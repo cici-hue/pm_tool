@@ -1,4 +1,4 @@
-﻿﻿﻿﻿﻿﻿﻿﻿<!DOCTYPE html>
+﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
@@ -1142,6 +1142,260 @@
             line-height: 1.6;
         }
 
+        /* === 项目规划表 按钮 === */
+        .schedule-btn {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #fff;
+            border: none;
+            padding: 0.5rem 1.2rem;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 6px rgba(102, 126, 234, 0.3);
+            margin-left: 0.5rem;
+            vertical-align: middle;
+        }
+        .schedule-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.45);
+        }
+        .schedule-btn:active {
+            transform: translateY(0);
+        }
+
+        /* === 项目规划日程表 弹窗 === */
+        .schedule-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .schedule-modal-overlay {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.55);
+            backdrop-filter: blur(2px);
+        }
+        .schedule-modal-content {
+            position: relative;
+            background: #fff;
+            border-radius: 14px;
+            padding: 0;
+            max-width: 1100px;
+            width: 95%;
+            max-height: 90vh;
+            overflow: hidden;
+            box-shadow: 0 25px 70px rgba(0,0,0,0.35);
+            animation: scheduleFadeIn 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+        @keyframes scheduleFadeIn {
+            from { transform: scale(0.95) translateY(20px); opacity: 0; }
+            to   { transform: scale(1) translateY(0); opacity: 1; }
+        }
+        .schedule-modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.2rem 1.6rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #fff;
+            border-radius: 14px 14px 0 0;
+        }
+        .schedule-modal-header h2 {
+            margin: 0;
+            font-size: 1.35rem;
+            font-weight: 700;
+        }
+        .schedule-close-btn {
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: #fff;
+            font-size: 1.2rem;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            cursor: pointer;
+            line-height: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s;
+        }
+        .schedule-close-btn:hover {
+            background: rgba(255,255,255,0.35);
+        }
+        .schedule-modal-body {
+            padding: 1.4rem 1.6rem 1.6rem;
+            overflow-y: auto;
+            flex: 1;
+        }
+
+        /* === 图例 === */
+        .gantt-legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem 1.2rem;
+            padding: 0.8rem 1rem;
+            background: #f8fafc;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            font-size: 0.82rem;
+            color: #475569;
+        }
+        .legend-item {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+        .legend-bar {
+            display: inline-block;
+            width: 16px;
+            height: 10px;
+            border-radius: 3px;
+        }
+        .legend-stage1 { background: linear-gradient(135deg, #60a5fa, #3b82f6); }
+        .legend-stage2 { background: linear-gradient(135deg, #34d399, #10b981); }
+        .legend-stage3 { background: linear-gradient(135deg, #fbbf24, #f59e0b); }
+        .legend-stage4 { background: linear-gradient(135deg, #f87171, #ef4444); }
+        .legend-stage5 { background: linear-gradient(135deg, #a78bfa, #8b5cf6); }
+
+        /* === Gantt 表格 === */
+        .gantt-container {
+            overflow-x: auto;
+            border: 1px solid #e5e7eb;
+            border-radius: 10px;
+            background: #fff;
+        }
+        .gantt-table {
+            width: 100%;
+            border-collapse: collapse;
+            table-layout: fixed;
+            min-width: 900px;
+        }
+        .gantt-table th, .gantt-table td {
+            border: 1px solid #e5e7eb;
+            padding: 0.55rem 0.6rem;
+            font-size: 0.85rem;
+            text-align: left;
+            vertical-align: middle;
+        }
+        .gantt-table thead th {
+            background: #f1f5f9;
+            color: #334155;
+            font-weight: 700;
+            text-align: center;
+        }
+        .gantt-phase-col { width: 130px; }
+        .gantt-task-col  { width: 280px; }
+        .gantt-duration-col { width: 80px; text-align: center; }
+        .gantt-timeline-col { padding: 0 !important; position: relative; }
+        .gantt-months {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            height: 100%;
+        }
+        .gantt-months span {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.78rem;
+            font-weight: 600;
+            color: #475569;
+            border-right: 1px dashed #cbd5e1;
+        }
+        .gantt-months span:last-child { border-right: none; }
+
+        .gantt-phase {
+            background: #f8fafc;
+            font-weight: 700;
+            color: #1e293b;
+            text-align: center;
+            line-height: 1.4;
+            font-size: 0.85rem;
+        }
+        .gantt-task {
+            color: #334155;
+            font-size: 0.82rem;
+        }
+        .gantt-duration {
+            text-align: center;
+            color: #64748b;
+            font-size: 0.78rem;
+            font-weight: 500;
+            background: #fafafa;
+        }
+        .gantt-bar-cell {
+            position: relative;
+            height: 38px;
+            background-image: repeating-linear-gradient(
+                to right,
+                transparent 0,
+                transparent calc(16.666% - 1px),
+                #e2e8f0 calc(16.666% - 1px),
+                #e2e8f0 16.666%
+            );
+            padding: 0 0.5rem !important;
+        }
+        .gantt-bar {
+            position: absolute;
+            top: 6px;
+            height: 26px;
+            border-radius: 13px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 0.7rem;
+            font-weight: 600;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.12);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            padding: 0 6px;
+        }
+        .stage1-bar { background: linear-gradient(135deg, #60a5fa, #3b82f6); }
+        .stage2-bar { background: linear-gradient(135deg, #34d399, #10b981); }
+        .stage3-bar { background: linear-gradient(135deg, #fbbf24, #f59e0b); }
+        .stage4-bar { background: linear-gradient(135deg, #f87171, #ef4444); }
+        .stage5-bar { background: linear-gradient(135deg, #a78bfa, #8b5cf6); }
+        .milestone-marker {
+            background: linear-gradient(135deg, #f43f5e, #be123c) !important;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(244, 63, 94, 0.6); }
+            50% { box-shadow: 0 0 0 6px rgba(244, 63, 94, 0); }
+        }
+
+        .gantt-summary {
+            margin-top: 1rem;
+            padding: 0.9rem 1.1rem;
+            background: linear-gradient(135deg, #eff6ff 0%, #f0fdf4 100%);
+            border-left: 4px solid #667eea;
+            border-radius: 6px;
+            font-size: 0.88rem;
+            color: #1e40af;
+        }
+        .gantt-summary p {
+            margin: 0.3rem 0;
+        }
+
+        @media (max-width: 768px) {
+            .schedule-modal-content { width: 98%; }
+            .gantt-phase-col, .gantt-task-col { width: auto; }
+        }
+
         .modal-header {
             padding: 1.5rem;
             border-bottom: 2px solid #e5e7eb;
@@ -2026,7 +2280,8 @@
                 <div class="project-header">
                     <div class="project-title-area">
                         <h1 class="section-title">🎯 Quality Intelligence Platform</h1>
-                        <p class="project-subtitle" onclick="openMilestoneModal()" style="cursor:pointer;text-decoration:underline;">📍 关键里程碑</p>
+                        <p class="project-subtitle" onclick="openMilestoneModal()" style="cursor:pointer;text-decoration:underline;display:inline-block;margin-right:1rem;">📍 关键里程碑</p>
+                        <button class="schedule-btn" onclick="openProjectSchedule()" style="cursor:pointer;">📅 项目规划表</button>
                     </div>
                     <div class="progress-overview">
                         <div class="overall-progress-label">总体进度</div>
@@ -2065,6 +2320,165 @@
                                 <div class="milestone-date">2026年12月</div>
                                 <div class="milestone-title">第一版上线使用</div>
                                 <div class="milestone-desc">确保网站正常部署，数据库正常同步，前端各功能正常使用</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 项目规划日程表弹窗 -->
+                <div id="projectScheduleModal" class="schedule-modal" style="display:none;">
+                    <div class="schedule-modal-overlay" onclick="closeProjectSchedule()"></div>
+                    <div class="schedule-modal-content">
+                        <div class="schedule-modal-header">
+                            <h2>📅 项目规划日程表</h2>
+                            <button class="schedule-close-btn" onclick="closeProjectSchedule()">✕</button>
+                        </div>
+                        <div class="schedule-modal-body">
+                            <div class="gantt-legend">
+                                <span class="legend-item"><i class="legend-bar legend-stage1"></i>项目阶段一：准备阶段</span>
+                                <span class="legend-item"><i class="legend-bar legend-stage2"></i>项目阶段二：基础功能开发</span>
+                                <span class="legend-item"><i class="legend-bar legend-stage3"></i>项目阶段三：AI知识库开发</span>
+                                <span class="legend-item"><i class="legend-bar legend-stage4"></i>项目阶段四：第一版上线</span>
+                                <span class="legend-item"><i class="legend-bar legend-stage5"></i>项目阶段五：持续监控、版本迭代优化</span>
+                            </div>
+                            <div class="gantt-container">
+                                <table class="gantt-table">
+                                    <thead>
+                                        <tr>
+                                            <th class="gantt-phase-col">项目阶段规划</th>
+                                            <th class="gantt-task-col">关键时间节点</th>
+                                            <th class="gantt-duration-col">周期</th>
+                                            <th class="gantt-timeline-col" colspan="6">
+                                                <div class="gantt-months">
+                                                    <span>2026.07</span>
+                                                    <span>2026.08</span>
+                                                    <span>2026.09</span>
+                                                    <span>2026.10</span>
+                                                    <span>2026.11</span>
+                                                    <span>2026.12</span>
+                                                </div>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <!-- 阶段一 -->
+                                        <tr class="gantt-stage-row stage1-row">
+                                            <td class="gantt-phase" rowspan="2">项目阶段一：<br>准备阶段</td>
+                                            <td class="gantt-task">数据库字段规范</td>
+                                            <td class="gantt-duration">2 weeks</td>
+                                            <td colspan="6" class="gantt-bar-cell">
+                                                <div class="gantt-bar stage1-bar" style="left:0%;width:8.3%;">Jul</div>
+                                            </td>
+                                        </tr>
+                                        <tr class="gantt-stage-row stage1-row">
+                                            <td class="gantt-task">确定数据库产品</td>
+                                            <td class="gantt-duration">2 weeks</td>
+                                            <td colspan="6" class="gantt-bar-cell">
+                                                <div class="gantt-bar stage1-bar" style="left:8.3%;width:8.3%;">Jul</div>
+                                            </td>
+                                        </tr>
+
+                                        <!-- 阶段二 -->
+                                        <tr class="gantt-stage-row stage2-row">
+                                            <td class="gantt-phase" rowspan="4">项目阶段二：<br>基础功能开发</td>
+                                            <td class="gantt-task">前端基础功能构建完毕</td>
+                                            <td class="gantt-duration">2 weeks</td>
+                                            <td colspan="6" class="gantt-bar-cell">
+                                                <div class="gantt-bar stage2-bar" style="left:16.6%;width:8.3%;">Aug</div>
+                                            </td>
+                                        </tr>
+                                        <tr class="gantt-stage-row stage2-row">
+                                            <td class="gantt-task">数据库迁移（适用于有原数据库的应用）</td>
+                                            <td class="gantt-duration">4 weeks</td>
+                                            <td colspan="6" class="gantt-bar-cell">
+                                                <div class="gantt-bar stage2-bar" style="left:25%;width:16.6%;">Aug-Sep</div>
+                                            </td>
+                                        </tr>
+                                        <tr class="gantt-stage-row stage2-row">
+                                            <td class="gantt-task">前端应用基础功能可用，数据库可同步、网站正常部署</td>
+                                            <td class="gantt-duration">2 weeks</td>
+                                            <td colspan="6" class="gantt-bar-cell">
+                                                <div class="gantt-bar stage2-bar" style="left:41.6%;width:8.3%;">Sep</div>
+                                            </td>
+                                        </tr>
+                                        <tr class="gantt-stage-row stage2-row">
+                                            <td class="gantt-task">前端应用基础功能小范围测试并优化</td>
+                                            <td class="gantt-duration">2 weeks</td>
+                                            <td colspan="6" class="gantt-bar-cell">
+                                                <div class="gantt-bar stage2-bar" style="left:50%;width:8.3%;">Sep</div>
+                                            </td>
+                                        </tr>
+
+                                        <!-- 阶段三 -->
+                                        <tr class="gantt-stage-row stage3-row">
+                                            <td class="gantt-phase" rowspan="4">项目阶段三：<br>AI知识库开发</td>
+                                            <td class="gantt-task">数据库资料准备齐全</td>
+                                            <td class="gantt-duration">2 weeks</td>
+                                            <td colspan="6" class="gantt-bar-cell">
+                                                <div class="gantt-bar stage3-bar" style="left:50%;width:8.3%;">Sep</div>
+                                            </td>
+                                        </tr>
+                                        <tr class="gantt-stage-row stage3-row">
+                                            <td class="gantt-task">后端搭建AI知识库</td>
+                                            <td class="gantt-duration">4 weeks</td>
+                                            <td colspan="6" class="gantt-bar-cell">
+                                                <div class="gantt-bar stage3-bar" style="left:58.3%;width:16.6%;">Oct</div>
+                                            </td>
+                                        </tr>
+                                        <tr class="gantt-stage-row stage3-row">
+                                            <td class="gantt-task">前端应用AI知识库功能可用</td>
+                                            <td class="gantt-duration">4 weeks</td>
+                                            <td colspan="6" class="gantt-bar-cell">
+                                                <div class="gantt-bar stage3-bar" style="left:75%;width:16.6%;">Oct-Nov</div>
+                                            </td>
+                                        </tr>
+                                        <tr class="gantt-stage-row stage3-row">
+                                            <td class="gantt-task">前端应用全部功能小范围测试并优化</td>
+                                            <td class="gantt-duration">2 weeks</td>
+                                            <td colspan="6" class="gantt-bar-cell">
+                                                <div class="gantt-bar stage3-bar" style="left:83.3%;width:8.3%;">Nov</div>
+                                            </td>
+                                        </tr>
+
+                                        <!-- 阶段四 -->
+                                        <tr class="gantt-stage-row stage4-row">
+                                            <td class="gantt-phase" rowspan="2">项目阶段四：<br>第一版上线<br>2026.12.31</td>
+                                            <td class="gantt-task">前端应用使用说明文档</td>
+                                            <td class="gantt-duration">1 weeks</td>
+                                            <td colspan="6" class="gantt-bar-cell">
+                                                <div class="gantt-bar stage4-bar" style="left:83.3%;width:4.2%;">Nov</div>
+                                            </td>
+                                        </tr>
+                                        <tr class="gantt-stage-row stage4-row">
+                                            <td class="gantt-task">前端应用上线使用</td>
+                                            <td class="gantt-duration">里程碑</td>
+                                            <td colspan="6" class="gantt-bar-cell">
+                                                <div class="gantt-bar stage4-bar milestone-marker" style="left:91.6%;width:8.3%;">⭐ 12.31 上线</div>
+                                            </td>
+                                        </tr>
+
+                                        <!-- 阶段五 -->
+                                        <tr class="gantt-stage-row stage5-row">
+                                            <td class="gantt-phase" rowspan="2">项目阶段五：<br>持续监控、<br>版本迭代优化</td>
+                                            <td class="gantt-task">设置应用监控：异常数据监控、数据同步监控</td>
+                                            <td class="gantt-duration">2 weeks</td>
+                                            <td colspan="6" class="gantt-bar-cell">
+                                                <div class="gantt-bar stage5-bar" style="left:91.6%;width:8.3%;">Dec</div>
+                                            </td>
+                                        </tr>
+                                        <tr class="gantt-stage-row stage5-row">
+                                            <td class="gantt-task">设置版本迭代规范：需求收集、评审、版本号、迭代通知</td>
+                                            <td class="gantt-duration">2 weeks</td>
+                                            <td colspan="6" class="gantt-bar-cell">
+                                                <div class="gantt-bar stage5-bar" style="left:91.6%;width:8.3%;">Dec</div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="gantt-summary">
+                                <p>📌 <strong>项目总周期：</strong>2026年7月 - 2026年12月（6个月）</p>
+                                <p>🎯 <strong>关键里程碑：</strong>2026年12月31日 第一版正式上线</p>
                             </div>
                         </div>
                     </div>
@@ -2880,6 +3294,14 @@
 
         function closeMilestoneModal() {
             document.getElementById('milestoneModal').style.display = 'none';
+        }
+
+        function openProjectSchedule() {
+            document.getElementById('projectScheduleModal').style.display = 'flex';
+        }
+
+        function closeProjectSchedule() {
+            document.getElementById('projectScheduleModal').style.display = 'none';
         }
 
         var nodeNames = [
