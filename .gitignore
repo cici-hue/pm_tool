@@ -1,0 +1,8 @@
+.trae/
+fix-*.py
+find-*.py
+check-*.py
+count-*.py
+analyze-*.py
+test-syntax.html
+未命名*.html

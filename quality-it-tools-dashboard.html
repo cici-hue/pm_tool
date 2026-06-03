@@ -1,0 +1,3066 @@
+﻿﻿﻿﻿﻿﻿﻿﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quality Intelligence Platform Project - 项目总览平台</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft YaHei", sans-serif;
+            background: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* Top Navigation */
+        .top-nav {
+            background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%);
+            color: white;
+            padding: 0 2rem;
+            height: 64px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .nav-subtitle {
+            font-size: 0.9rem;
+            opacity: 0.9;
+            font-weight: 400;
+        }
+
+        .nav-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .nav-btn {
+            background: rgba(255,255,255,0.2);
+            border: 1px solid rgba(255,255,255,0.3);
+            color: white;
+            padding: 0.5rem 1.25rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.875rem;
+            transition: all 0.3s ease;
+        }
+
+        .nav-btn:hover {
+            background: rgba(255,255,255,0.3);
+            transform: translateY(-1px);
+        }
+
+        /* Navigation Tabs */
+        .nav-tabs-container {
+            background: white;
+            border-bottom: 2px solid #e5e7eb;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            position: sticky;
+            top: 64px;
+            z-index: 99;
+        }
+
+        .nav-tabs {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .nav-tab {
+            background: transparent;
+            border: none;
+            border-bottom: 3px solid transparent;
+            color: #6b7280;
+            padding: 1rem 1.5rem;
+            font-size: 0.95rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            position: relative;
+        }
+
+        .nav-tab:hover {
+            color: #2563eb;
+            background: #f8fafc;
+        }
+
+        .nav-tab.active {
+            color: #2563eb;
+            border-bottom-color: #2563eb;
+            font-weight: 600;
+        }
+
+        .tab-icon {
+            font-size: 1.1rem;
+        }
+
+        /* Tab Content */
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* ==================== PROJECT MANAGEMENT STYLES ==================== */
+        
+        /* Project Header */
+        .project-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 12px;
+            padding: 0.5rem 1rem;
+            margin-bottom: 0.6rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+        }
+
+        .project-title-area h1 {
+            color: white !important;
+            font-size: 1.3rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .project-subtitle {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 0.85rem;
+            margin: 0;
+        }
+
+        .progress-overview {
+            text-align: center;
+            min-width: 180px;
+        }
+
+        .overall-progress-label {
+            color: white;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            font-size: 0.95rem;
+        }
+
+        .overall-progress-bar {
+            width: 280px;
+            height: 20px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 15px;
+            overflow: hidden;
+            margin: 0 auto 0.5rem auto;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .overall-progress-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #10b981 0%, #34d399 100%);
+            border-radius: 15px;
+            transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 0 10px rgba(16, 185, 129, 0.5);
+        }
+
+        .overall-progress-percent {
+            color: white;
+            font-size: 1.8rem;
+            font-weight: bold;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Statistics Row */
+        .pm-stats-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1.25rem;
+            margin-bottom: 2rem;
+        }
+
+        .pm-stat-item {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            border-left: 4px solid;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .pm-stat-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+        }
+
+        .pm-stat-red { border-left-color: #ef4444; }
+        .pm-stat-yellow { border-left-color: #f59e0b; }
+        .pm-stat-green { border-left-color: #10b981; }
+        .pm-stat-total { border-left-color: #3b82f6; }
+
+        .pm-stat-icon {
+            font-size: 2rem;
+        }
+
+        .pm-stat-value {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #111827;
+            line-height: 1;
+        }
+
+        .pm-stat-label {
+            font-size: 0.85rem;
+            color: #6b7280;
+            margin-top: 0.25rem;
+        }
+
+        /* Timeline Table Container */
+        .timeline-table-container {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            overflow-x: auto;
+            margin-bottom: 2rem;
+        }
+
+        /* Timeline Table */
+        .timeline-table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 1480px;
+            font-size: 0.88rem;
+        }
+
+        .timeline-table thead {
+            background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .timeline-table th {
+            padding: 1rem 0.75rem;
+            color: white;
+            font-weight: 600;
+            text-align: center;
+            border-right: 1px solid rgba(255, 255, 255, 0.2);
+            white-space: nowrap;
+            font-size: 0.82rem;
+            line-height: 1.4;
+        }
+
+        .node-duration {
+            font-weight: normal;
+            opacity: 0.9;
+            font-size: 0.78rem;
+        }
+
+        .col-phase {
+            min-width: 220px;
+            text-align: left !important;
+        }
+
+        .col-app {
+            min-width: 240px;
+            text-align: left !important;
+        }
+
+        .col-node {
+            min-width: 130px;
+        }
+
+        /* ==================== GANTT CHART STYLES ==================== */
+        
+        /* Phase Group Header Row (Row 1) */
+        .gantt-phase-row {
+            background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%) !important;
+        }
+        
+        .gantt-phase-header {
+            text-align: center;
+            font-weight: 700 !important;
+            font-size: 0.9rem !important;
+            letter-spacing: 0.03em;
+            padding: 0.9rem 0.5rem !important;
+            border-right: 2px solid rgba(255, 255, 255, 0.3) !important;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .gantt-phase-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.1) 0%, transparent 100%);
+            pointer-events: none;
+        }
+        
+        /* Phase-specific colors for group headers */
+        .phase-prep {
+            background: linear-gradient(135deg, #059669 0%, #10b981 100%) !important;
+        }
+        
+        .phase-dev {
+            background: linear-gradient(135deg, #d97706 0%, #f59e0b 100%) !important;
+        }
+        
+        .phase-ai {
+            background: linear-gradient(135deg, #7c3aed 0%, #8b5cf6 100%) !important;
+        }
+        
+        .phase-launch {
+            background: linear-gradient(135deg, #dc2626 0%, #ef4444 100%) !important;
+        }
+        
+        .phase-monitor {
+            background: linear-gradient(135deg, #0891b2 0%, #06b6d4 100%) !important;
+        }
+        
+        /* Detail Row (Row 2) - Node Headers */
+        .gantt-detail-row {
+            background: linear-gradient(180deg, #dbeafe 0%, #bfdbfe 100%) !important;
+        }
+        
+        .gantt-detail-row th {
+            color: #1e40af !important;
+            font-weight: 600 !important;
+            border-right: 2px solid rgba(30, 64, 175, 0.15) !important;
+            padding: 0.7rem 0.4rem !important;
+        }
+        
+        /* Node-specific subtle backgrounds */
+        .node-prep {
+            background: rgba(16, 185, 129, 0.08) !important;
+        }
+        
+        .node-dev {
+            background: rgba(245, 158, 11, 0.08) !important;
+        }
+        
+        .node-ai {
+            background: rgba(139, 92, 246, 0.08) !important;
+        }
+        
+        .node-launch {
+            background: rgba(239, 68, 68, 0.08) !important;
+        }
+        
+        .node-monitor {
+            background: rgba(6, 182, 212, 0.08) !important;
+        }
+        
+        /* Responsive adjustments for Gantt table */
+        @media (max-width: 1400px) {
+            .gantt-phase-header {
+                font-size: 0.82rem !important;
+                padding: 0.75rem 0.35rem !important;
+            }
+            
+            .gantt-detail-row th {
+                font-size: 0.78rem !important;
+                padding: 0.6rem 0.3rem !important;
+            }
+            
+            .timeline-table {
+                min-width: 1200px;
+            }
+        }
+
+        /* Phase Header Row */
+        .phase-header {
+            background: linear-gradient(90deg, #f0f9ff 0%, #e0f2fe 100%);
+            border-bottom: 2px solid #bae6fd;
+        }
+
+        .phase-header:hover {
+            background: linear-gradient(90deg, #e0f2fe 0%, #bae6fd 100%);
+        }
+
+        .phase-name {
+            padding: 1rem 1.25rem !important;
+            font-weight: 700 !important;
+            color: #0369a1 !important;
+            font-size: 0.95rem !important;
+            letter-spacing: 0.02em;
+        }
+
+        .phase-icon {
+            margin-right: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        /* Application Row */
+        .app-row {
+            background: white;
+            border-bottom: 1px solid #f3f4f6;
+            transition: all 0.2s ease;
+        }
+
+        .app-row:hover {
+            background: #fafafa;
+            transform: scale(1.001);
+            box-shadow: inset 0 0 0 2px #dbeafe;
+        }
+
+        .app-cell {
+            background: #f9fafb;
+            border-right: 1px solid #e5e7eb;
+        }
+
+        .app-name {
+            padding: 0.875rem 1rem !important;
+            font-weight: 600 !important;
+            color: #1f2937 !important;
+            font-size: 0.88rem !important;
+            border-right: 2px solid #e5e7eb;
+        }
+
+        /* Status Cell */
+        .status-cell {
+            padding: 0.75rem !important;
+            text-align: center;
+            vertical-align: middle;
+            border-right: 1px solid #f3f4f6;
+        }
+
+        .empty-cell {
+            background: #fafafa;
+        }
+
+        /* Traffic Light Button */
+        .traffic-light {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: 3px solid rgba(0, 0, 0, 0.15);
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            outline: none;
+            position: relative;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        .traffic-light:hover {
+            transform: scale(1.15) rotate(360deg);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+        }
+
+        .traffic-light:active {
+            transform: scale(0.95);
+        }
+
+        .traffic-light.red {
+            background: radial-gradient(circle at 35% 35%, #ff6b6b, #ef4444, #dc2626);
+            box-shadow: 0 2px 8px rgba(239, 68, 68, 0.4), inset 0 -2px 4px rgba(0, 0, 0, 0.2), inset 0 2px 4px rgba(255, 255, 255, 0.3);
+        }
+
+        .traffic-light.yellow {
+            background: radial-gradient(circle at 35% 35%, #fcd34d, #f59e0b, #d97706);
+            box-shadow: 0 2px 8px rgba(245, 158, 11, 0.4), inset 0 -2px 4px rgba(0, 0, 0, 0.2), inset 0 2px 4px rgba(255, 255, 255, 0.3);
+        }
+
+        .traffic-light.green {
+            background: radial-gradient(circle at 35% 35%, #6ee7b7, #10b981, #059669);
+            box-shadow: 0 2px 8px rgba(16, 185, 129, 0.4), inset 0 -2px 4px rgba(0, 0, 0, 0.2), inset 0 2px 4px rgba(255, 255, 255, 0.3);
+        }
+
+        
+        /* Sticky/Frozen Columns */
+        .timeline-table-container {
+            overflow-x: auto;
+            position: relative;
+            max-width: 100%;
+        }
+        
+        .timeline-table th.stage-th,
+        .timeline-table td.stage-title,
+        .timeline-table th.subproject-th,
+        .timeline-table td.module-name {
+            position: sticky;
+            left: 0;
+            z-index: 10;
+            background: #f5f5f5;
+            box-shadow: 2px 0 3px rgba(0,0,0,0.08);
+        }
+
+        /* 项目阶段列颜色 */
+        .timeline-table th.stage-th,
+        .timeline-table td.stage-title {
+            background: #f58220;
+            color: white;
+        }
+
+        .timeline-table th.subproject-th,
+        .timeline-table td.module-name {
+            left: 100px;
+            min-width: 160px !important;
+            width: 160px !important;
+        }
+
+        .timeline-table th.stage-th,
+        .timeline-table td.stage-title {
+            min-width: 100px !important;
+            width: 100px !important;
+        }
+
+        /* 子项目为空时的单元格样式 */
+        .subproject-empty {
+            background: #f5f5f5;
+        }
+
+        .timeline-table thead tr th {
+            position: sticky;
+            top: 0;
+            z-index: 20;
+        }
+
+        .timeline-table thead tr th.stage-th {
+            z-index: 30;
+        }
+
+        .timeline-table thead tr th.subproject-th {
+            z-index: 25;
+            left: 100px;
+        }
+
+        .key-node-th {
+            background: #d0d0d0 !important;
+            color: #333;
+            font-weight: bold;
+            text-align: center;
+            min-width: 960px;
+        }
+
+/* New Gantt Styles from 未命名(2).html */
+        .timeline-table .stage-th {
+            background: #f58220;
+            color: #fff;
+            font-weight: bold;
+            min-width: 140px;
+        }
+        .timeline-table .node-th {
+            background: #d0d0d0;
+            color: #333;
+            font-weight: bold;
+            min-width: 170px;
+        }
+        .timeline-table .stage-title {
+            background: #f58220;
+            font-weight: bold;
+            color: white;
+            vertical-align: middle;
+        }
+        .timeline-table .module-name {
+            font-size: 14px;
+            color: #333;
+            padding-left: 1rem;
+        }
+        .status-dot {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            border: 1px solid #999;
+            cursor: pointer;
+            margin: 8px auto;
+            transition: all 0.2s ease;
+        }
+        .status-dot:hover {
+            transform: scale(1.2);
+        }
+        .dot-red    { background: #e74c3c; }
+        .dot-yellow { background: #f1c40f; }
+        .dot-green  { background: #2ecc71; }
+
+        /* Instructions Box */
+        .instructions-box {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            border-left: 5px solid #f59e0b;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-top: 2rem;
+            color: #92400e;
+        }
+
+        .instructions-box code {
+            background: rgba(255, 255, 255, 0.6);
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85rem;
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 1200px) {
+            .project-header {
+                flex-direction: column;
+                text-align: center;
+                gap: 1.5rem;
+            }
+            
+            .progress-overview {
+                width: 100%;
+            }
+            
+            .overall-progress-bar {
+                width: 80%;
+                max-width: 300px;
+            }
+        }
+
+
+        /* Main Container */
+        .main-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* Section Title */
+        .section-title {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: #111827;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 3px solid #2563eb;
+        }
+
+        .section-subtitle {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #374151;
+            margin: 2rem 0 1rem;
+        }
+
+        /* ============================================ */
+        /* ARCHITECTURE SECTION - SKETCH STYLE         */
+        /* ============================================ */
+
+        .architecture-overview {
+            background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+            border: 2px solid #93c5fd;
+            border-radius: 10px;
+            padding: 1.25rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .architecture-overview h3 {
+            color: #1e40af;
+            font-size: 1.05rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .architecture-overview p {
+            color: #1e3a8a;
+            line-height: 1.6;
+            font-size: 0.9rem;
+        }
+
+        /* ============================================ */
+        /* ARCHITECTURE SECTION - CANVAS LAYOUT       */
+        /* ============================================ */
+
+        .arch-layout {
+            position: relative;
+            width: 100%;
+            height: 720px;
+            max-width: 1100px;
+            margin: 120px auto 0 auto;  /* 距离顶部120px */
+            background: transparent;
+        }
+
+        /* Layer Boxes - Absolute Positioned */
+        .arch-box {
+            background: white;
+            border: 3px solid #333;
+            border-radius: 12px;
+            padding: 1.25rem;
+            box-shadow: 3px 3px 15px rgba(0,0,0,0.18);
+            position: absolute;
+        }
+
+        .arch-box-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 0.85rem;
+            padding-bottom: 0.55rem;
+            border-bottom: 2.5px solid currentColor;
+        }
+
+        /* Application Layer Box - TOP LEFT */
+        .box-apps {
+            top: 0;
+            left: 0;
+            width: 46%;
+            min-height: 280px;
+            border-color: #2563eb;
+        }
+
+        .box-apps .arch-box-title {
+            color: #1e40af;
+        }
+
+        /* Data Layer Box - TOP RIGHT */
+        .box-data {
+            top: 0;
+            right: 0;
+            width: 46%;
+            min-height: 280px;
+            border-color: #f59e0b;
+        }
+
+        .box-data .arch-box-title {
+            color: #d97706;
+        }
+
+        /* Knowledge Base Box - BOTTOM CENTER (narrow) */
+        .box-knowledge {
+            bottom: 20px;
+            left: 30%;
+            width: 42%;
+            min-height: 120px;
+            max-width: 420px;
+            border-color: #8b5cf6;
+        }
+
+        .box-knowledge .arch-box-title {
+            color: #7c3aed;
+        }
+
+        .knowledge-content {
+            font-size: 0.92rem;
+            line-height: 1.7;
+            color: #4c1d95;
+            text-align: center;
+        }
+
+        .knowledge-content p {
+            margin: 0;
+        }
+
+        /* App List */
+        .app-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.55rem;
+        }
+
+        .app-entry {
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            border: 2px solid #cbd5e1;
+            border-radius: 7px;
+            padding: 0.6rem 0.85rem;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            font-size: 0.87rem;
+            font-weight: 500;
+            color: #1e40af;
+            position: relative;
+        }
+
+        .app-entry:hover {
+            background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+            border-color: #3b82f6;
+            transform: translateX(4px) scale(1.02);
+            box-shadow: 0 2px 8px rgba(37,99,235,0.2);
+        }
+
+        .app-entry.no-data {
+            opacity: 1;
+            font-style: normal;
+            color: #1e40af;
+            border-style: dashed;
+            border-color: #d1d5db;
+        }
+
+        .app-entry.no-data:hover {
+            opacity: 0.9;
+            color: #1e3a8a;
+            background: #f9fafb;
+        }
+
+        /* Data List */
+        .data-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.7rem;
+        }
+
+        .data-entry {
+            background: white;
+            border-left: 4px solid #f59e0b;
+            padding: 0.55rem 0.75rem;
+            font-size: 0.84rem;
+            color: #78350f;
+            border-radius: 0 6px 6px 0;
+        }
+
+        .data-source-name {
+            font-weight: 650;
+            color: #92400e;
+            margin-bottom: 0.2rem;
+            font-size: 0.86rem;
+        }
+
+        .data-items {
+            font-size: 0.8rem;
+            color: #a16207;
+            line-height: 1.45;
+        }
+
+        .data-entry.special {
+            border-left-color: #8b5cf6;
+            background: linear-gradient(135deg, #faf5ff 0%, #f3e8ff 100%);
+        }
+
+        .data-entry.special .data-source-name {
+            color: #7c3aed;
+        }
+
+        .data-entry.special .data-items {
+            color: #6d28d9;
+        }
+
+        /* Flow Arrows - Absolute Positioning on Canvas */
+        .flow-arrow-svg {
+            position: absolute;
+            pointer-events: none;
+            z-index: 5;
+        }
+
+        .flow-arrow-path {
+            fill: none;
+            stroke-width: 5;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        /* Flow Text Cards */
+        .flow-card {
+            position: absolute;
+            background: white;
+            border: 2.5px solid;
+            border-radius: 12px;
+            padding: 0;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.14);
+            z-index: 10;
+            max-width: 380px;
+            cursor: pointer;
+            transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow: hidden;
+        }
+
+        .flow-card.green {
+            border-color: #10b981;
+            background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
+        }
+
+        .flow-card.red {
+            border-color: #ef4444;
+            background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+        }
+
+        .flow-card.purple {
+            border-color: #8b5cf6;
+            background: linear-gradient(135deg, #faf5ff 0%, #ede9fe 100%);
+        }
+
+        .flow-header {
+            font-weight: 750;
+            font-size: 0.9rem;
+            padding: 0.7rem 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.55rem;
+            user-select: none;
+            position: relative;
+        }
+
+        .flow-header::after {
+            content: '?';
+            margin-left: auto;
+            font-size: 0.7rem;
+            transition: transform 0.3s ease;
+            opacity: 0.6;
+        }
+
+        .flow-card.expanded .flow-header::after {
+            transform: rotate(90deg);
+        }
+
+        .flow-header.green { color: #059669; }
+        .flow-header.red { color: #dc2626; }
+        .flow-header.purple { color: #7c3aed; }
+
+        .flow-badge {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.78rem;
+            font-weight: 800;
+            color: white;
+            flex-shrink: 0;
+        }
+
+        .badge-green { background: #10b981; }
+        .badge-red { background: #ef4444; }
+        .badge-purple { background: #8b5cf6; }
+
+        .flow-body {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), 
+                        padding 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+                        opacity 0.3s ease;
+            opacity: 0;
+            padding: 0 1rem;
+        }
+
+        .flow-card.expanded .flow-body {
+            max-height: 300px;
+            opacity: 1;
+            padding: 0 1rem 1rem 1rem;
+        }
+
+        .flow-body-text {
+            font-size: 0.84rem;
+            line-height: 1.65;
+            color: #374151;
+            margin-top: 0.5rem;
+        }
+
+        /* Responsive - Canvas Layout */
+        @media (max-width: 1024px) {
+            .arch-layout {
+                height: 900px;
+            }
+
+            .box-apps, .box-data {
+                width: 48%;
+                position: absolute;
+            }
+
+            .box-apps { top: 0; left: 0; }
+            .box-data { top: 0; right: 0; }
+
+            .box-knowledge {
+                width: 60%;
+                left: 20%;
+                bottom: 20px;
+            }
+
+            .flow-card {
+                max-width: 280px;
+                font-size: 0.9em;
+            }
+        }
+
+        /* Application Detail Modal */
+        .app-detail-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .app-detail-modal.active {
+            display: flex;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 12px;
+            max-width: 700px;
+            width: 90%;
+            max-height: 85vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(30px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .milestone-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .milestone-modal-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+        }
+
+        .milestone-modal-content {
+            position: relative;
+            background: #fff;
+            border-radius: 12px;
+            padding: 1.5rem;
+            max-width: 560px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            animation: milestoneFadeIn 0.25s ease;
+        }
+
+        @keyframes milestoneFadeIn {
+            from { transform: scale(0.95); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .milestone-modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.2rem;
+            padding-bottom: 0.8rem;
+            border-bottom: 2px solid #667eea;
+        }
+
+        .milestone-modal-header h2 {
+            margin: 0;
+            font-size: 1.4rem;
+            color: #333;
+        }
+
+        .milestone-close-btn {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #999;
+            line-height: 1;
+            padding: 4px;
+        }
+
+        .milestone-close-btn:hover {
+            color: #333;
+        }
+
+        .milestone-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+        }
+
+        .milestone-item {
+            position: relative;
+            padding: 1rem 1rem 1rem 3rem;
+            border-left: 3px solid #667eea;
+            margin-left: 10px;
+        }
+
+        .milestone-item::before {
+            content: '';
+            position: absolute;
+            left: -8px;
+            top: 1.3rem;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: #667eea;
+            border: 3px solid #fff;
+            box-shadow: 0 0 0 2px #667eea;
+        }
+
+        .milestone-date {
+            font-size: 0.9rem;
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 0.3rem;
+        }
+
+        .milestone-title {
+            font-size: 1.05rem;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 0.3rem;
+        }
+
+        .milestone-desc {
+            font-size: 0.88rem;
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .modal-header {
+            padding: 1.5rem;
+            border-bottom: 2px solid #e5e7eb;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            border-radius: 12px 12px 0 0;
+        }
+
+        .modal-header h3 {
+            font-size: 1rem;
+            color: #111827;
+            margin: 0;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #6b7280;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 6px;
+            transition: all 0.2s;
+        }
+
+        .modal-close:hover {
+            background: #e5e7eb;
+            color: #111827;
+        }
+
+        .modal-body {
+            padding: 1.5rem;
+        }
+
+        .modal-section {
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-section-title {
+            font-weight: 600;
+            color: #1e40af;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .modal-section-content {
+            color: #374151;
+            line-height: 1.7;
+            font-size: 0.88rem;
+        }
+
+        .ai-application-box {
+            background: linear-gradient(135deg, #faf5ff 0%, #f3e8ff 100%);
+            border: 2px solid #c4b5fd;
+            border-radius: 10px;
+            padding: 1.25rem;
+            margin-top: 1rem;
+        }
+
+        .ai-application-box h4 {
+            color: #5b21b6;
+            margin-bottom: 1rem;
+            font-size: 1rem;
+        }
+
+        .ai-hint-example {
+            background: white;
+            border-left: 4px solid #8b5cf6;
+            padding: 0.75rem 1rem;
+            margin: 0.5rem 0;
+            border-radius: 0 6px 6px 0;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            color: #374151;
+        }
+
+        /* ========================================== */
+        /* PROJECT MANAGEMENT SECTION                 */
+        /* ========================================== */
+
+        .pm-section {
+            margin-top: 3rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+            border: 1px solid #e5e7eb;
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+        }
+
+        .stat-icon {
+            font-size: 2rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .stat-icon-blue { color: #2563eb; }
+        .stat-icon-green { color: #10b981; }
+        .stat-icon-purple { color: #8b5cf6; }
+        .stat-icon-orange { color: #f59e0b; }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #111827;
+            margin-bottom: 0.25rem;
+        }
+
+        .stat-label {
+            font-size: 0.875rem;
+            color: #6b7280;
+        }
+
+        .progress-wrapper {
+            margin-top: 1rem;
+        }
+
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8rem;
+            color: #6b7280;
+            margin-bottom: 0.25rem;
+        }
+
+        .progress-bar-bg {
+            background: #e5e7eb;
+            border-radius: 999px;
+            height: 8px;
+            overflow: hidden;
+        }
+
+        .progress-bar-fill {
+            background: linear-gradient(90deg, #2563eb, #3b82f6);
+            height: 100%;
+            border-radius: 999px;
+            transition: width 1s ease;
+        }
+
+        /* Gantt Chart */
+        .gantt-section {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+            border: 1px solid #e5e7eb;
+            margin-bottom: 2rem;
+            overflow: hidden;
+        }
+
+        .gantt-header-custom {
+            padding: 1.25rem 1.5rem;
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #f9fafb;
+        }
+
+        .card-title {
+            font-weight: 600;
+            color: #111827;
+            font-size: 1.1rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+            color: white;
+            border: none;
+            padding: 0.625rem 1.25rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.875rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+        }
+
+        /* Status Tags */
+        .status-tag {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.25rem 0.75rem;
+            border-radius: 999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .status-completed {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .status-active {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+
+        .status-pending {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        /* Projects Grid */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .project-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+            border: 1px solid #e5e7eb;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .project-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+        }
+
+        .project-card-header {
+            padding: 1.25rem;
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #f9fafb;
+        }
+
+        .project-name {
+            font-weight: 600;
+            color: #111827;
+            font-size: 1rem;
+        }
+
+        .project-card-body {
+            padding: 1.25rem;
+        }
+
+        .project-description {
+            color: #6b7280;
+            font-size: 0.875rem;
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+
+        .owners-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid #e5e7eb;
+        }
+
+        .owner-info {
+            text-align: center;
+        }
+
+        .owner-label {
+            font-size: 0.75rem;
+            color: #9ca3af;
+            margin-bottom: 0.25rem;
+        }
+
+        .owner-name {
+            font-weight: 600;
+            color: #374151;
+            font-size: 0.875rem;
+        }
+
+        /* Subproject Preview Cards */
+        .subproject-preview-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1rem;
+        }
+
+        .subproject-preview-card {
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+            padding: 1.3rem 1.4rem;
+            background: #fff;
+            border-radius: 12px;
+            border: 1px solid #e5e7eb;
+            cursor: pointer;
+            transition: all 0.25s ease;
+        }
+
+        .subproject-preview-card:hover {
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            border-color: #667eea;
+            transform: translateY(-3px);
+        }
+
+        .preview-icon {
+            font-size: 2.2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .preview-info {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .preview-name {
+            font-weight: 600;
+            color: #333;
+            font-size: 0.95rem;
+            margin-bottom: 0.2rem;
+        }
+
+        .preview-intro {
+            font-size: 0.85rem;
+            color: #6b7280;
+            line-height: 1.6;
+            margin-bottom: 0.8rem;
+            flex: 1;
+        }
+
+        .preview-meta-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.6rem;
+            padding-top: 0.7rem;
+            border-top: 1px solid #f0f0f0;
+        }
+
+        .preview-tech {
+            font-size: 0.78rem;
+            color: #9ca3af;
+            white-space: nowrap;
+        }
+
+        .preview-progress {
+            font-size: 0.78rem;
+            color: #888;
+        }
+
+        .preview-arrow {
+            color: #ccc;
+            font-size: 1.2rem;
+            align-self: flex-end;
+            transition: all 0.25s;
+        }
+
+        .subproject-preview-card:hover .preview-arrow {
+            color: #667eea;
+            transform: translateX(3px);
+        }
+
+        /* Subproject Detail Modal */
+        .subdetail-modal {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .subdetail-overlay {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.45);
+        }
+
+        .subdetail-content {
+            position: relative;
+            background: #fff;
+            border-radius: 14px;
+            width: 90%;
+            max-width: 600px;
+            max-height: 85vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+            animation: subdetailFadeIn 0.25s ease;
+        }
+
+        @keyframes subdetailFadeIn {
+            from { transform: scale(0.95); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .subdetail-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            padding: 1.3rem 1.5rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 14px 14px 0 0;
+        }
+
+        .subdetail-title-row {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .subdetail-title-row h2 {
+            margin: 0;
+            color: #fff;
+            font-size: 1.3rem;
+        }
+
+        .subdetail-edit-btn {
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: #fff;
+            padding: 0.35rem 0.8rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.82rem;
+            transition: all 0.2s;
+        }
+
+        .subdetail-edit-btn:hover {
+            background: rgba(255,255,255,0.35);
+        }
+
+        .subdetail-edit-btn.editing {
+            background: #10b981;
+        }
+
+        .subdetail-close-btn {
+            position: absolute;
+            top: 12px; right: 14px;
+            background: none;
+            border: none;
+            color: rgba(255,255,255,0.8);
+            font-size: 1.4rem;
+            cursor: pointer;
+            line-height: 1;
+        }
+
+        .subdetail-close-btn:hover {
+            color: #fff;
+        }
+
+        .subdetail-body {
+            padding: 1.4rem 1.5rem;
+        }
+
+        .subdetail-section {
+            margin-bottom: 1.1rem;
+        }
+
+        .subdetail-section label {
+            display: block;
+            font-size: 0.75rem;
+            color: #9ca3af;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            margin-bottom: 0.35rem;
+        }
+
+        .subdetail-text {
+            font-size: 0.9rem;
+            color: #374151;
+            line-height: 1.65;
+            padding: 0.45rem 0.6rem;
+            background: #f9fafb;
+            border-radius: 8px;
+            border: 1px solid transparent;
+        }
+
+        .subdetail-edit-area {
+            width: 100%;
+            min-height: 80px;
+            padding: 0.5rem 0.6rem;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            border: 2px solid #667eea;
+            border-radius: 8px;
+            resize: vertical;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(102,126,234,0.12);
+        }
+
+        .subdetail-owners-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1.1rem;
+        }
+
+        .subdetail-owner-field label {
+            display: block;
+            font-size: 0.72rem;
+            color: #9ca3af;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+
+        .subdetail-text-inline {
+            display: block;
+            font-size: 0.88rem;
+            color: #374151;
+            padding: 0.35rem 0.55rem;
+            background: #f9fafb;
+            border-radius: 6px;
+            border: 1px solid transparent;
+        }
+
+        .subdetail-text-inline.empty {
+            color: #bbb;
+            font-style: italic;
+        }
+
+        .subdetail-edit-input {
+            width: 100%;
+            padding: 0.35rem 0.55rem;
+            font-size: 0.88rem;
+            border: 2px solid #667eea;
+            border-radius: 6px;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(102,126,234,0.12);
+        }
+
+        .subdetail-progress-box {
+            font-size: 0.86rem;
+            line-height: 1.7;
+            color: #4b5563;
+            padding: 0.6rem 0.8rem;
+            background: linear-gradient(135deg, #f8f9ff 0%, #f0f4ff 100%);
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+        }
+
+        /* Info Box */
+        .info-box {
+            background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+            border: 1px solid #93c5fd;
+            border-radius: 10px;
+            padding: 1.25rem;
+            margin: 1.5rem 0;
+        }
+
+        .info-box strong {
+            color: #1e40af;
+        }
+
+        .info-box ul {
+            margin-top: 0.5rem;
+            padding-left: 1.25rem;
+        }
+
+        .info-box li {
+            margin: 0.25rem 0;
+            color: #1e3a8a;
+        }
+
+        /* Milestones */
+        .milestones-timeline {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+            border: 1px solid #e5e7eb;
+            padding: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .timeline-item {
+            display: flex;
+            gap: 1rem;
+            padding: 1rem 0;
+            border-bottom: 1px solid #f3f4f6;
+        }
+
+        .timeline-item:last-child {
+            border-bottom: none;
+        }
+
+        .timeline-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #2563eb;
+            margin-top: 0.25rem;
+            flex-shrink: 0;
+        }
+
+        .timeline-content {
+            flex: 1;
+        }
+
+        .timeline-date {
+            font-size: 0.875rem;
+            color: #6b7280;
+            margin-bottom: 0.25rem;
+        }
+
+        .timeline-title {
+            font-weight: 600;
+            color: #111827;
+            margin-bottom: 0.25rem;
+        }
+
+        .timeline-desc {
+            font-size: 0.875rem;
+            color: #6b7280;
+        }
+
+        /* Image Gallery */
+        .image-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .image-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+            border: 1px solid #e5e7eb;
+            overflow: hidden;
+        }
+
+        .image-card img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .image-card-caption {
+            padding: 1rem;
+            font-size: 0.875rem;
+            color: #6b7280;
+            text-align: center;
+            border-top: 1px solid #e5e7eb;
+        }
+    </style>
+</head>
+<body>
+    <!-- Top Navigation -->
+    <div class="top-nav">
+        <div class="nav-title">
+            📊 Quality Intelligence Platform Project
+        </div>
+    </div>
+
+    <!-- Navigation Tabs -->
+    <div class="nav-tabs-container">
+        <div class="nav-tabs">
+            <button class="nav-tab active" onclick="switchTab('architecture')">
+                <span class="tab-icon">🏗️</span>
+                <span class="tab-text">项目总览架构</span>
+            </button>
+            <button class="nav-tab" onclick="switchTab('planning')">
+                <span class="tab-icon">📋</span>
+                <span class="tab-text">项目规划与管理</span>
+            </button>
+            <button class="nav-tab" onclick="switchTab('subprojects')">
+                <span class="tab-icon">📦</span>
+                <span class="tab-text">子项目详情</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="main-container">
+
+        <!-- ========================================== -->
+        <!-- SECTION 1: PROJECT ARCHITECTURE (FIRST!)   -->
+        <!-- ========================================== -->
+
+        <div id="tab-architecture" class="tab-content active">
+        <h1 class="section-title">🏗️ 项目总览架构</h1>
+
+        <!-- Architecture Diagram - Canvas Absolute Positioning Layout -->
+        <div class="arch-layout" id="archLayout">
+
+            <!-- SVG Arrow Definitions (hidden) -->
+            <svg width="0" height="0" style="position:absolute;">
+                <defs>
+                    <marker id="arrowGreen" markerWidth="12" markerHeight="8" refX="11" refY="4" orient="auto">
+                        <polygon points="0 0, 12 4, 0 8" fill="#10b981"/>
+                    </marker>
+                    <marker id="arrowRed" markerWidth="12" markerHeight="8" refX="11" refY="4" orient="auto">
+                        <polygon points="0 0, 12 4, 0 8" fill="#ef4444"/>
+                    </marker>
+                    <marker id="arrowPurple" markerWidth="12" markerHeight="8" refX="11" refY="4" orient="auto">
+                        <polygon points="0 0, 12 4, 0 8" fill="#8b5cf6"/>
+                    </marker>
+                </defs>
+            </svg>
+
+            <!-- TOP LEFT: Application Layer Box -->
+            <div class="arch-box box-apps" id="boxApps">
+                <div class="arch-box-title">📱 应用层</div>
+                <div class="app-list">
+
+                    <div class="app-entry" onclick="showAppDetail('factory-assessment')" id="app-factory">
+                        🏭 Factory Assessment Online
+                    </div>
+
+                    <div class="app-entry" onclick="showAppDetail('process-evaluation')" id="app-process">
+                        ⚙️ Process Evaluation System
+                    </div>
+
+                    <div class="app-entry" onclick="showAppDetail('claim-management')" id="app-claim">
+                        📋 Claim Management System
+                    </div>
+
+                    <div class="app-entry" onclick="showAppDetail('pending-decision')" id="app-pending">
+                        ⚖️ Pending Decision Tool
+                    </div>
+
+                    <div class="app-entry no-data" onclick="showAppDetail('efficiency-tools')">
+                        ⚡ Efficiency Tools
+                    </div>
+
+                    <div class="app-entry no-data" onclick="showAppDetail('material-management')">
+                        📦 Material Management System
+                    </div>
+
+                    <div class="app-entry no-data" onclick="showAppDetail('quality-intelligence')">
+                        🎓 Quality Intelligence Library
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- TOP RIGHT: Data Layer Box -->
+            <div class="arch-box box-data" id="boxData">
+                <div class="arch-box-title">🗄️ 数据层</div>
+                <div class="data-list">
+
+                    <div class="data-entry">
+                        <div class="data-source-name">factory relevant data</div>
+                        <div class="data-items">工厂质量评估数据<br>工厂生产流程工序评估<br>评估报告与整改建议</div>
+                    </div>
+
+                    <div class="data-entry">
+                        <div class="data-source-name">Claim data and materials</div>
+                        <div class="data-items">历史Claim明细<br>疵点照片<br>新Claim明细</div>
+                    </div>
+
+                    <div class="data-entry">
+                        <div class="data-source-name">Pending data and materials</div>
+                        <div class="data-items">历史Pending决策信息<br>新Pending决策信息<br>疵点照片</div>
+                    </div>
+
+                    <div class="data-entry special">
+                        <div class="data-source-name">Quality Academy materials</div>
+                        <div class="data-items">claim library<br>各品类产品生产流程<br>生产经验与技巧</div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- BOTTOM CENTER: Knowledge Base Box (narrow) -->
+            <div class="arch-box box-knowledge" id="boxKnowledge">
+                <div class="arch-box-title">🧠 AI知识库</div>
+                <div class="knowledge-content">
+                    <p><strong>通过大模型对数据进行知识提炼，形成可被应用端调用的AI知识库，为应用端提供智能提示</strong></p>
+                </div>
+            </div>
+
+            <!-- ==================== ARROW 1: App → Data (GREEN, curved arc above) ==================== -->
+            <svg class="flow-arrow-svg" viewBox="0 -100 1100 820" style="top:-150px;left:0;width:100%;height:calc(100% + 150px);">
+                <path d="M 253 115 Q 550 45, 847 115"
+                      class="flow-arrow-path"
+                      stroke="#10b981"
+                      marker-end="url(#arrowGreen)"
+                      fill="none"/>
+            </svg>
+
+            <div class="flow-card green" style="top: -120px; left: 50%; transform: translateX(-50%); z-index: 20;" onclick="toggleFlowCard(this)">
+                <div class="flow-header green">
+                    <span class="flow-badge badge-green">✅</span>
+                    应用层 → 数据层：数据产生与存储
+                </div>
+                <div class="flow-body">
+                    <p class="flow-body-text">
+                    每个应用在使用过程中产生的新数据或上传的历史数据，这些数据通过<strong>关键字段</strong>（如客户、工厂、索赔原因、产品类型等）相互关联，统一存储在数据库中。
+                    </p>
+                </div>
+            </div>
+
+            <!-- ==================== ARROW 2: Data → Knowledge (RED, curved right side) ==================== -->
+            <svg class="flow-arrow-svg" viewBox="0 0 1100 720" style="top:0;left:0;width:100%;height:100%;">
+                <path d="M 900 280 C 920 380, 750 520, 650 600"
+                      class="flow-arrow-path"
+                      stroke="#ef4444"
+                      marker-end="url(#arrowRed)"
+                      fill="none"/>
+            </svg>
+
+            <div class="flow-card red" style="top: 480px; right: -10px; max-width: 340px;" onclick="toggleFlowCard(this)">
+                <div class="flow-header red">
+                    <span class="flow-badge badge-red"></span>
+                    数据层 → 知识层：AI知识提炼
+                </div>
+                <div class="flow-body">
+                    <p class="flow-body-text">
+                    通过<strong>大模型</strong>对数据库中的数据进行<strong>知识提炼</strong>，AI自动分析历史数据，归类整理，生成标准化的流程知识，形成<strong>AI综合知识库</strong>。
+                    </p>
+                </div>
+            </div>
+
+            <!-- ==================== ARROW 3: Knowledge → App (PURPLE, curved left side) ==================== -->
+            <svg class="flow-arrow-svg" viewBox="0 0 1100 720" style="top:0;left:0;width:100%;height:100%;">
+                <path d="M 450 600 C 300 500, 180 380, 200 280"
+                      class="flow-arrow-path"
+                      stroke="#8b5cf6"
+                      marker-end="url(#arrowPurple)"
+                      fill="none"/>
+            </svg>
+
+            <div class="flow-card purple" style="top: 470px; left: -10px; max-width: 330px;" onclick="toggleFlowCard(this)">
+                <div class="flow-header purple">
+                    <span class="flow-badge badge-purple">AI</span>
+                    知识层 → 应用层：智能反哺前端
+                </div>
+                <div class="flow-body">
+                    <p class="flow-body-text">
+                        AI知识库在各个应用的<strong>关键操作节点</strong>提供智能提示(hint)，基于历史数据给出建议方向，帮助用户做出更准确的判断和决策。
+                    </p>
+                </div>
+            </div>
+
+        </div>
+
+
+        <!-- Application Detail Modal -->
+        <div id="appModal" class="app-detail-modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 id="modalTitle">应用详情</h3>
+                    <button class="modal-close" onclick="closeModal()">✕</button>
+                </div>
+                <div id="modalBody"></div>
+            </div>
+        </div>
+        </div>
+
+
+        <!-- ========================================== -->
+        <!-- SECTION 2: PROJECT MANAGEMENT              -->
+        <!-- ========================================== -->
+
+        
+        <div id="tab-planning" class="tab-content">
+            <div class="pm-section">
+
+                <!-- Project Header with Progress -->
+                <div class="project-header">
+                    <div class="project-title-area">
+                        <h1 class="section-title">🎯 Quality Intelligence Platform</h1>
+                        <p class="project-subtitle" onclick="openMilestoneModal()" style="cursor:pointer;text-decoration:underline;">📍 关键里程碑</p>
+                    </div>
+                    <div class="progress-overview">
+                        <div class="overall-progress-label">总体进度</div>
+                        <div class="overall-progress-bar">
+                            <div class="overall-progress-fill" id="overallProgressFill"></div>
+                        </div>
+                        <div class="overall-progress-percent" id="overallProgressPercent">0%</div>
+                    </div>
+                </div>
+
+                <!-- 里程碑弹窗 -->
+                <div id="milestoneModal" class="milestone-modal" style="display:none;">
+                    <div class="milestone-modal-overlay" onclick="closeMilestoneModal()"></div>
+                    <div class="milestone-modal-content">
+                        <div class="milestone-modal-header">
+                            <h2>📍 关键里程碑</h2>
+                            <button class="milestone-close-btn" onclick="closeMilestoneModal()">✕</button>
+                        </div>
+                        <div class="milestone-list">
+                            <div class="milestone-item">
+                                <div class="milestone-date">2026年7月</div>
+                                <div class="milestone-title">确保数据库产品</div>
+                                <div class="milestone-desc">统一数据库字段规范，确保数据库产品</div>
+                            </div>
+                            <div class="milestone-item">
+                                <div class="milestone-date">2026年9月</div>
+                                <div class="milestone-title">数据库迁移/搭建完毕</div>
+                                <div class="milestone-desc">连接数据库，数据库表/文件准备完毕，数据库迁移/搭建完毕，前端基础功能小范围测试并优化</div>
+                            </div>
+                            <div class="milestone-item">
+                                <div class="milestone-date">2026年11月</div>
+                                <div class="milestone-title">AI知识库搭建完毕</div>
+                                <div class="milestone-desc">利用大模型对数据进行深度学习、归纳整理，形成知识卡片，前端集成AI知识库功能，小范围测试并优化</div>
+                            </div>
+                            <div class="milestone-item">
+                                <div class="milestone-date">2026年12月</div>
+                                <div class="milestone-title">第一版上线使用</div>
+                                <div class="milestone-desc">确保网站正常部署，数据库正常同步，前端各功能正常使用</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project Timeline Table -->
+                <div class="timeline-table-container">
+                    <table class="timeline-table" id="projectTimelineTable">
+                        <thead>
+                            <tr>
+                                <th class="stage-th">项目阶段</th>
+                                <th class="node-th subproject-th">子项目</th>
+                                <th class="node-th" colspan="12">关键时间节点</th>
+                            </tr>
+                        </thead>
+                        <tbody id="timelineBody">
+                            <!-- 阶段一：准备阶段 -->
+                            <tr>
+                                <td class="stage-title" rowspan="2">项目阶段一：准备阶段</td>
+                                <td class="subproject-empty"></td>
+                                <td>数据库字段规范（2 weeks）</td>
+                                <td>确保数据库产品（2 weeks）</td>
+                                <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                            </tr>
+                            <tr>
+                                <td class="subproject-empty"></td>
+                                <td><div class="status-dot dot-red" onclick="toggleDot(this)"></div></td>
+                                <td><div class="status-dot dot-red" onclick="toggleDot(this)"></div></td>
+                                <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                            </tr>
+
+                            <!-- 阶段二：核心功能开发 -->
+                            <tr>
+                                <td class="stage-title" rowspan="8">项目阶段二：基础功能开发</td>
+                                <td class="subproject-empty"></td>
+                                <td></td>
+                                <td>前端基础功能构建完毕（2 weeks）</td>
+                                <td>连接数据库、数据库迁移/搭建（4 weeks）</td>
+                                <td>网站/后端正常部署（2 weeks）</td>
+                                <td>前端基础功能小范围测试并优化（2 weeks）</td>
+                                <td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                            </tr>
+                            <tr>
+                                <td class="subproject-empty"></td>
+                                <td><div 
+                                <td><div 
+                                <td><div 
+                                <td><div 
+                                <td><div 
+                                <td><div 
+                                <td></td><td></td><td></td><td></td><td></td><td></td>
+                            </tr>
+                            <tr><td class="module-name">factory assessment online</td><td></td><td><div class="status-dot dot-red" onclick="toggleDot(this)"></div></td><td><div class="status-dot dot-red" onclick="toggleDot(this)"></div></td><td><div class="status-dot dot-red" onclick="toggleDot(this)"></div></td><td><div class="status-dot dot-red" onclick="toggleDot(this)"></div></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                            <tr><td class="module-name">factory evaluation system</td><td></td><td><div class="status-dot dot-red" onclick="toggleDot(this)"></div></td><td><div class="status-dot dot-red" onclick="toggleDot(this)"></div></td><td><div class="status-dot dot-red" onclick="toggleDot(this)"></div></td><td><div class="status-dot dot-red" onclick="toggleDot(this)"></div></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                            <tr><td class="module-name">claim management system</td><td></td><td><div class="status-dot dot-red" onclick="toggleDot(this)"></div></td><td><div class="status-dot dot-red" onclick="toggleDot(this)"></div></td><td><div class="status-dot dot-red" onclick="toggleDot(this)"></div></td><td><div class="status-dot dot-red" onclick="toggleDot(this)"></div></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                            <tr><td class="module-name">pending decision tool</td><td></td><td><div class="status-dot dot-red" onclick="toggleDot(this)"></div></td><td><div class="status-dot dot-red" onclick="toggleDot(this)"></div></td><td><div class="status-dot dot-red" onclick="toggleDot(this)"></div></td><td><div class="status-dot dot-red" onclick="toggleDot(this)"></div></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                            <tr><td class="module-name">material management system</td><td></td><td><div class="status-dot dot-red" onclick="toggleDot(this)"></div></td><td><div class="status-dot dot-red" onclick="toggleDot(this)"></div></td><td><div class="status-dot dot-red" onclick="toggleDot(this)"></div></td><td><div class="status-dot dot-red" onclick="toggleDot(this)"></div></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                            <tr><td class="module-name">efficiency tools</td><td></td><td><div class="status-dot dot-red" onclick="toggleDot(this)"></div></td><td>/</td><td><div class="status-dot dot-red" onclick="toggleDot(this)"></div></td><td><div class="status-dot dot-red" onclick="toggleDot(this)"></div></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+
+                            <!-- 阶段三：AI知识库开发 -->
+                            <tr>
+                                <td class="stage-title" rowspan="8">项目阶段三：AI知识库开发</td>
+                                <td class="subproject-empty"></td>
+                                <td></td><td></td><td></td><td></td><td></td>
+                                <td>后端知识库搭建（4 weeks）</td>
+                                <td>AI知识库前端集成（2 weeks）</td>
+                                <td>AI知识库功能小范围测试并优化（2 weeks）</td>
+                                <td></td><td></td><td></td><td></td>
+                            </tr>
+                            <tr>
+                                <td class="subproject-empty"></td>
+                                <td></td><td></td><td></td><td></td><td></td>
+                                <td><div 
+                                <td><div 
+                                <td><div 
+                                <td></td><td></td><td></td><td></td>
+                            </tr>
+                            <tr><td class="module-name">factory assessment online</td><td></td><td></td><td></td><td></td><td></td><td><div class="status-dot dot-red" onclick="toggleDot(this)"></div></td><td><div class="status-dot dot-red" onclick="toggleDot(this)"></div></td><td><div class="status-dot dot-red" onclick="toggleDot(this)"></div></td><td></td><td></td><td></td><td></td></tr>
+                            <tr><td class="module-name">factory evaluation system</td><td></td><td></td><td></td><td></td><td></td><td><div class="status-dot dot-red" onclick="toggleDot(this)"></div></td><td><div class="status-dot dot-red" onclick="toggleDot(this)"></div></td><td><div class="status-dot dot-red" onclick="toggleDot(this)"></div></td><td></td><td></td><td></td><td></td></tr>
+                            <tr><td class="module-name">claim management system</td><td></td><td></td><td></td><td></td><td></td><td><div class="status-dot dot-red" onclick="toggleDot(this)"></div></td><td><div class="status-dot dot-red" onclick="toggleDot(this)"></div></td><td><div class="status-dot dot-red" onclick="toggleDot(this)"></div></td><td></td><td></td><td></td><td></td></tr>
+                            <tr><td class="module-name">pending decision tool</td><td></td><td></td><td></td><td></td><td></td><td><div class="status-dot dot-red" onclick="toggleDot(this)"></div></td><td><div class="status-dot dot-red" onclick="toggleDot(this)"></div></td><td><div class="status-dot dot-red" onclick="toggleDot(this)"></div></td><td></td><td></td><td></td><td></td></tr>
+                            <tr><td class="module-name">material management system</td><td></td><td></td><td></td><td></td><td></td><td><div class="status-dot dot-red" onclick="toggleDot(this)"></div></td><td><div class="status-dot dot-red" onclick="toggleDot(this)"></div></td><td><div class="status-dot dot-red" onclick="toggleDot(this)"></div></td><td></td><td></td><td></td><td></td></tr>
+                            <tr><td class="module-name">quality intelligence library</td><td></td><td></td><td></td><td></td><td></td><td><div class="status-dot dot-red" onclick="toggleDot(this)"></div></td><td><div class="status-dot dot-red" onclick="toggleDot(this)"></div></td><td><div class="status-dot dot-red" onclick="toggleDot(this)"></div></td><td></td><td></td><td></td><td></td></tr>
+
+                            <!-- 阶段四：统一上线 -->
+                            <tr>
+                                <td class="stage-title" rowspan="9">项目阶段四：第一版上线</td>
+                                <td class="subproject-empty"></td>
+                                <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                                <td>产品使用手册/开发手册（2 weeks）</td>
+                                <td>第一版上线使用</td>
+                                <td></td><td></td>
+                            </tr>
+                            <tr>
+                                <td class="subproject-empty"></td>
+                                <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                                <td><div 
+                                <td><div 
+                                <td></td><td></td>
+                            </tr>
+                            <tr><td class="module-name">factory assessment online</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td><div class="status-dot dot-red" onclick="toggleDot(this)"></div></td><td><div class="status-dot dot-red" onclick="toggleDot(this)"></div></td><td></td><td></td></tr>
+                            <tr><td class="module-name">factory evaluation system</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td><div class="status-dot dot-red" onclick="toggleDot(this)"></div></td><td><div class="status-dot dot-red" onclick="toggleDot(this)"></div></td><td></td><td></td></tr>
+                            <tr><td class="module-name">claim management system</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td><div class="status-dot dot-red" onclick="toggleDot(this)"></div></td><td><div class="status-dot dot-red" onclick="toggleDot(this)"></div></td><td></td><td></td></tr>
+                            <tr><td class="module-name">pending decision tool</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td><div class="status-dot dot-red" onclick="toggleDot(this)"></div></td><td><div class="status-dot dot-red" onclick="toggleDot(this)"></div></td><td></td><td></td></tr>
+                            <tr><td class="module-name">material management system</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td><div class="status-dot dot-red" onclick="toggleDot(this)"></div></td><td><div class="status-dot dot-red" onclick="toggleDot(this)"></div></td><td></td><td></td></tr>
+                            <tr><td class="module-name">quality intelligence library</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td><div class="status-dot dot-red" onclick="toggleDot(this)"></div></td><td><div class="status-dot dot-red" onclick="toggleDot(this)"></div></td><td></td><td></td></tr>
+                            <tr><td class="module-name">efficiency tools</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td><div class="status-dot dot-red" onclick="toggleDot(this)"></div></td><td><div class="status-dot dot-red" onclick="toggleDot(this)"></div></td><td></td><td></td></tr>
+
+                            <!-- 阶段五：数据监控、版本迭代优化 -->
+                            <tr>
+                                <td class="stage-title" rowspan="9">项目阶段五：持续监控、版本迭代优化</td>
+                                <td class="subproject-empty"></td>
+                                <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                                <td>设置应用监控：异常数据监控、数据同步监控（2 weeks）</td>
+                                <td>制定版本迭代规范：需求收集、评审、版本号、更新日志、通知(2 weeks)</td>
+                            </tr>
+                            <tr>
+                                <td class="subproject-empty"></td>
+                                <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                                <td><div 
+                                <td><div 
+                            </tr>
+                            <tr><td class="module-name">factory assessment online</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td><div class="status-dot dot-red" onclick="toggleDot(this)"></div></td><td><div class="status-dot dot-red" onclick="toggleDot(this)"></div></td></tr>
+                            <tr><td class="module-name">factory evaluation system</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td><div class="status-dot dot-red" onclick="toggleDot(this)"></div></td><td><div class="status-dot dot-red" onclick="toggleDot(this)"></div></td></tr>
+                            <tr><td class="module-name">claim management system</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td><div class="status-dot dot-red" onclick="toggleDot(this)"></div></td><td><div class="status-dot dot-red" onclick="toggleDot(this)"></div></td></tr>
+                            <tr><td class="module-name">pending decision tool</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td><div class="status-dot dot-red" onclick="toggleDot(this)"></div></td><td><div class="status-dot dot-red" onclick="toggleDot(this)"></div></td></tr>
+                            <tr><td class="module-name">material management system</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td><div class="status-dot dot-red" onclick="toggleDot(this)"></div></td><td><div class="status-dot dot-red" onclick="toggleDot(this)"></div></td></tr>
+                            <tr><td class="module-name">quality intelligence library</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td><div class="status-dot dot-red" onclick="toggleDot(this)"></div></td><td><div class="status-dot dot-red" onclick="toggleDot(this)"></div></td></tr>
+                            <tr><td class="module-name">efficiency tools</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td><div class="status-dot dot-red" onclick="toggleDot(this)"></div></td><td><div class="status-dot dot-red" onclick="toggleDot(this)"></div></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                
+        </div>
+    </div>
+
+    <div id="tab-subprojects" class="tab-content">
+        <h2 class="section-subtitle">📦 子项目管理详情</h2>
+        <div class="subproject-preview-grid">
+
+            <div class="subproject-preview-card" onclick="openSubDetail('factory assessment online')">
+                <div class="preview-icon">🏭</div>
+                <div class="preview-info">
+                    <div class="preview-name">Factory Assessment Online</div>
+                    <div class="preview-intro" id="intro-factory-assessment-online"></div>
+                    <div class="preview-meta-row">
+                        <span class="preview-tech" id="tech-factory-assessment-online">Owner: 待指定</span>
+                        <span class="preview-progress" id="preview-factory-assessment-online"></span>
+                    </div>
+                </div>
+                <span class="preview-arrow">▸</span>
+            </div>
+
+            <div class="subproject-preview-card" onclick="openSubDetail('factory evaluation system')">
+                <div class="preview-icon">⚙️</div>
+                <div class="preview-info">
+                    <div class="preview-name">Factory Evaluation System</div>
+                    <div class="preview-intro" id="intro-factory-evaluation-system"></div>
+                    <div class="preview-meta-row">
+                        <span class="preview-tech" id="tech-factory-evaluation-system">Owner: 待指定</span>
+                        <span class="preview-progress" id="preview-factory-evaluation-system"></span>
+                    </div>
+                </div>
+                <span class="preview-arrow">▸</span>
+            </div>
+
+            <div class="subproject-preview-card" onclick="openSubDetail('claim management system')">
+                <div class="preview-icon">📋</div>
+                <div class="preview-info">
+                    <div class="preview-name">Claim Management System</div>
+                    <div class="preview-intro" id="intro-claim-management-system"></div>
+                    <div class="preview-meta-row">
+                        <span class="preview-tech" id="tech-claim-management-system">Owner: 待指定</span>
+                        <span class="preview-progress" id="preview-claim-management-system"></span>
+                    </div>
+                </div>
+                <span class="preview-arrow">▸</span>
+            </div>
+
+            <div class="subproject-preview-card" onclick="openSubDetail('pending decision tool')">
+                <div class="preview-icon">⚖️</div>
+                <div class="preview-info">
+                    <div class="preview-name">Pending Decision Tool</div>
+                    <div class="preview-intro" id="intro-pending-decision-tool"></div>
+                    <div class="preview-meta-row">
+                        <span class="preview-tech" id="tech-pending-decision-tool">Owner: 待指定</span>
+                        <span class="preview-progress" id="preview-pending-decision-tool"></span>
+                    </div>
+                </div>
+                <span class="preview-arrow">▸</span>
+            </div>
+
+            <div class="subproject-preview-card" onclick="openSubDetail('material management system')">
+                <div class="preview-icon">📦</div>
+                <div class="preview-info">
+                    <div class="preview-name">Material Management System</div>
+                    <div class="preview-intro" id="intro-material-management-system"></div>
+                    <div class="preview-meta-row">
+                        <span class="preview-tech" id="tech-material-management-system">Owner: 待指定</span>
+                        <span class="preview-progress" id="preview-material-management-system"></span>
+                    </div>
+                </div>
+                <span class="preview-arrow">▸</span>
+            </div>
+
+            <div class="subproject-preview-card" onclick="openSubDetail('efficiency tools')">
+                <div class="preview-icon">⚡</div>
+                <div class="preview-info">
+                    <div class="preview-name">Efficiency Tools</div>
+                    <div class="preview-intro" id="intro-efficiency-tools"></div>
+                    <div class="preview-meta-row">
+                        <span class="preview-tech" id="tech-efficiency-tools">Owner: 待指定</span>
+                        <span class="preview-progress" id="preview-efficiency-tools"></span>
+                    </div>
+                </div>
+                <span class="preview-arrow">▸</span>
+            </div>
+
+            <div class="subproject-preview-card" onclick="openSubDetail('quality intelligence library')">
+                <div class="preview-icon">🎓</div>
+                <div class="preview-info">
+                    <div class="preview-name">Quality Intelligence Library</div>
+                    <div class="preview-intro" id="intro-quality-intelligence-library"></div>
+                    <div class="preview-meta-row">
+                        <span class="preview-tech" id="tech-quality-intelligence-library">Owner: 待指定</span>
+                        <span class="preview-progress" id="preview-quality-intelligence-library"></span>
+                    </div>
+                </div>
+                <span class="preview-arrow">▸</span>
+            </div>
+
+        </div>
+
+        <!-- 子项目详情弹窗 -->
+        <div id="subDetailModal" class="subdetail-modal" style="display:none;">
+            <div class="subdetail-overlay" onclick="closeSubDetail()"></div>
+            <div class="subdetail-content">
+                <div class="subdetail-header">
+                    <div class="subdetail-title-row">
+                        <h2 id="subDetailTitle"></h2>
+                        <button class="subdetail-edit-btn" id="subDetailEditBtn" onclick="toggleEditMode()">✏️ 编辑</button>
+                    </div>
+                    <button class="subdetail-close-btn" onclick="closeSubDetail()">✕</button>
+                </div>
+                <div class="subdetail-body">
+                    <div class="subdetail-section">
+                        <label>项目名称</label>
+                        <p id="subDetailIntro" class="subdetail-text"></p>
+                        <textarea id="subDetailIntroEdit" class="subdetail-edit-area" style="display:none;"></textarea>
+                    </div>
+                    <div class="subdetail-section">
+                        <label>主要功能</label>
+                        <p id="subDetailFunctions" class="subdetail-text"></p>
+                        <textarea id="subDetailFunctionsEdit" class="subdetail-edit-area" style="display:none;"></textarea>
+                    </div>
+                    <div class="subdetail-owners-row">
+                        <div class="subdetail-owner-field">
+                            <label>Business Owner</label>
+                            <span id="subDetailBizOwner" class="subdetail-text-inline"></span>
+                            <input type="text" id="subDetailBizOwnerEdit" class="subdetail-edit-input" style="display:none;">
+                        </div>
+                        <div class="subdetail-owner-field">
+                            <label>Technical Owner</label>
+                            <span id="subDetailTechOwner" class="subdetail-text-inline"></span>
+                            <input type="text" id="subDetailTechOwnerEdit" class="subdetail-edit-input" style="display:none;">
+                        </div>
+                    </div>
+                    <div class="subdetail-section">
+                        <label>目前进度</label>
+                        <div id="subDetailProgress" class="subdetail-progress-box"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+        </div>
+
+    </div>
+
+    <script>
+        function switchTab(tabId) {
+            var tabs = document.querySelectorAll('.nav-tab');
+            var contents = document.querySelectorAll('.tab-content');
+
+            tabs.forEach(function(tab) {
+                tab.classList.remove('active');
+            });
+
+            contents.forEach(function(content) {
+                content.classList.remove('active');
+            });
+
+            event.currentTarget.classList.add('active');
+            document.getElementById('tab-' + tabId).classList.add('active');
+        }
+
+        // ==================== PROJECT MANAGEMENT FUNCTIONS ====================
+        
+        // Status cycle: red -> yellow -> green -> red
+        var statusCycle = ['red', 'yellow', 'green'];
+        
+        // Toggle traffic light status
+        function toggleStatus(button) {
+            var currentStatus = button.getAttribute('data-status');
+            var currentIndex = statusCycle.indexOf(currentStatus);
+            var nextIndex = (currentIndex + 1) % statusCycle.length;
+            var nextStatus = statusCycle[nextIndex];
+            
+            // Update button status
+            button.setAttribute('data-status', nextStatus);
+            button.className = 'traffic-light ' + nextStatus;
+            
+            // Add animation effect
+            button.style.transform = 'scale(1.3) rotate(360deg)';
+            setTimeout(function() {
+                button.style.transform = '';
+            }, 300);
+            
+            // Save to localStorage and update progress
+            saveProgress();
+            calculateOverallProgress();
+            
+            // Show feedback tooltip (optional enhancement)
+            showStatusFeedback(button, nextStatus);
+        }
+        
+        // Show brief feedback when status changes
+        function showStatusFeedback(button, status) {
+            var messages = {
+                'red': '🔴 未开始',
+                'yellow': ' 开发中',
+                'green': '🟢 已完成',
+            };
+            
+            // Create tooltip element if not exists
+            var tooltip = document.createElement('div');
+            tooltip.className = 'status-tooltip';
+            tooltip.textContent = messages[status];
+            
+            var styles = [
+                'position: fixed',
+                'background: rgba(0, 0, 0, 0.85)',
+                'color: white',
+                'padding: 8px 16px',
+                'border-radius: 6px',
+                'font-size: 14px',
+                'font-weight: 600',
+                'z-index: 10000',
+                'pointer-events: none',
+                'opacity: 1',
+                'transition: opacity 0.3s ease',
+                'box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3)'
+            ];
+            tooltip.style.cssText = styles.join(';');
+            
+            // Position near the button
+            var rect = button.getBoundingClientRect();
+            tooltip.style.left = (rect.left + rect.width / 2 - 40) + 'px';
+            tooltip.style.top = (rect.top - 45) + 'px';
+            
+            document.body.appendChild(tooltip);
+            
+            // Remove after delay
+            setTimeout(function() {
+                tooltip.style.opacity = '0';
+                setTimeout(function() {
+                    if (tooltip.parentNode) {
+                        tooltip.parentNode.removeChild(tooltip);
+                    }
+                }, 300);
+            }, 1200);
+        }
+        
+        // Save all progress data to localStorage
+        function saveProgress() {
+            var buttons = document.querySelectorAll('.traffic-light');
+            var progressData = {};
+            
+            buttons.forEach(function(button, index) {
+                progressData['button_' + index] = {
+                    status: button.getAttribute('data-status'),
+                    appRow: button.closest('.app-row') ? button.closest('.app-row').getAttribute('data-app') : ''
+                };
+            });
+            
+            localStorage.setItem('qualityPlatformProgress', JSON.stringify(progressData));
+            console.log('\u2705 Progress saved to localStorage');
+        }
+        
+        // Load progress from localStorage
+        function loadProgress() {
+            var savedData = localStorage.getItem('qualityPlatformProgress');
+            
+            if (savedData) {
+                try {
+                    var progressData = JSON.parse(savedData);
+                    var buttons = document.querySelectorAll('.traffic-light');
+                    
+                    buttons.forEach(function(button, index) {
+                        var key = 'button_' + index;
+                        if (progressData[key]) {
+                            var status = progressData[key].status;
+                            button.setAttribute('data-status', status);
+                            button.className = 'traffic-light ' + status;
+                        }
+                    });
+                    
+                    console.log('\u2705 Progress loaded from localStorage');
+                    return true;
+                } catch (e) {
+                    console.error('\u274C Error loading progress:', e);
+                    return false;
+                }
+            }
+            
+            return false;
+        }
+        
+        // Calculate and display overall progress
+        function calculateOverallProgress() {
+            var buttons = document.querySelectorAll('.traffic-light');
+            var totalButtons = buttons.length;
+            var greenCount = 0;
+            var yellowCount = 0;
+            var redCount = 0;
+            
+            buttons.forEach(function(button) {
+                var status = button.getAttribute('data-status');
+                if (status === 'green') greenCount++;
+                else if (status === 'yellow') yellowCount++;
+                else if (status === 'red') redCount++;
+            });
+            
+            // Calculate percentage (only count editable lights)
+            var percentage = totalButtons > 0 ? Math.round((greenCount / totalButtons) * 100) : 0;
+            
+            // Update progress bar
+            var progressBar = document.getElementById('overallProgressFill');
+            var progressPercent = document.getElementById('overallProgressPercent');
+            
+            if (progressBar) {
+                progressBar.style.width = percentage + '%';
+                
+                // Change color based on progress
+                if (percentage >= 80) {
+                    progressBar.style.background = 'linear-gradient(90deg, #10b981 0%, #34d399 100%)';
+                } else if (percentage >= 50) {
+                    progressBar.style.background = 'linear-gradient(90deg, #f59e0b 0%, #fbbf24 100%)';
+                } else {
+                    progressBar.style.background = 'linear-gradient(90deg, #ef4444 0%, #f87171 100%)';
+                }
+            }
+            
+            if (progressPercent) {
+                progressPercent.textContent = percentage + '%';
+                
+                // Animate number change
+                progressPercent.style.transform = 'scale(1.2)';
+                setTimeout(function() {
+                    progressPercent.style.transform = '';
+                }, 200);
+            }
+            
+            // Update statistics cards
+            var statRed = document.getElementById('statRed');
+            var statYellow = document.getElementById('statYellow');
+            var statGreen = document.getElementById('statGreen');
+            var statTotal = document.getElementById('statTotal');
+            
+            if (statRed) statRed.textContent = redCount;
+            if (statYellow) statYellow.textContent = yellowCount;
+            if (statGreen) statGreen.textContent = greenCount;
+            if (statTotal) statTotal.textContent = totalButtons;
+            
+            // Log for debugging
+            console.log('\uD83D\uDCCA Progress: ' + greenCount + '✅ ' + yellowCount + '🟡 ' + redCount + '🔴 | Total: ' + totalButtons + ' | ' + percentage + '%');
+            
+            return { green: greenCount, yellow: yellowCount, red: redCount, total: totalButtons, percent: percentage };
+        }
+        
+        // Initialize project management when tab is shown
+        function initProjectManagement() {
+            // Load saved progress
+            loadProgress();
+            
+            // Calculate initial progress
+            calculateOverallProgress();
+            
+            console.log('\uD83C\uDFAF Project Management initialized');
+        }
+        
+        // Auto-save every 30 seconds (backup mechanism)
+        setInterval(function() {
+            saveProgress();
+        }, 30000);
+        
+        // Initialize when DOM is ready
+        document.addEventListener('DOMContentLoaded', function() {
+            // Delay slightly to ensure table is rendered
+            setTimeout(initProjectManagement, 100);
+        });
+        
+        // Also initialize when switching to planning tab
+        var originalSwitchTab = switchTab;
+        switchTab = function(tabId) {
+            originalSwitchTab(tabId);
+            
+            if (tabId === 'planning') {
+                setTimeout(initProjectManagement, 50);
+            }
+        };
+
+
+        function toggleFlowCard(card) {
+            card.classList.toggle('expanded');
+        }
+
+        var appDetails = {
+            'knowledge': {
+                title: '🧠 AI 综合知识库',
+                sections: [
+                    {
+                        title: '📋 核心功能',
+                        content: '<ul style="line-height: 1.8;"><li>收集<strong>大模型</strong>数据库中的历史数据并进行<strong>知识提炼</strong></li><li>通过<strong>关键字段</strong>如客户名称、问题原因、产品类型等，进行分类整理</li><li>AI自动分析历史数据，生成标准化的流程知识</li><li>形成可被应用端调用的<strong>结构化知识</strong></li></ul>'
+                    },
+                    {
+                        title: '📊 数据来源',
+                        content: '<ul style="line-height: 1.8;"><li>Factory Assessment & Process Evaluation — 工厂数据、质量评估结果</li><li>Claim Management — 历史Claim详细记录与归档</li><li>Pending Decision Tool — 历史待决策记录与处理结果</li><li>Quality Academy — 培训记录、案例库、最佳实践（持续更新中）</li></ul>'
+                    },
+                    {
+                        title: '🔗 知识库应用前端（未来扩展）',
+                        content: ''
+                    }
+                ],
+                aiApplications: [
+                    {
+                        app: 'Factory Assessment / Process Evaluation',
+                        hint1: '场景1 - 上传时AI提示hint： "该工厂在质量评估中表现，<strong>可能引发某客户或某Claim风险</strong>，参考历史数据..."',
+                        hint2: '场景2 - 建议时AI提示hint： "之前QC检查该工厂的某Claim的RCA，<strong>根本原因是...</strong>"'
+                    },
+                    {
+                        app: 'Claim Management System',
+                        hint1: '场景 - RCA分析时AI提示hint： "<strong>历史类似Claim通常是什么原因</strong>？模型建议重点关注..."',
+                        hint2: '补充："是否需要应用<strong>特定方案</strong>"'
+                    },
+                    {
+                        app: 'Pending Decision Tool',
+                        hint1: '场景 - 优化决策时AI提示hint： "该客户+工厂+该产品<strong>历史总投诉</strong>较高，建议<strong>优化方案</strong>"',
+                        hint2: '补充："该客户+工厂+该产品<strong>OK</strong>记录，可考虑是否优化"'
+                    }
+                ]
+            },
+
+            'factory-assessment': {
+                title: '🏭 Factory Assessment Online',
+                sections: [
+                    {
+                        title: '📋 主要功能',
+                        content: '在线工厂质量评估管理系统，支持多维度打分、历史对比与AI智能建议。'
+                    },
+                    {
+                        title: '📊 核心数据/流程',
+                        content: '<ul style="line-height: 1.8;"><li><strong>工厂质量评估数据</strong></li><li><strong>评估报告与整改建议</strong></li></ul>'
+                    },
+                    {
+                        title: '🧠 AI知识库在本应用使用',
+                        content: ''
+                    }
+                ],
+                aiApplications: [
+                    {
+                        app: '上传评估时AI提示',
+                        hint1: '当用户对某工厂进行评估时AI知识库提供<strong>Hint</strong>：<br>"该工厂在[印染]工序的评分较低，参考历史数据，可能引发<strong>[客户A]、[相关Claim]</strong>风险，历史类似情况3起（2024年2月、2025年7月...）"',
+                        hint2: ''
+                    },
+                    {
+                        app: '建议/写Comments时AI提示',
+                        hint1: '当用户需要填写建议或Comments时AI知识库提供<strong>Hint</strong>：<br>"之前QC检查该工厂[2025年3月Claim#12345]的RCA，<strong>根本原因是：缝纫[设备]导致的QC异常</strong>，建议关注[自动检测设备]"',
+                        hint2: ''
+                    }
+                ]
+            },
+
+            'process-evaluation': {
+                title: '⚙️ Factory Process Evaluation System',
+                sections: [
+                    {
+                        title: '📋 主要功能',
+                        content: '针对特定工序进行深度评估，用于工厂内部流程优化、问题识别与持续改进追踪。'
+                    },
+                    {
+                        title: '📊 核心数据/流程',
+                        content: '<ul style="line-height: 1.8;"><li>工厂生产流程工序评估</li><li>不同产品类型的工序表现分析</li><li>评估报告与整改建议</li></ul>'
+                    },
+                    {
+                        title: '🧠 AI知识库在本应用使用',
+                        content: ''
+                    }
+                ],
+                aiApplications: [
+                    {
+                        app: '评估过程时AI提示',
+                        hint1: '当用户对某工厂[印染]工序评估时AI提示：<br>"该工厂在[印染]工序的产品偏色率15% vs 行业平均8%，历史数据显示此为常见问题，<strong>[色牢度不达标]</strong>是Claim<strong>最常见原因</strong>，染色配方和工艺参数"',
+                        hint2: ''
+                    }
+                ]
+            },
+
+            'claim-management': {
+                title: '📋 Claim Management System',
+                sections: [
+                    {
+                        title: '📋 主要功能',
+                        content: '质量索赔管理系统，用于记录、跟踪和分析客户投诉与索赔案件，支持RCA分析、根本原因追踪及持续改进追踪。'
+                    },
+                    {
+                        title: '📊 核心数据/流程',
+                        content: '<ul style="line-height: 1.8;"><li><strong>历史Claim详细</strong> — 客户、供应商、产品类型、索赔原因等</li><li><strong>疵点照片</strong> </li><li><strong>新登记Claim信息</strong></li><li>RCA报告信息</li></ul>'
+                    },
+                    {
+                        title: '🧠 AI知识库在本应用使用',
+                        content: ''
+                    }
+                ],
+                aiApplications: [
+                    {
+                        app: 'RCA分析时AI提示',
+                        hint1: '当用户对某Claim做根因分析时AI提示：<br>"此类claim多由[设备校准不当]导致，建议优先调查该工厂的设备因素..."',
+                        hint2: ''
+                    }
+                ]
+            },
+
+            'pending-decision': {
+                title: '⚖️ Pending Decision Tool',
+                sections: [
+                    {
+                        title: '📋 主要功能',
+                        content: '放货决策工具，帮助QC团队基于历史数据和当前状态做出更准确的放货决策。'
+                    },
+                    {
+                        title: '📊 核心数据/流程',
+                        content: '<ul style="line-height: 1.8;"><li><strong>历史Pending决策信息</strong> </li><li><strong>新的Pending 决策信息</strong></li><li><strong>疵点照片</strong></li></ul>'
+                    },
+                    {
+                        title: '🧠 AI知识库在本应用使用',
+                        content: ''
+                    }
+                ],
+                aiApplications: [
+                    {
+                        app: '优化决策时AI提示',
+                        hint1: '当用户考虑是否放货提示：<br>"该客户+工厂+[产品]组合在<strong>此类疵点问题放货率100%，且未产生过claim,建议放货"',
+                        hint2: ''
+                    }
+                ]
+            },
+
+            'efficiency-tools': {
+                title: '⚡ Efficiency Tools',
+                sections: [
+                    {
+                        title: '📋 主要功能',
+                        content: '效率提升工具集合'
+                    },
+                    {
+                        title: '📊 核心数据/流程',
+                        content: '<p style="color: #9ca3af; font-style: italic;">具体功能将在后续版本中完善</p>'
+                    },
+                    {
+                        title: '🧠 AI知识库应用',
+                        content: '<p style="color: #9ca3af; font-style: italic;">暂无AI应用场景，后续可扩展</p>'
+                    }
+                ],
+                aiApplications: []
+            },
+
+            'material-management': {
+                title: '📦 Material Management System',
+                sections: [
+                    {
+                        title: '📋 主要功能',
+                        content: '<ul style="line-height: 1.8;"><li><strong>面辅料信息管理</strong> — 面料、辅料的基础数据库，记录成分、颜色、供应商等信息</li><li><strong>数据看板</strong> — 展示面料供应商的分数排名</li></ul>'
+                    },
+                    {
+                        title: '📊 核心数据/流程',
+                        content: '<ul style="line-height: 1.8;"><li><strong>面辅料信息查询</strong> — 成分、颜色、供应商、规格等</li></ul>'
+                    },
+                    {
+                        title: '🧠 AI知识库应用',
+                        content: '<p style="color: #9ca3af; font-style: italic;">暂无AI应用场景，后续可扩展</p>'
+                    }
+                ],
+                aiApplications: []
+            },
+
+            'quality-intelligence': {
+                title: '🎓 Quality Intelligence Library',
+                sections: [
+                    {
+                        title: '📋 主要功能',
+                        content: '<ul style="line-height: 1.8;"><li><strong>AI知识库问答与检索系统</strong> — 基于大模型的知识问答系统，支持自然语言查询</li><li><strong>前端交互展示</strong> — 提供友好的用户界面，展示知识查询结果</li></ul>'
+                    },
+                    {
+                        title: '📊 核心数据/流程',
+                        content: '<p style="color: #9ca3af; font-style: italic;">当前版本暂未开放，后续作为知识库查询端</p>'
+                    },
+                    {
+                        title: '🧠 AI知识库应用',
+                        content: '<ul style="line-height: 1.8;"><li><strong>AI知识库前端交互展示</strong> — 作为知识库用户端，提供智能问答与检索</li></ul>'
+                    }
+                ],
+                aiApplications: [
+                    {
+                        app: '智能问答场景',
+                        hint1: '用户输入问题："该工厂的某工序有哪些风险？" → AI知识库基于历史数据生成回答',
+                        hint2: '用户输入："如何预防此类问题？" → AI知识库推荐类似历史成功案例'
+                    }
+                ]
+            }
+        };
+
+        function showAppDetail(appId) {
+            var modal = document.getElementById('appModal');
+            var modalTitle = document.getElementById('modalTitle');
+            var modalBody = document.getElementById('modalBody');
+            var appData = appDetails[appId];
+
+            if (appData) {
+                modalTitle.textContent = appData.title;
+                var html = '';
+
+                for (var i = 0; i < appData.sections.length; i++) {
+                    var section = appData.sections[i];
+                    if (section.content) {
+                        html += '<div class="modal-section">';
+                        html += '<div class="modal-section-title">' + section.title + '</div>';
+                        html += '<div class="modal-section-content">' + section.content + '</div>';
+                        html += '</div>';
+                    }
+                }
+
+                if (appData.aiApplications && appData.aiApplications.length > 0) {
+                    html += '<div class="modal-section" style="margin-top: 20px; background: linear-gradient(135deg, #faf5ff, #ede9fe); border-left: 4px solid #8b5cf6;">';
+                    html += '<div class="modal-section-title">🧠 AI知识库实际应用提示示例</div>';
+                    html += '<div class="modal-section-content">';
+                    for (var j = 0; j < appData.aiApplications.length; j++) {
+                        var aiApp = appData.aiApplications[j];
+                        html += '<div style="margin-bottom: 15px;">';
+                        html += '<div style="font-weight: 600; color: #7c3aed; margin-bottom: 8px;">🧠 AI知识库实际应用提示示例</div>';
+                        if (aiApp.hint1) {
+                            html += '<div style="padding: 10px; background: white; border-radius: 8px; margin-bottom: 6px; line-height: 1.65;">' + aiApp.hint1 + '</div>';
+                        }
+                        if (aiApp.hint2) {
+                            html += '<div style="padding: 10px; background: white; border-radius: 8px; line-height: 1.65;">' + aiApp.hint2 + '</div>';
+                        }
+                        html += '</div>';
+                    }
+                    html += '</div></div>';
+                }
+
+                modalBody.innerHTML = html;
+                modal.classList.add('active');
+            }
+        }
+
+        function closeModal() {
+            var modal = document.getElementById('appModal');
+            modal.classList.remove('active');
+        }
+
+        window.onclick = function(event) {
+            var modal = document.getElementById('appModal');
+            if (event.target === modal) {
+                closeModal();
+            }
+        }
+
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                closeModal();
+            }
+        });
+
+        // Toggle dot status (from 未命名(2).html)
+        function toggleDot(dot) {
+            var statusOrder = ['dot-red', 'dot-yellow', 'dot-green'];
+            var cur = dot.classList.contains('dot-yellow') ? 'dot-yellow' : dot.classList.contains('dot-green') ? 'dot-green' : 'dot-red';
+            var next = statusOrder[(statusOrder.indexOf(cur) + 1) % 3];
+            dot.classList.remove('dot-red', 'dot-yellow', 'dot-green');
+            dot.classList.add(next);
+            updateOverallProgress();
+            refreshAllPreviewProgress();
+        }
+
+        // Calculate overall progress based on green dots
+        function updateOverallProgress() {
+            var allDots = document.querySelectorAll('.status-dot.dot-green');
+            var totalDots = document.querySelectorAll('.status-dot');
+            
+            if (totalDots.length === 0) return;
+            
+            var percent = Math.round((allDots.length / totalDots.length) * 100);
+            
+            document.getElementById('overallProgressFill').style.width = percent + '%';
+            document.getElementById('overallProgressPercent').textContent = percent + '%';
+        }
+
+        function openMilestoneModal() {
+            document.getElementById('milestoneModal').style.display = 'flex';
+        }
+
+        function closeMilestoneModal() {
+            document.getElementById('milestoneModal').style.display = 'none';
+        }
+
+        var nodeNames = [
+            '数据库字段规范',
+            '确保各数据库产品使用',
+            '前端基础功能架构搭建',
+            '后端数据库/迁移搭建',
+            '前端/后端功能测试',
+            '前端基础功能小范围测试并优化',
+            '基础知识库搭建',
+            'AI知识库前端集成',
+            'AI知识库小范围测试并优化',
+            '产品使用手册/培训手册',
+            '统一上线使用',
+            '应用监控与数据同步',
+            '版本迭代规范',
+        ];
+
+        var subprojectData = {
+            'factory assessment online': { icon:'🏭', name:'Factory Assessment Online', intro:'在线工厂质量评估管理系统，支持多维度打分、历史对比与AI智能建议。', functions:'工厂评估数据上传、多维度打分、历史数据对比、智能建议' },
+            'factory evaluation system': { icon:'⚙️', name:'Factory Evaluation System', intro:'针对特定工序的深度评估工具，用于工厂内部流程优化、问题识别与持续改进追踪。', functions:'工序风险评估、问题识别、改进追踪、工序优化建议' },
+            'claim management system': { icon:'📋', name:'Claim Management System', intro:'综合质量索赔管理系统，从索赔登记到RCA分析、处理与闭环追踪。', functions:'索赔登记、RCA分析、索赔卡片、索赔分发、处理进度追踪、统计分析' },
+            'pending decision tool': { icon:'⚖️', name:'Pending Decision Tool', intro:'基于历史数据的智能决策优化工具，支持QC团队与运营人员做出科学的优化决策。', functions:'历史数据分析、风险等级评估、智能决策建议、决策记录追踪' },
+            'material management system': { icon:'📦', name:'Material Management System', intro:'服装面辅料管理系统，面辅料登记信息仓库。', functions:'面辅料登记管理、库存查询、采购订单管理' },
+            'efficiency tools': { icon:'⚡', name:'Efficiency Tools', intro:'效率提升工具集合，支持多场景自动化处理。', functions:'自动化流程、批量处理、数据导出' },
+            'quality intelligence library': { icon:'🎓', name:'Quality Intelligence Library', intro:'AI驱动的综合性知识库系统，分析历史数据形成可复用的知识卡片，为应用端提供智能提示。', functions:'大模型数据分析、智能知识卡片生成、AI提示引擎、交互推荐' }
+        };
+
+        function getAllDotsForSubproject(name) {
+            var rows = document.querySelectorAll('#timelineBody tr');
+            var allDots = [];
+            var stageOffsets = [0, 0, 2, 6, 9, 11];
+            var currentStage = 0;
+            for (var i = 0; i < rows.length; i++) {
+                var stageCell = rows[i].querySelector('.stage-title');
+                if (stageCell) {
+                    currentStage++;
+                    continue;
+                }
+                var cell = rows[i].querySelector('.module-name');
+                if (cell && cell.textContent.trim().toLowerCase() === name.toLowerCase()) {
+                    var dots = rows[i].querySelectorAll('.status-dot');
+                    var baseOffset = stageOffsets[currentStage] || 0;
+                    dots.forEach(function(dot, idx) {
+                        allDots.push({ dot: dot, nodeIdx: baseOffset + idx });
+                    });
+                }
+            }
+            return allDots;
+        }
+
+        function getSubprojectProgressSummary(name) {
+            var allDots = getAllDotsForSubproject(name);
+            if (!allDots.length) return '';
+            var green=0, yellow=0, red=0;
+            allDots.forEach(function(item){
+                if (item.dot.classList.contains('dot-green')) green++;
+                else if (item.dot.classList.contains('dot-yellow')) yellow++;
+                else red++;
+            });
+            var parts = [];
+            if (green>0) parts.push('<span style="color:#059669;font-weight:600">' + green + ' 已完成</span>');
+            if (yellow>0) parts.push('<span style="color:#d97706;font-weight:600">' + yellow + ' 开发中</span>');
+            if (red>0) parts.push('<span style="color:#dc2626;font-weight:600">' + red + ' 未开始</span>');
+            return parts.join('  ');
+        }
+
+        function getSubprojectProgressDetail(name) {
+            var allDots = getAllDotsForSubproject(name);
+            if (!allDots.length) return '<div>未找到对应的子项目节点</div>';
+            var greenNodes=[], yellowNodes=[], redNodes=[];
+            allDots.forEach(function(item){
+                var n = nodeNames[item.nodeIdx]||('节点'+(item.nodeIdx+1));
+                if (item.dot.classList.contains('dot-green')) greenNodes.push(n);
+                else if (item.dot.classList.contains('dot-yellow')) yellowNodes.push(n);
+                else redNodes.push(n);
+            });
+            var html='';
+            if (greenNodes.length) html+='<div><span style="color:#059669;font-weight:600">✅ 已完成：</span>' + greenNodes.join('、') + '</div>';
+            if (yellowNodes.length) html+='<div style="margin-top:4px"><span style="color:#d97706;font-weight:600">🔄 开发中：</span>' + yellowNodes.join('、') + '</div>';
+            if (redNodes.length) html+='<div style="margin-top:4px"><span style="color:#dc2626;font-weight:600"> 未开始：</span>' + redNodes.join('、') + '</div>';
+            return html||'<div>暂无进度节点</div>';
+        }
+
+        var currentEditName = null;
+
+        function refreshAllPreviewProgress() {
+            Object.keys(subprojectData).forEach(function(key) {
+                var id = key.toLowerCase().replace(/\s+/g,'-');
+                var progressEl = document.getElementById('preview-'+id);
+                if (progressEl) progressEl.innerHTML = getSubprojectProgressSummary(key);
+                var introEl = document.getElementById('intro-'+id);
+                if (introEl) introEl.textContent = subprojectData[key].intro;
+                var techEl = document.getElementById('tech-'+id);
+                if (techEl) {
+                    var t = subprojectData[key].techOwner || '';
+                    techEl.textContent = 'Owner: ' + (t || '待指定');
+                }
+            });
+        }
+
+        function openSubDetail(name) {
+            event.stopPropagation();
+            currentEditName = name;
+            var d = subprojectData[name];
+            document.getElementById('subDetailTitle').textContent = d.icon + ' ' + d.name;
+            document.getElementById('subDetailIntro').textContent = d.intro;
+            document.getElementById('subDetailFunctions').textContent = d.functions;
+            document.getElementById('subDetailIntroEdit').value = d.intro;
+            document.getElementById('subDetailFunctionsEdit').value = d.functions;
+            var biz = subprojectData[name].bizOwner || '';
+            var tech = subprojectData[name].techOwner || '';
+            document.getElementById('subDetailBizOwner').textContent = biz || '待指定';
+            document.getElementById('subDetailTechOwner').textContent = tech || '待指定';
+            document.getElementById('subDetailBizOwner').className = biz ? 'subdetail-text-inline' : 'subdetail-text-inline empty';
+            document.getElementById('subDetailTechOwner').className = tech ? 'subdetail-text-inline' : 'subdetail-text-inline empty';
+            document.getElementById('subDetailBizOwnerEdit').value = biz;
+            document.getElementById('subDetailTechOwnerEdit').value = tech;
+            document.getElementById('subDetailProgress').innerHTML = getSubprojectProgressDetail(name);
+            exitEditMode();
+            document.getElementById('subDetailModal').style.display = 'flex';
+        }
+
+        function closeSubDetail() {
+            document.getElementById('subDetailModal').style.display = 'none';
+        }
+
+        var editMode = false;
+
+        function toggleEditMode() {
+            editMode = !editMode;
+            var btn = document.getElementById('subDetailEditBtn');
+            if (editMode) {
+                btn.textContent = 'Save';
+                btn.classList.add('editing');
+                document.getElementById('subDetailIntro').style.display='none';
+                document.getElementById('subDetailIntroEdit').style.display='';
+                document.getElementById('subDetailFunctions').style.display='none';
+                document.getElementById('subDetailFunctionsEdit').style.display='';
+                document.getElementById('subDetailBizOwner').style.display='none';
+                document.getElementById('subDetailBizOwnerEdit').style.display='';
+                document.getElementById('subDetailTechOwner').style.display='none';
+                document.getElementById('subDetailTechOwnerEdit').style.display='';
+            } else {
+                saveEdits();
+                btn.textContent = 'Edit';
+                btn.classList.remove('editing');
+                exitEditMode();
+            }
+        }
+
+        function saveEdits() {
+            if (!currentEditName) return;
+            subprojectData[currentEditName].intro = document.getElementById('subDetailIntroEdit').value;
+            subprojectData[currentEditName].functions = document.getElementById('subDetailFunctionsEdit').value;
+            subprojectData[currentEditName].bizOwner = document.getElementById('subDetailBizOwnerEdit').value;
+            subprojectData[currentEditName].techOwner = document.getElementById('subDetailTechOwnerEdit').value;
+            document.getElementById('subDetailIntro').textContent = subprojectData[currentEditName].intro;
+            document.getElementById('subDetailFunctions').textContent = subprojectData[currentEditName].functions;
+            var b = subprojectData[currentEditName].bizOwner, t = subprojectData[currentEditName].techOwner;
+            document.getElementById('subDetailBizOwner').textContent = b || '待指定';
+            document.getElementById('subDetailTechOwner').textContent = t || '待指定';
+            document.getElementById('subDetailBizOwner').className = b ? 'subdetail-text-inline' : 'subdetail-text-inline empty';
+            document.getElementById('subDetailTechOwner').className = t ? 'subdetail-text-inline' : 'subdetail-text-inline empty';
+            refreshAllPreviewProgress();
+        }
+
+        function exitEditMode() {
+            document.getElementById('subDetailIntro').style.display='';
+            document.getElementById('subDetailIntroEdit').style.display='none';
+            document.getElementById('subDetailFunctions').style.display='';
+            document.getElementById('subDetailFunctionsEdit').style.display='none';
+            document.getElementById('subDetailBizOwner').style.display='';
+            document.getElementById('subDetailBizOwnerEdit').style.display='none';
+            document.getElementById('subDetailTechOwner').style.display='';
+            document.getElementById('subDetailTechOwnerEdit').style.display='none';
+        }
+
+        window.addEventListener('DOMContentLoaded', function() {
+            refreshAllPreviewProgress();
+        });
+    </script>
+</body>
+</html>
