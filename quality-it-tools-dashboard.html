@@ -1,4 +1,4 @@
-﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿<!DOCTYPE html>
+﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
@@ -454,44 +454,6 @@
             background: #fafafa;
         }
 
-        /* Traffic Light Button */
-        .traffic-light {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            border: 3px solid rgba(0, 0, 0, 0.15);
-            cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            outline: none;
-            position: relative;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-        }
-
-        .traffic-light:hover {
-            transform: scale(1.15) rotate(360deg);
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
-        }
-
-        .traffic-light:active {
-            transform: scale(0.95);
-        }
-
-        .traffic-light.red {
-            background: radial-gradient(circle at 35% 35%, #ff6b6b, #ef4444, #dc2626);
-            box-shadow: 0 2px 8px rgba(239, 68, 68, 0.4), inset 0 -2px 4px rgba(0, 0, 0, 0.2), inset 0 2px 4px rgba(255, 255, 255, 0.3);
-        }
-
-        .traffic-light.yellow {
-            background: radial-gradient(circle at 35% 35%, #fcd34d, #f59e0b, #d97706);
-            box-shadow: 0 2px 8px rgba(245, 158, 11, 0.4), inset 0 -2px 4px rgba(0, 0, 0, 0.2), inset 0 2px 4px rgba(255, 255, 255, 0.3);
-        }
-
-        .traffic-light.green {
-            background: radial-gradient(circle at 35% 35%, #6ee7b7, #10b981, #059669);
-            box-shadow: 0 2px 8px rgba(16, 185, 129, 0.4), inset 0 -2px 4px rgba(0, 0, 0, 0.2), inset 0 2px 4px rgba(255, 255, 255, 0.3);
-        }
-
-        
         /* Sticky/Frozen Columns */
         .timeline-table-container {
             overflow-x: auto;
@@ -2276,6 +2238,7 @@
                             <div class="overall-progress-fill" id="overallProgressFill"></div>
                         </div>
                         <div class="overall-progress-percent" id="overallProgressPercent">0%</div>
+                        <button type="button" onclick="resetDotsState()" title="重置所有红绿灯为红色，并清空 localStorage" style="margin-top:6px;padding:4px 10px;font-size:12px;background:#f3f4f6;color:#374151;border:1px solid #d1d5db;border-radius:6px;cursor:pointer;">🔄 重置进度</button>
                     </div>
                 </div>
 
@@ -2753,222 +2716,89 @@
             document.getElementById('tab-' + tabId).classList.add('active');
         }
 
-        // ==================== PROJECT MANAGEMENT FUNCTIONS ====================
-        
-        // Status cycle: red -> yellow -> green -> red
-        var statusCycle = ['red', 'yellow', 'green'];
-        
-        // Toggle traffic light status
-        function toggleStatus(button) {
-            var currentStatus = button.getAttribute('data-status');
-            var currentIndex = statusCycle.indexOf(currentStatus);
-            var nextIndex = (currentIndex + 1) % statusCycle.length;
-            var nextStatus = statusCycle[nextIndex];
-            
-            // Update button status
-            button.setAttribute('data-status', nextStatus);
-            button.className = 'traffic-light ' + nextStatus;
-            
-            // Add animation effect
-            button.style.transform = 'scale(1.3) rotate(360deg)';
-            setTimeout(function() {
-                button.style.transform = '';
-            }, 300);
-            
-            // Save to localStorage and update progress
-            saveProgress();
-            calculateOverallProgress();
-            
-            // Show feedback tooltip (optional enhancement)
-            showStatusFeedback(button, nextStatus);
-        }
-        
-        // Show brief feedback when status changes
-        function showStatusFeedback(button, status) {
-            var messages = {
-                'red': '🔴 未开始',
-                'yellow': ' 开发中',
-                'green': '🟢 已完成',
-            };
-            
-            // Create tooltip element if not exists
-            var tooltip = document.createElement('div');
-            tooltip.className = 'status-tooltip';
-            tooltip.textContent = messages[status];
-            
-            var styles = [
-                'position: fixed',
-                'background: rgba(0, 0, 0, 0.85)',
-                'color: white',
-                'padding: 8px 16px',
-                'border-radius: 6px',
-                'font-size: 14px',
-                'font-weight: 600',
-                'z-index: 10000',
-                'pointer-events: none',
-                'opacity: 1',
-                'transition: opacity 0.3s ease',
-                'box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3)'
-            ];
-            tooltip.style.cssText = styles.join(';');
-            
-            // Position near the button
-            var rect = button.getBoundingClientRect();
-            tooltip.style.left = (rect.left + rect.width / 2 - 40) + 'px';
-            tooltip.style.top = (rect.top - 45) + 'px';
-            
-            document.body.appendChild(tooltip);
-            
-            // Remove after delay
-            setTimeout(function() {
-                tooltip.style.opacity = '0';
-                setTimeout(function() {
-                    if (tooltip.parentNode) {
-                        tooltip.parentNode.removeChild(tooltip);
-                    }
-                }, 300);
-            }, 1200);
-        }
-        
-        // Save all progress data to localStorage
-        function saveProgress() {
-            var buttons = document.querySelectorAll('.traffic-light');
-            var progressData = {};
-            
-            buttons.forEach(function(button, index) {
-                progressData['button_' + index] = {
-                    status: button.getAttribute('data-status'),
-                    appRow: button.closest('.app-row') ? button.closest('.app-row').getAttribute('data-app') : ''
-                };
-            });
-            
-            localStorage.setItem('qualityPlatformProgress', JSON.stringify(progressData));
-            console.log('\u2705 Progress saved to localStorage');
-        }
-        
-        // Load progress from localStorage
-        function loadProgress() {
-            var savedData = localStorage.getItem('qualityPlatformProgress');
-            
-            if (savedData) {
-                try {
-                    var progressData = JSON.parse(savedData);
-                    var buttons = document.querySelectorAll('.traffic-light');
-                    
-                    buttons.forEach(function(button, index) {
-                        var key = 'button_' + index;
-                        if (progressData[key]) {
-                            var status = progressData[key].status;
-                            button.setAttribute('data-status', status);
-                            button.className = 'traffic-light ' + status;
-                        }
-                    });
-                    
-                    console.log('\u2705 Progress loaded from localStorage');
-                    return true;
-                } catch (e) {
-                    console.error('\u274C Error loading progress:', e);
-                    return false;
-                }
-            }
-            
-            return false;
-        }
-        
-        // Calculate and display overall progress
-        function calculateOverallProgress() {
-            var buttons = document.querySelectorAll('.traffic-light');
-            var totalButtons = buttons.length;
-            var greenCount = 0;
-            var yellowCount = 0;
-            var redCount = 0;
-            
-            buttons.forEach(function(button) {
-                var status = button.getAttribute('data-status');
-                if (status === 'green') greenCount++;
-                else if (status === 'yellow') yellowCount++;
-                else if (status === 'red') redCount++;
-            });
-            
-            // Calculate percentage (only count editable lights)
-            var percentage = totalButtons > 0 ? Math.round((greenCount / totalButtons) * 100) : 0;
-            
-            // Update progress bar
-            var progressBar = document.getElementById('overallProgressFill');
-            var progressPercent = document.getElementById('overallProgressPercent');
-            
-            if (progressBar) {
-                progressBar.style.width = percentage + '%';
-                
-                // Change color based on progress
-                if (percentage >= 80) {
-                    progressBar.style.background = 'linear-gradient(90deg, #10b981 0%, #34d399 100%)';
-                } else if (percentage >= 50) {
-                    progressBar.style.background = 'linear-gradient(90deg, #f59e0b 0%, #fbbf24 100%)';
-                } else {
-                    progressBar.style.background = 'linear-gradient(90deg, #ef4444 0%, #f87171 100%)';
-                }
-            }
-            
-            if (progressPercent) {
-                progressPercent.textContent = percentage + '%';
-                
-                // Animate number change
-                progressPercent.style.transform = 'scale(1.2)';
-                setTimeout(function() {
-                    progressPercent.style.transform = '';
-                }, 200);
-            }
-            
-            // Update statistics cards
-            var statRed = document.getElementById('statRed');
-            var statYellow = document.getElementById('statYellow');
-            var statGreen = document.getElementById('statGreen');
-            var statTotal = document.getElementById('statTotal');
-            
-            if (statRed) statRed.textContent = redCount;
-            if (statYellow) statYellow.textContent = yellowCount;
-            if (statGreen) statGreen.textContent = greenCount;
-            if (statTotal) statTotal.textContent = totalButtons;
-            
-            // Log for debugging
-            console.log('\uD83D\uDCCA Progress: ' + greenCount + '✅ ' + yellowCount + '🟡 ' + redCount + '🔴 | Total: ' + totalButtons + ' | ' + percentage + '%');
-            
-            return { green: greenCount, yellow: yellowCount, red: redCount, total: totalButtons, percent: percentage };
-        }
-        
-        // Initialize project management when tab is shown
-        function initProjectManagement() {
-            // Load saved progress
-            loadProgress();
-            
-            // Calculate initial progress
-            calculateOverallProgress();
-            
-            console.log('\uD83C\uDFAF Project Management initialized');
-        }
-        
-        // Auto-save every 30 seconds (backup mechanism)
-        setInterval(function() {
-            saveProgress();
-        }, 30000);
-        
-        // Initialize when DOM is ready
-        document.addEventListener('DOMContentLoaded', function() {
-            // Delay slightly to ensure table is rendered
-            setTimeout(initProjectManagement, 100);
-        });
-        
-        // Also initialize when switching to planning tab
-        var originalSwitchTab = switchTab;
-        switchTab = function(tabId) {
-            originalSwitchTab(tabId);
-            
-            if (tabId === 'planning') {
-                setTimeout(initProjectManagement, 50);
-            }
-        };
+        // ==================== STATUS DOT PERSISTENCE (localStorage) ====================
+        var DOTS_STORAGE_KEY = 'qualityPlatformStatusDots';
 
+        // Save current state of all status-dot elements to localStorage
+        function saveDotsState() {
+            var dots = document.querySelectorAll('.status-dot');
+            var states = [];
+            for (var i = 0; i < dots.length; i++) {
+                var d = dots[i];
+                var color = d.classList.contains('dot-green') ? 'green'
+                          : d.classList.contains('dot-yellow') ? 'yellow'
+                          : 'red';
+                // 只保存非默认状态(非红色)以节省空间
+                if (color !== 'red') {
+                    states.push({ i: i, c: color });
+                }
+            }
+            try {
+                localStorage.setItem(DOTS_STORAGE_KEY, JSON.stringify(states));
+            } catch (e) {
+                console.error('保存状态点失败:', e);
+            }
+        }
+
+        // Load saved state from localStorage and apply to DOM
+        function loadDotsState() {
+            var saved = localStorage.getItem(DOTS_STORAGE_KEY);
+            if (!saved) return false;
+            try {
+                var states = JSON.parse(saved);
+                var dots = document.querySelectorAll('.status-dot');
+                states.forEach(function(s) {
+                    if (s.i >= 0 && s.i < dots.length && (s.c === 'red' || s.c === 'yellow' || s.c === 'green')) {
+                        var d = dots[s.i];
+                        d.classList.remove('dot-red', 'dot-yellow', 'dot-green');
+                        d.classList.add('dot-' + s.c);
+                    }
+                });
+                return true;
+            } catch (e) {
+                console.error('读取状态点失败:', e);
+                return false;
+            }
+        }
+
+        // Clear saved state and reset all dots to red
+        function resetDotsState() {
+            if (!confirm('确定要重置所有红绿灯状态吗？此操作不可撤销。')) return;
+            try {
+                localStorage.removeItem(DOTS_STORAGE_KEY);
+            } catch (e) {}
+            var dots = document.querySelectorAll('.status-dot');
+            dots.forEach(function(d) {
+                d.classList.remove('dot-yellow', 'dot-green');
+                d.classList.add('dot-red');
+            });
+            updateOverallProgress();
+            refreshAllPreviewProgress();
+        }
+
+        // Initialize status dots on page load and on tab switch
+        function initStatusDots() {
+            loadDotsState();
+            updateOverallProgress();
+            refreshAllPreviewProgress();
+        }
+
+        // Load saved state when DOM is ready
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(initStatusDots, 50);
+        });
+
+        // Re-apply state when switching to the planning tab
+        // (overrides any previous wrap; we keep the original behaviour intact)
+        (function() {
+            var prev = window.switchTab;
+            window.switchTab = function(tabId) {
+                if (typeof prev === 'function') prev(tabId);
+                if (tabId === 'planning') {
+                    setTimeout(initStatusDots, 50);
+                }
+            };
+        })();
 
         function toggleFlowCard(card) {
             card.classList.toggle('expanded');
@@ -3248,6 +3078,7 @@
             var next = statusOrder[(statusOrder.indexOf(cur) + 1) % 3];
             dot.classList.remove('dot-red', 'dot-yellow', 'dot-green');
             dot.classList.add(next);
+            saveDotsState();
             updateOverallProgress();
             refreshAllPreviewProgress();
         }
