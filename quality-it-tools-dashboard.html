@@ -1,4 +1,4 @@
-﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿<!DOCTYPE html>
+﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
@@ -84,7 +84,20 @@
             margin: 0 auto;
             padding: 0 2rem;
             display: flex;
+            align-items: center;
+            justify-content: space-between;
             gap: 0.5rem;
+        }
+
+        .nav-tabs-left {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .nav-tabs-right {
+            display: flex;
+            align-items: center;
+            margin-left: auto;
         }
 
         .nav-tab {
@@ -116,6 +129,34 @@
 
         .tab-icon {
             font-size: 1.1rem;
+        }
+
+        /* Language Switcher Button */
+        .lang-switcher {
+            background: #f1f5f9;
+            border: 1px solid #e2e8f0;
+            color: #334155;
+            padding: 0.5rem 1rem;
+            font-size: 0.9rem;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .lang-switcher:hover {
+            background: #2563eb;
+            border-color: #2563eb;
+            color: #fff;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 10px rgba(37, 99, 235, 0.25);
+        }
+
+        .lang-switcher:active {
+            transform: translateY(0);
         }
 
         /* Tab Content */
@@ -2023,18 +2064,23 @@
     <!-- Navigation Tabs -->
     <div class="nav-tabs-container">
         <div class="nav-tabs">
-            <button class="nav-tab active" onclick="switchTab('architecture')">
-                <span class="tab-icon">🏗️</span>
-                <span class="tab-text">项目总览架构</span>
-            </button>
-            <button class="nav-tab" onclick="switchTab('planning')">
-                <span class="tab-icon">📋</span>
-                <span class="tab-text">项目规划与管理</span>
-            </button>
-            <button class="nav-tab" onclick="switchTab('subprojects')">
-                <span class="tab-icon">📦</span>
-                <span class="tab-text">子项目详情</span>
-            </button>
+            <div class="nav-tabs-left">
+                <button class="nav-tab active" onclick="switchTab('architecture')">
+                    <span class="tab-icon">🏗️</span>
+                    <span class="tab-text" data-i18n="tab.overview">项目总览架构</span>
+                </button>
+                <button class="nav-tab" onclick="switchTab('planning')">
+                    <span class="tab-icon">📋</span>
+                    <span class="tab-text" data-i18n="tab.planning">项目规划与管理</span>
+                </button>
+                <button class="nav-tab" onclick="switchTab('subprojects')">
+                    <span class="tab-icon">📦</span>
+                    <span class="tab-text" data-i18n="tab.subprojects">子项目详情</span>
+                </button>
+            </div>
+            <div class="nav-tabs-right">
+                <button id="langSwitcher" class="lang-switcher" onclick="switchLanguage()" title="Switch Language / 切换语言">🌐 EN</button>
+            </div>
         </div>
     </div>
 
@@ -2046,7 +2092,7 @@
         <!-- ========================================== -->
 
         <div id="tab-architecture" class="tab-content active">
-        <h1 class="section-title">🏗️ 项目总览架构</h1>
+        <h1 class="section-title" data-i18n="arch.title">🏗️ 项目总览架构</h1>
 
         <!-- Architecture Diagram - Canvas Absolute Positioning Layout -->
         <div class="arch-layout" id="archLayout">
@@ -2068,7 +2114,7 @@
 
             <!-- TOP LEFT: Application Layer Box -->
             <div class="arch-box box-apps" id="boxApps">
-                <div class="arch-box-title">📱 应用层</div>
+                <div class="arch-box-title" data-i18n="arch.app_layer">📱 应用层</div>
                 <div class="app-list">
 
                     <div class="app-entry" onclick="showAppDetail('factory-assessment')" id="app-factory">
@@ -2104,27 +2150,43 @@
 
             <!-- TOP RIGHT: Data Layer Box -->
             <div class="arch-box box-data" id="boxData">
-                <div class="arch-box-title">🗄️ 数据层</div>
+                <div class="arch-box-title" data-i18n="arch.data_layer">🗄️ 数据层</div>
                 <div class="data-list">
 
                     <div class="data-entry">
                         <div class="data-source-name">factory relevant data</div>
-                        <div class="data-items">工厂质量评估数据<br>工厂生产流程工序评估<br>评估报告与整改建议</div>
+                        <div class="data-items">
+                            <span data-i18n="data.factory_quality">工厂质量评估数据</span><br>
+                            <span data-i18n="data.factory_process">工厂生产流程工序评估</span><br>
+                            <span data-i18n="data.factory_report">评估报告与整改建议</span>
+                        </div>
                     </div>
 
                     <div class="data-entry">
                         <div class="data-source-name">Claim data and materials</div>
-                        <div class="data-items">历史Claim明细<br>疵点照片<br>新Claim明细</div>
+                        <div class="data-items">
+                            <span data-i18n="data.claim_history">历史Claim明细</span><br>
+                            <span data-i18n="data.defect_photo">疵点照片</span><br>
+                            <span data-i18n="data.claim_new">新Claim明细</span>
+                        </div>
                     </div>
 
                     <div class="data-entry">
                         <div class="data-source-name">Pending data and materials</div>
-                        <div class="data-items">历史Pending决策信息<br>新Pending决策信息<br>疵点照片</div>
+                        <div class="data-items">
+                            <span data-i18n="data.pending_history">历史Pending决策信息</span><br>
+                            <span data-i18n="data.pending_new">新Pending决策信息</span><br>
+                            <span data-i18n="data.defect_photo">疵点照片</span>
+                        </div>
                     </div>
 
                     <div class="data-entry special">
                         <div class="data-source-name">Quality Academy materials</div>
-                        <div class="data-items">claim library<br>各品类产品生产流程<br>生产经验与技巧</div>
+                        <div class="data-items">
+                            <span data-i18n="data.claim_library">claim library</span><br>
+                            <span data-i18n="data.process_exp">各品类产品生产流程</span><br>
+                            <span data-i18n="data.experience">生产经验与技巧</span>
+                        </div>
                     </div>
 
                 </div>
@@ -2132,9 +2194,9 @@
 
             <!-- BOTTOM CENTER: Knowledge Base Box (narrow) -->
             <div class="arch-box box-knowledge" id="boxKnowledge">
-                <div class="arch-box-title">🧠 AI知识库</div>
+                <div class="arch-box-title" data-i18n="arch.ai_layer">🧠 AI知识库</div>
                 <div class="knowledge-content">
-                    <p><strong>通过大模型对数据进行知识提炼，形成可被应用端调用的AI知识库，为应用端提供智能提示</strong></p>
+                    <p><strong data-i18n="arch.intro_line">通过大模型对数据进行知识提炼，形成可被应用端调用的AI知识库，为应用端提供智能提示</strong></p>
                 </div>
             </div>
 
@@ -2150,10 +2212,10 @@
             <div class="flow-card green" style="top: -120px; left: 50%; transform: translateX(-50%); z-index: 20;" onclick="toggleFlowCard(this)">
                 <div class="flow-header green">
                     <span class="flow-badge badge-green">✅</span>
-                    应用层 → 数据层：数据产生与存储
+                    <span data-i18n="arch.flow1">应用层 → 数据层：数据产生与存储</span>
                 </div>
                 <div class="flow-body">
-                    <p class="flow-body-text">
+                    <p class="flow-body-text" data-i18n="arch.flow1_desc">
                     每个应用在使用过程中产生的新数据或上传的历史数据，这些数据通过<strong>关键字段</strong>（如客户、工厂、索赔原因、产品类型等）相互关联，统一存储在数据库中。
                     </p>
                 </div>
@@ -2171,10 +2233,10 @@
             <div class="flow-card red" style="top: 480px; right: -10px; max-width: 340px;" onclick="toggleFlowCard(this)">
                 <div class="flow-header red">
                     <span class="flow-badge badge-red"></span>
-                    数据层 → 知识层：AI知识提炼
+                    <span data-i18n="arch.flow2">数据层 → 知识层：AI知识提炼</span>
                 </div>
                 <div class="flow-body">
-                    <p class="flow-body-text">
+                    <p class="flow-body-text" data-i18n="arch.flow2_desc">
                     通过<strong>大模型</strong>对数据库中的数据进行<strong>知识提炼</strong>，AI自动分析历史数据，归类整理，生成标准化的流程知识，形成<strong>AI综合知识库</strong>。
                     </p>
                 </div>
@@ -2192,10 +2254,10 @@
             <div class="flow-card purple" style="top: 470px; left: -10px; max-width: 330px;" onclick="toggleFlowCard(this)">
                 <div class="flow-header purple">
                     <span class="flow-badge badge-purple">AI</span>
-                    知识层 → 应用层：智能反哺前端
+                    <span data-i18n="arch.flow3">知识层 → 应用层：智能反哺前端</span>
                 </div>
                 <div class="flow-body">
-                    <p class="flow-body-text">
+                    <p class="flow-body-text" data-i18n="arch.flow3_desc">
                         AI知识库在各个应用的<strong>关键操作节点</strong>提供智能提示(hint)，基于历史数据给出建议方向，帮助用户做出更准确的判断和决策。
                     </p>
                 </div>
@@ -2208,7 +2270,7 @@
         <div id="appModal" class="app-detail-modal">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h3 id="modalTitle">应用详情</h3>
+                    <h3 id="modalTitle" data-i18n="app.modal.title">应用详情</h3>
                     <button class="modal-close" onclick="closeModal()">✕</button>
                 </div>
                 <div id="modalBody"></div>
@@ -2228,17 +2290,17 @@
                 <!-- Project Header with Progress -->
                 <div class="project-header">
                     <div class="project-title-area">
-                        <h1 class="section-title">🎯 Quality Intelligence Platform</h1>
-                        <p class="project-subtitle" onclick="openMilestoneModal()" style="cursor:pointer;text-decoration:underline;display:inline-block;margin-right:1rem;">📍 关键里程碑</p>
-                        <button class="schedule-btn" onclick="openProjectSchedule()" style="cursor:pointer;">📅 项目规划表</button>
+                        <h1 class="section-title" data-i18n="header.section_title">🎯 Quality Intelligence Platform</h1>
+                        <p class="project-subtitle" onclick="openMilestoneModal()" style="cursor:pointer;text-decoration:underline;display:inline-block;margin-right:1rem;" data-i18n="header.milestone">📍 关键里程碑</p>
+                        <button class="schedule-btn" onclick="openProjectSchedule()" style="cursor:pointer;" data-i18n="header.schedule">📅 项目规划表</button>
                     </div>
                     <div class="progress-overview">
-                        <div class="overall-progress-label">总体进度</div>
+                        <div class="overall-progress-label" data-i18n="header.overall_progress">总体进度</div>
                         <div class="overall-progress-bar">
                             <div class="overall-progress-fill" id="overallProgressFill"></div>
                         </div>
                         <div class="overall-progress-percent" id="overallProgressPercent">0%</div>
-                        <button type="button" onclick="resetDotsState()" title="重置所有红绿灯为红色，并清空 localStorage" style="margin-top:6px;padding:4px 10px;font-size:12px;background:#f3f4f6;color:#374151;border:1px solid #d1d5db;border-radius:6px;cursor:pointer;">🔄 重置进度</button>
+                        <button type="button" onclick="resetDotsState()" data-i18n-attr="title:header.reset_title" title="重置所有红绿灯为红色，并清空 localStorage" style="margin-top:6px;padding:4px 10px;font-size:12px;background:#f3f4f6;color:#374151;border:1px solid #d1d5db;border-radius:6px;cursor:pointer;" data-i18n="header.reset_btn">🔄 重置进度</button>
                     </div>
                 </div>
 
@@ -2247,29 +2309,29 @@
                     <div class="milestone-modal-overlay" onclick="closeMilestoneModal()"></div>
                     <div class="milestone-modal-content">
                         <div class="milestone-modal-header">
-                            <h2>📍 关键里程碑</h2>
+                            <h2 data-i18n="milestone.modal_title">📍 关键里程碑</h2>
                             <button class="milestone-close-btn" onclick="closeMilestoneModal()">✕</button>
                         </div>
                         <div class="milestone-list">
                             <div class="milestone-item">
-                                <div class="milestone-date">2026年7月</div>
-                                <div class="milestone-title">确保数据库产品</div>
-                                <div class="milestone-desc">统一数据库字段规范，确保数据库产品</div>
+                                <div class="milestone-date" data-i18n="milestone.1.date">2026年7月</div>
+                                <div class="milestone-title" data-i18n="milestone.1.title">确保数据库产品</div>
+                                <div class="milestone-desc" data-i18n="milestone.1.desc">统一数据库字段规范，确保数据库产品</div>
                             </div>
                             <div class="milestone-item">
-                                <div class="milestone-date">2026年9月</div>
-                                <div class="milestone-title">数据库迁移/搭建完毕</div>
-                                <div class="milestone-desc">连接数据库，数据库表/文件准备完毕，数据库迁移/搭建完毕，前端基础功能小范围测试并优化</div>
+                                <div class="milestone-date" data-i18n="milestone.2.date">2026年9月</div>
+                                <div class="milestone-title" data-i18n="milestone.2.title">数据库迁移/搭建完毕</div>
+                                <div class="milestone-desc" data-i18n="milestone.2.desc">连接数据库，数据库表/文件准备完毕，数据库迁移/搭建完毕，前端基础功能小范围测试并优化</div>
                             </div>
                             <div class="milestone-item">
-                                <div class="milestone-date">2026年11月</div>
-                                <div class="milestone-title">AI知识库搭建完毕</div>
-                                <div class="milestone-desc">利用大模型对数据进行深度学习、归纳整理，形成知识卡片，前端集成AI知识库功能，小范围测试并优化</div>
+                                <div class="milestone-date" data-i18n="milestone.3.date">2026年11月</div>
+                                <div class="milestone-title" data-i18n="milestone.3.title">AI知识库搭建完毕</div>
+                                <div class="milestone-desc" data-i18n="milestone.3.desc">利用大模型对数据进行深度学习、归纳整理，形成知识卡片，前端集成AI知识库功能，小范围测试并优化</div>
                             </div>
                             <div class="milestone-item">
-                                <div class="milestone-date">2026年12月</div>
-                                <div class="milestone-title">第一版上线使用</div>
-                                <div class="milestone-desc">确保网站正常部署，数据库正常同步，前端各功能正常使用</div>
+                                <div class="milestone-date" data-i18n="milestone.4.date">2026年12月</div>
+                                <div class="milestone-title" data-i18n="milestone.4.title">第一版上线使用</div>
+                                <div class="milestone-desc" data-i18n="milestone.4.desc">确保网站正常部署，数据库正常同步，前端各功能正常使用</div>
                             </div>
                         </div>
                     </div>
@@ -2280,24 +2342,24 @@
                     <div class="schedule-modal-overlay" onclick="closeProjectSchedule()"></div>
                     <div class="schedule-modal-content">
                         <div class="schedule-modal-header">
-                            <h2>📅 项目规划日程表</h2>
+                            <h2 data-i18n="gantt.title">📅 项目规划日程表</h2>
                             <button class="schedule-close-btn" onclick="closeProjectSchedule()">✕</button>
                         </div>
                         <div class="schedule-modal-body">
                             <div class="gantt-legend">
-                                <span class="legend-item"><i class="legend-bar legend-stage1"></i>项目阶段一：准备阶段</span>
-                                <span class="legend-item"><i class="legend-bar legend-stage2"></i>项目阶段二：基础功能开发</span>
-                                <span class="legend-item"><i class="legend-bar legend-stage3"></i>项目阶段三：AI知识库开发</span>
-                                <span class="legend-item"><i class="legend-bar legend-stage4"></i>项目阶段四：第一版上线</span>
-                                <span class="legend-item"><i class="legend-bar legend-stage5"></i>项目阶段五：持续监控、版本迭代优化</span>
+                                <span class="legend-item"><i class="legend-bar legend-stage1"></i><span data-i18n="gantt.legend1">项目阶段一：准备阶段</span></span>
+                                <span class="legend-item"><i class="legend-bar legend-stage2"></i><span data-i18n="gantt.legend2">项目阶段二：基础功能开发</span></span>
+                                <span class="legend-item"><i class="legend-bar legend-stage3"></i><span data-i18n="gantt.legend3">项目阶段三：AI知识库开发</span></span>
+                                <span class="legend-item"><i class="legend-bar legend-stage4"></i><span data-i18n="gantt.legend4">项目阶段四：第一版上线</span></span>
+                                <span class="legend-item"><i class="legend-bar legend-stage5"></i><span data-i18n="gantt.legend5">项目阶段五：持续监控、版本迭代优化</span></span>
                             </div>
                             <div class="gantt-container">
                                 <table class="gantt-table">
                                     <thead>
                                         <tr>
-                                            <th class="gantt-phase-col">项目阶段规划</th>
-                                            <th class="gantt-task-col">关键时间节点</th>
-                                            <th class="gantt-duration-col">周期</th>
+                                            <th class="gantt-phase-col" data-i18n="gantt.col_phase">项目阶段规划</th>
+                                            <th class="gantt-task-col" data-i18n="gantt.col_task">关键时间节点</th>
+                                            <th class="gantt-duration-col" data-i18n="gantt.col_duration">周期</th>
                                             <th class="gantt-timeline-col" colspan="6">
                                                 <div class="gantt-months">
                                                     <span>2026.07</span>
@@ -2313,16 +2375,16 @@
                                     <tbody>
                                         <!-- 阶段一 -->
                                         <tr class="gantt-stage-row stage1-row">
-                                            <td class="gantt-phase" rowspan="2">项目阶段一：<br>准备阶段</td>
-                                            <td class="gantt-task">数据库字段规范</td>
-                                            <td class="gantt-duration">2 weeks</td>
+                                            <td class="gantt-phase" rowspan="2" data-i18n-html="gantt.phase1">项目阶段一：<br>准备阶段</td>
+                                            <td class="gantt-task" data-i18n="tl.node1_short">数据库字段规范</td>
+                                            <td class="gantt-duration" data-i18n="tl.2w">2 weeks</td>
                                             <td colspan="6" class="gantt-bar-cell">
                                                 <div class="gantt-bar stage1-bar" style="left:0%;width:8.3%;">Jul</div>
                                             </td>
                                         </tr>
                                         <tr class="gantt-stage-row stage1-row">
-                                            <td class="gantt-task">确定数据库产品</td>
-                                            <td class="gantt-duration">2 weeks</td>
+                                            <td class="gantt-task" data-i18n="tl.node2_short">确定数据库产品</td>
+                                            <td class="gantt-duration" data-i18n="tl.2w">2 weeks</td>
                                             <td colspan="6" class="gantt-bar-cell">
                                                 <div class="gantt-bar stage1-bar" style="left:8.3%;width:8.3%;">Jul</div>
                                             </td>
@@ -2330,30 +2392,30 @@
 
                                         <!-- 阶段二 -->
                                         <tr class="gantt-stage-row stage2-row">
-                                            <td class="gantt-phase" rowspan="4">项目阶段二：<br>基础功能开发</td>
-                                            <td class="gantt-task">前端基础功能构建完毕</td>
-                                            <td class="gantt-duration">2 weeks</td>
+                                            <td class="gantt-phase" rowspan="4" data-i18n-html="gantt.phase2">项目阶段二：<br>基础功能开发</td>
+                                            <td class="gantt-task" data-i18n="tl.node3_short">前端基础功能构建完毕</td>
+                                            <td class="gantt-duration" data-i18n="tl.2w">2 weeks</td>
                                             <td colspan="6" class="gantt-bar-cell">
                                                 <div class="gantt-bar stage2-bar" style="left:16.6%;width:8.3%;">Aug</div>
                                             </td>
                                         </tr>
                                         <tr class="gantt-stage-row stage2-row">
-                                            <td class="gantt-task">连接数据库，数据库迁移/搭建完毕</td>
-                                            <td class="gantt-duration">4 weeks</td>
+                                            <td class="gantt-task" data-i18n="tl.node4_short">连接数据库，数据库迁移/搭建完毕</td>
+                                            <td class="gantt-duration" data-i18n="tl.4w">4 weeks</td>
                                             <td colspan="6" class="gantt-bar-cell">
                                                 <div class="gantt-bar stage2-bar" style="left:25%;width:16.6%;">Aug-Sep</div>
                                             </td>
                                         </tr>
                                         <tr class="gantt-stage-row stage2-row">
-                                            <td class="gantt-task">网站/后端正常部署</td>
-                                            <td class="gantt-duration">2 weeks</td>
+                                            <td class="gantt-task" data-i18n="tl.node5_short">网站/后端正常部署</td>
+                                            <td class="gantt-duration" data-i18n="tl.2w">2 weeks</td>
                                             <td colspan="6" class="gantt-bar-cell">
                                                 <div class="gantt-bar stage2-bar" style="left:41.6%;width:8.3%;">Sep</div>
                                             </td>
                                         </tr>
                                         <tr class="gantt-stage-row stage2-row">
-                                            <td class="gantt-task">前端应用基础功能小范围测试并优化</td>
-                                            <td class="gantt-duration">2 weeks</td>
+                                            <td class="gantt-task" data-i18n="tl.node6_short">前端应用基础功能小范围测试并优化</td>
+                                            <td class="gantt-duration" data-i18n="tl.2w">2 weeks</td>
                                             <td colspan="6" class="gantt-bar-cell">
                                                 <div class="gantt-bar stage2-bar" style="left:50%;width:8.3%;">Sep</div>
                                             </td>
@@ -2361,23 +2423,23 @@
 
                                         <!-- 阶段三 -->
                                         <tr class="gantt-stage-row stage3-row">
-                                            <td class="gantt-phase" rowspan="3">项目阶段三：<br>AI知识库开发</td>
-                                            <td class="gantt-task">后端知识库搭建</td>
-                                            <td class="gantt-duration">4 weeks</td>
+                                            <td class="gantt-phase" rowspan="3" data-i18n-html="gantt.phase3">项目阶段三：<br>AI知识库开发</td>
+                                            <td class="gantt-task" data-i18n="tl.node7_short">后端知识库搭建</td>
+                                            <td class="gantt-duration" data-i18n="tl.4w">4 weeks</td>
                                             <td colspan="6" class="gantt-bar-cell">
                                                 <div class="gantt-bar stage3-bar" style="left:58.3%;width:16.6%;">Oct</div>
                                             </td>
                                         </tr>
                                         <tr class="gantt-stage-row stage3-row">
-                                            <td class="gantt-task">AI知识库前端集成</td>
-                                            <td class="gantt-duration">2 weeks</td>
+                                            <td class="gantt-task" data-i18n="tl.node8_short">AI知识库前端集成</td>
+                                            <td class="gantt-duration" data-i18n="tl.2w">2 weeks</td>
                                             <td colspan="6" class="gantt-bar-cell">
                                                 <div class="gantt-bar stage3-bar" style="left:75%;width:8.3%;">Nov</div>
                                             </td>
                                         </tr>
                                         <tr class="gantt-stage-row stage3-row">
-                                            <td class="gantt-task">AI功能小范围测试并优化</td>
-                                            <td class="gantt-duration">2 weeks</td>
+                                            <td class="gantt-task" data-i18n="tl.node9_short">AI功能小范围测试并优化</td>
+                                            <td class="gantt-duration" data-i18n="tl.2w">2 weeks</td>
                                             <td colspan="6" class="gantt-bar-cell">
                                                 <div class="gantt-bar stage3-bar" style="left:83.3%;width:8.3%;">Nov</div>
                                             </td>
@@ -2385,33 +2447,33 @@
 
                                         <!-- 阶段四 -->
                                         <tr class="gantt-stage-row stage4-row">
-                                            <td class="gantt-phase" rowspan="2">项目阶段四：<br>第一版上线<br>2026.12.31</td>
-                                            <td class="gantt-task">产品使用手册/开发手册</td>
-                                            <td class="gantt-duration">2 weeks</td>
+                                            <td class="gantt-phase" rowspan="2" data-i18n-html="gantt.phase4">项目阶段四：<br>第一版上线<br>2026.12.31</td>
+                                            <td class="gantt-task" data-i18n="tl.node10_short">产品使用手册/开发手册</td>
+                                            <td class="gantt-duration" data-i18n="tl.2w">2 weeks</td>
                                             <td colspan="6" class="gantt-bar-cell">
                                                 <div class="gantt-bar stage4-bar" style="left:83.3%;width:8.3%;">Nov</div>
                                             </td>
                                         </tr>
                                         <tr class="gantt-stage-row stage4-row">
-                                            <td class="gantt-task">第一版上线使用</td>
-                                            <td class="gantt-duration">里程碑</td>
+                                            <td class="gantt-task" data-i18n="tl.node11_short">第一版上线使用</td>
+                                            <td class="gantt-duration" data-i18n="tl.milestone">里程碑</td>
                                             <td colspan="6" class="gantt-bar-cell">
-                                                <div class="gantt-bar stage4-bar milestone-marker" style="left:91.6%;width:8.3%;">⭐ 12.31 上线</div>
+                                                <div class="gantt-bar stage4-bar milestone-marker" style="left:91.6%;width:8.3%;" data-i18n="gantt.milestone_dec31">⭐ 12.31 上线</div>
                                             </td>
                                         </tr>
 
                                         <!-- 阶段五 -->
                                         <tr class="gantt-stage-row stage5-row">
-                                            <td class="gantt-phase" rowspan="2">项目阶段五：<br>持续监控、<br>版本迭代优化</td>
-                                            <td class="gantt-task">设置应用监控：异常数据监控、数据同步监控</td>
-                                            <td class="gantt-duration">2 weeks</td>
+                                            <td class="gantt-phase" rowspan="2" data-i18n-html="gantt.phase5">项目阶段五：<br>持续监控、<br>版本迭代优化</td>
+                                            <td class="gantt-task" data-i18n="tl.node12_short">设置应用监控：异常数据监控、数据同步监控</td>
+                                            <td class="gantt-duration" data-i18n="tl.2w">2 weeks</td>
                                             <td colspan="6" class="gantt-bar-cell">
                                                 <div class="gantt-bar stage5-bar" style="left:91.6%;width:8.3%;">Dec</div>
                                             </td>
                                         </tr>
                                         <tr class="gantt-stage-row stage5-row">
-                                            <td class="gantt-task">设置版本迭代规范：需求收集、评审、版本号、迭代日志、通知</td>
-                                            <td class="gantt-duration">2 weeks</td>
+                                            <td class="gantt-task" data-i18n="tl.node13_short">设置版本迭代规范：需求收集、评审、版本号、迭代日志、通知</td>
+                                            <td class="gantt-duration" data-i18n="tl.2w">2 weeks</td>
                                             <td colspan="6" class="gantt-bar-cell">
                                                 <div class="gantt-bar stage5-bar" style="left:91.6%;width:8.3%;">Dec</div>
                                             </td>
@@ -2437,10 +2499,10 @@
                         <tbody id="timelineBody">
                             <!-- 阶段一：准备阶段 -->
                             <tr>
-                                <td class="stage-title" rowspan="2">项目阶段一：准备阶段</td>
+                                <td class="stage-title" rowspan="2" data-i18n="gantt.phase1_simple">项目阶段一：准备阶段</td>
                                 <td class="subproject-empty"></td>
-                                <td>数据库字段规范（2 weeks）</td>
-                                <td>确保数据库产品（2 weeks）</td>
+                                <td data-i18n="tl.node1">数据库字段规范（2 weeks）</td>
+                                <td data-i18n="tl.node2">确保数据库产品（2 weeks）</td>
                                 <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
                             </tr>
                             <tr>
@@ -2452,13 +2514,13 @@
 
                             <!-- 阶段二：核心功能开发 -->
                             <tr>
-                                <td class="stage-title" rowspan="8">项目阶段二：基础功能开发</td>
+                                <td class="stage-title" rowspan="8" data-i18n="gantt.phase2_simple">项目阶段二：基础功能开发</td>
                                 <td class="subproject-empty"></td>
                                 <td></td>
-                                <td>前端基础功能构建完毕（2 weeks）</td>
-                                <td>连接数据库、数据库迁移/搭建（4 weeks）</td>
-                                <td>网站/后端正常部署（2 weeks）</td>
-                                <td>前端基础功能小范围测试并优化（2 weeks）</td>
+                                <td data-i18n="tl.node3">前端基础功能构建完毕（2 weeks）</td>
+                                <td data-i18n="tl.node4">连接数据库、数据库迁移/搭建（4 weeks）</td>
+                                <td data-i18n="tl.node5">网站/后端正常部署（2 weeks）</td>
+                                <td data-i18n="tl.node6">前端基础功能小范围测试并优化（2 weeks）</td>
                                 <td></td><td></td><td></td><td></td><td></td><td></td><td></td>
                             </tr>
                             <tr>
@@ -2476,16 +2538,16 @@
                             <tr><td class="module-name">claim management system</td><td></td><td><div class="status-dot dot-red" onclick="toggleDot(this)"></div></td><td><div class="status-dot dot-red" onclick="toggleDot(this)"></div></td><td><div class="status-dot dot-red" onclick="toggleDot(this)"></div></td><td><div class="status-dot dot-red" onclick="toggleDot(this)"></div></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
                             <tr><td class="module-name">pending decision tool</td><td></td><td><div class="status-dot dot-red" onclick="toggleDot(this)"></div></td><td><div class="status-dot dot-red" onclick="toggleDot(this)"></div></td><td><div class="status-dot dot-red" onclick="toggleDot(this)"></div></td><td><div class="status-dot dot-red" onclick="toggleDot(this)"></div></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
                             <tr><td class="module-name">material management system</td><td></td><td><div class="status-dot dot-red" onclick="toggleDot(this)"></div></td><td><div class="status-dot dot-red" onclick="toggleDot(this)"></div></td><td><div class="status-dot dot-red" onclick="toggleDot(this)"></div></td><td><div class="status-dot dot-red" onclick="toggleDot(this)"></div></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-                            <tr><td class="module-name">efficiency tools</td><td></td><td><div class="status-dot dot-red" onclick="toggleDot(this)"></div></td><td>/</td><td><div class="status-dot dot-red" onclick="toggleDot(this)"></div></td><td><div class="status-dot dot-red" onclick="toggleDot(this)"></div></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                            <tr><td class="module-name">efficiency tools</td><td></td><td><div class="status-dot dot-red" onclick="toggleDot(this)"></div></td><td data-i18n="tl.not_applicable">/</td><td><div class="status-dot dot-red" onclick="toggleDot(this)"></div></td><td><div class="status-dot dot-red" onclick="toggleDot(this)"></div></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
 
                             <!-- 阶段三：AI知识库开发 -->
                             <tr>
-                                <td class="stage-title" rowspan="8">项目阶段三：AI知识库开发</td>
+                                <td class="stage-title" rowspan="8" data-i18n="gantt.phase3_simple">项目阶段三：AI知识库开发</td>
                                 <td class="subproject-empty"></td>
                                 <td></td><td></td><td></td><td></td><td></td>
-                                <td>后端知识库搭建（4 weeks）</td>
-                                <td>AI知识库前端集成（2 weeks）</td>
-                                <td>AI知识库功能小范围测试并优化（2 weeks）</td>
+                                <td data-i18n="tl.node7">后端知识库搭建（4 weeks）</td>
+                                <td data-i18n="tl.node8">AI知识库前端集成（2 weeks）</td>
+                                <td data-i18n="tl.node9">AI知识库功能小范围测试并优化（2 weeks）</td>
                                 <td></td><td></td><td></td><td></td>
                             </tr>
                             <tr>
@@ -2505,11 +2567,11 @@
 
                             <!-- 阶段四：统一上线 -->
                             <tr>
-                                <td class="stage-title" rowspan="9">项目阶段四：第一版上线</td>
+                                <td class="stage-title" rowspan="9" data-i18n="gantt.phase4_simple">项目阶段四：第一版上线</td>
                                 <td class="subproject-empty"></td>
                                 <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
-                                <td>产品使用手册/开发手册（2 weeks）</td>
-                                <td>第一版上线使用</td>
+                                <td data-i18n="tl.node10">产品使用手册/开发手册（2 weeks）</td>
+                                <td data-i18n="tl.node11">第一版上线使用</td>
                                 <td></td><td></td>
                             </tr>
                             <tr>
@@ -2529,11 +2591,11 @@
 
                             <!-- 阶段五：数据监控、版本迭代优化 -->
                             <tr>
-                                <td class="stage-title" rowspan="9">项目阶段五：持续监控、版本迭代优化</td>
+                                <td class="stage-title" rowspan="9" data-i18n="gantt.phase5_simple">项目阶段五：持续监控、版本迭代优化</td>
                                 <td class="subproject-empty"></td>
                                 <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
-                                <td>设置应用监控：异常数据监控、数据同步监控（2 weeks）</td>
-                                <td>制定版本迭代规范：需求收集、评审、版本号、更新日志、通知(2 weeks)</td>
+                                <td data-i18n="tl.node12">设置应用监控：异常数据监控、数据同步监控（2 weeks）</td>
+                                <td data-i18n="tl.node13">制定版本迭代规范：需求收集、评审、版本号、更新日志、通知(2 weeks)</td>
                             </tr>
                             <tr>
                                 <td class="subproject-empty"></td>
@@ -2557,7 +2619,7 @@
     </div>
 
     <div id="tab-subprojects" class="tab-content">
-        <h2 class="section-subtitle">📦 子项目管理详情</h2>
+        <h2 class="section-subtitle" data-i18n="sub.title">📦 子项目管理详情</h2>
         <div class="subproject-preview-grid">
 
             <div class="subproject-preview-card" onclick="openSubDetail('factory assessment online')">
@@ -2660,35 +2722,35 @@
                 <div class="subdetail-header">
                     <div class="subdetail-title-row">
                         <h2 id="subDetailTitle"></h2>
-                        <button class="subdetail-edit-btn" id="subDetailEditBtn" onclick="toggleEditMode()">✏️ 编辑</button>
+                        <button class="subdetail-edit-btn" id="subDetailEditBtn" onclick="toggleEditMode()"><span data-i18n="common.edit">✏️ 编辑</span></button>
                     </div>
                     <button class="subdetail-close-btn" onclick="closeSubDetail()">✕</button>
                 </div>
                 <div class="subdetail-body">
                     <div class="subdetail-section">
-                        <label>项目名称</label>
+                        <label data-i18n="sub.detail.name">项目名称</label>
                         <p id="subDetailIntro" class="subdetail-text"></p>
                         <textarea id="subDetailIntroEdit" class="subdetail-edit-area" style="display:none;"></textarea>
                     </div>
                     <div class="subdetail-section">
-                        <label>主要功能</label>
+                        <label data-i18n="sub.detail.functions">主要功能</label>
                         <p id="subDetailFunctions" class="subdetail-text"></p>
                         <textarea id="subDetailFunctionsEdit" class="subdetail-edit-area" style="display:none;"></textarea>
                     </div>
                     <div class="subdetail-owners-row">
                         <div class="subdetail-owner-field">
-                            <label>Business Owner</label>
+                            <label data-i18n="sub.detail.biz_owner">Business Owner</label>
                             <span id="subDetailBizOwner" class="subdetail-text-inline"></span>
                             <input type="text" id="subDetailBizOwnerEdit" class="subdetail-edit-input" style="display:none;">
                         </div>
                         <div class="subdetail-owner-field">
-                            <label>Technical Owner</label>
+                            <label data-i18n="sub.detail.tech_owner">Technical Owner</label>
                             <span id="subDetailTechOwner" class="subdetail-text-inline"></span>
                             <input type="text" id="subDetailTechOwnerEdit" class="subdetail-edit-input" style="display:none;">
                         </div>
                     </div>
                     <div class="subdetail-section">
-                        <label>目前进度</label>
+                        <label data-i18n="sub.detail.progress">目前进度</label>
                         <div id="subDetailProgress" class="subdetail-progress-box"></div>
                     </div>
                 </div>
@@ -2700,6 +2762,406 @@
     </div>
 
     <script>
+        // ==================== I18N (中英文切换) ====================
+        var I18N = {
+            lang: 'zh',
+            LANG_KEY: 'qualityPlatformLang',
+            dict: {
+                zh: {
+                    'common.cancel': '取消', 'common.close': '关闭', 'common.save': '保存', 'common.edit': '编辑',
+                    'common.coming_soon': '当前版本暂未开放，后续作为知识库查询端',
+                    'common.tbd': '待指定', 'common.owner_prefix': 'Owner: ',
+                    'common.tbd_full': '暂未指定', 'common.unassigned': '待指定',
+                    'page.title': 'Quality Intelligence Platform Project - 项目总览平台',
+                    'tab.overview': '项目总览架构',
+                    'tab.planning': '项目规划与管理',
+                    'tab.subprojects': '子项目详情',
+                    'header.section_title': '🎯 Quality Intelligence Platform',
+                    'header.milestone': '📍 关键里程碑',
+                    'header.schedule': '📅 项目规划表',
+                    'header.overall_progress': '总体进度',
+                    'header.reset_btn': '🔄 重置进度',
+                    'header.reset_title': '重置所有红绿灯为红色，并清空 localStorage',
+                    'header.lang_switch_to_en': '🌐 EN',
+                    'header.lang_switch_to_zh': '🌐 中文',
+                    'arch.title': '🏗️ 项目总览架构',
+                    'arch.app_layer': '📱 应用层', 'arch.data_layer': '🗄️ 数据层', 'arch.ai_layer': '🧠 AI知识库',
+                    'arch.intro_line': '通过大模型对数据进行知识提炼，形成可被应用端调用的AI知识库，为应用端提供智能提示',
+                    'arch.flow1': '应用层 → 数据层：数据产生与存储',
+                    'arch.flow1_desc': '每个应用在使用过程中产生的新数据或上传的历史数据，这些数据通过关键字段（如客户、工厂、索赔原因、产品类型等）相互关联，统一存储在数据库中。',
+                    'arch.flow2': '数据层 → 知识层：AI知识提炼',
+                    'arch.flow2_desc': '通过大模型对数据库中的数据进行知识提炼，AI自动分析历史数据，归类整理，生成标准化的流程知识，形成AI综合知识库。',
+                    'arch.flow3': '知识层 → 应用层：智能反哺前端',
+                    'arch.flow3_desc': 'AI知识库在各个应用的关键操作节点提供智能提示(hint)，基于历史数据给出建议方向，帮助用户做出更准确的判断和决策。',
+                    'arch.key_field': '关键字段', 'arch.big_model': '大模型',
+                    'arch.knowledge_distill': '知识提炼', 'arch.ai_library': 'AI综合知识库',
+                    'arch.structured': '结构化知识',
+                    'milestone.modal_title': '📍 关键里程碑',
+                    'milestone.1.date': '2026年7月', 'milestone.1.title': '确保数据库产品', 'milestone.1.desc': '统一数据库字段规范，确保数据库产品',
+                    'milestone.2.date': '2026年9月', 'milestone.2.title': '数据库迁移/搭建完毕',
+                    'milestone.2.desc': '连接数据库，数据库表/文件准备完毕，数据库迁移/搭建完毕，前端基础功能小范围测试并优化',
+                    'milestone.3.date': '2026年11月', 'milestone.3.title': 'AI知识库搭建完毕',
+                    'milestone.3.desc': '利用大模型对数据进行深度学习、归纳整理，形成知识卡片，前端集成AI知识库功能，小范围测试并优化',
+                    'milestone.4.date': '2026年12月', 'milestone.4.title': '第一版上线使用',
+                    'milestone.4.desc': '确保网站正常部署，数据库正常同步，前端各功能正常使用',
+                    'gantt.title': '📅 项目规划日程表',
+                    'gantt.col_phase': '项目阶段规划', 'gantt.col_task': '关键时间节点', 'gantt.col_duration': '周期', 'gantt.milestone_label': '里程碑',
+                    'gantt.phase1': '项目阶段一：<br>准备阶段', 'gantt.phase2': '项目阶段二：<br>基础功能开发',
+                    'gantt.phase3': '项目阶段三：<br>AI知识库开发', 'gantt.phase4': '项目阶段四：<br>第一版上线<br>2026.12.31',
+                    'gantt.phase5': '项目阶段五：<br>持续监控、<br>版本迭代优化',
+                    'gantt.legend1': '项目阶段一：准备阶段', 'gantt.legend2': '项目阶段二：基础功能开发',
+                    'gantt.legend3': '项目阶段三：AI知识库开发', 'gantt.legend4': '项目阶段四：第一版上线', 'gantt.legend5': '项目阶段五：持续监控、版本迭代优化',
+                    'gantt.milestone_dec31': '⭐ 12.31 上线',
+                    'tl.phase1': '项目阶段一：准备阶段', 'tl.phase2': '项目阶段二：基础功能开发',
+                    'tl.phase3': '项目阶段三：AI知识库开发', 'tl.phase4': '项目阶段四：第一版上线',
+                    'tl.phase5': '项目阶段五：持续监控、版本迭代优化',
+                    'tl.node1': '数据库字段规范（2 weeks）', 'tl.node2': '确保数据库产品（2 weeks）',
+                    'tl.node3': '前端基础功能构建完毕（2 weeks）', 'tl.node4': '连接数据库、数据库迁移/搭建（4 weeks）',
+                    'tl.node5': '网站/后端正常部署（2 weeks）', 'tl.node6': '前端基础功能小范围测试并优化（2 weeks）',
+                    'tl.node7': '后端知识库搭建（4 weeks）', 'tl.node8': 'AI知识库前端集成（2 weeks）',
+                    'tl.node9': 'AI知识库功能小范围测试并优化（2 weeks）',
+                    'tl.node10': '产品使用手册/开发手册（2 weeks）', 'tl.node11': '第一版上线使用',
+                    'tl.node12': '设置应用监控：异常数据监控、数据同步监控（2 weeks）',
+                    'tl.node13': '制定版本迭代规范：需求收集、评审、版本号、更新日志、通知(2 weeks)',
+                    'n.db_schema': '数据库字段规范', 'n.ensure_db': '确保各数据库产品使用',
+                    'n.fe_base': '前端基础功能架构搭建', 'n.be_db': '后端数据库/迁移搭建',
+                    'n.fe_be_test': '前端/后端功能测试', 'n.fe_test_optim': '前端基础功能小范围测试并优化',
+                    'n.kb_build': '基础知识库搭建', 'n.ai_fe': 'AI知识库前端集成', 'n.ai_test': 'AI知识库小范围测试并优化',
+                    'n.manual': '产品使用手册/培训手册', 'n.launch': '统一上线使用',
+                    'n.monitor': '应用监控与数据同步', 'n.iteration': '版本迭代规范',
+                    'sub.title': '📦 子项目管理详情',
+                    'sub.fallback_node': '未找到对应的子项目节点', 'sub.empty': '暂无进度节点',
+                    'sub.completed_label': '✅ 已完成：', 'sub.inprogress_label': '🔄 开发中：', 'sub.notstarted_label': ' 未开始：',
+                    'sub.completed_x': '{0} 已完成', 'sub.inprogress_x': '{0} 开发中', 'sub.notstarted_x': '{0} 未开始',
+                    'sub.detail.name': '项目名称', 'sub.detail.intro': '项目名称', 'sub.detail.functions': '主要功能', 'sub.detail.progress': '目前进度',
+                    'sub.detail.biz_owner': 'Business Owner', 'sub.detail.tech_owner': 'Technical Owner',
+                    'sub.detail.edit': '✏️ 编辑', 'sub.detail.save': 'Save',
+                    'common.edit': '✏️ 编辑', 'common.save': 'Save',
+                    'tl.2w': '2 weeks', 'tl.4w': '4 weeks', 'tl.milestone': '里程碑',
+                    'tl.not_applicable': '/',
+                    'tl.node1_short': '数据库字段规范', 'tl.node2_short': '确定数据库产品',
+                    'tl.node3_short': '前端基础功能构建完毕', 'tl.node4_short': '连接数据库，数据库迁移/搭建完毕',
+                    'tl.node5_short': '网站/后端正常部署', 'tl.node6_short': '前端应用基础功能小范围测试并优化',
+                    'tl.node7_short': '后端知识库搭建', 'tl.node8_short': 'AI知识库前端集成', 'tl.node9_short': 'AI功能小范围测试并优化',
+                    'tl.node10_short': '产品使用手册/开发手册', 'tl.node11_short': '第一版上线使用',
+                    'tl.node12_short': '设置应用监控：异常数据监控、数据同步监控',
+                    'tl.node13_short': '设置版本迭代规范：需求收集、评审、版本号、迭代日志、通知',
+                    'gantt.phase1_simple': '项目阶段一：准备阶段', 'gantt.phase2_simple': '项目阶段二：基础功能开发',
+                    'gantt.phase3_simple': '项目阶段三：AI知识库开发', 'gantt.phase4_simple': '项目阶段四：第一版上线',
+                    'gantt.phase5_simple': '项目阶段五：持续监控、版本迭代优化',
+                    'gantt.milestone_dec31': '⭐ 12.31 上线',
+                    'sub.factory_assessment.intro': '在线工厂质量评估管理系统，支持多维度打分、历史对比与AI智能建议。',
+                    'sub.factory_assessment.functions': '工厂评估数据上传、多维度打分、历史数据对比、智能建议',
+                    'sub.factory_evaluation.intro': '针对特定工序的深度评估工具，用于工厂内部流程优化、问题识别与持续改进追踪。',
+                    'sub.factory_evaluation.functions': '工序风险评估、问题识别、改进追踪、工序优化建议',
+                    'sub.claim.intro': '综合质量索赔管理系统，从索赔登记到RCA分析、处理与闭环追踪。',
+                    'sub.claim.functions': '索赔登记、RCA分析、索赔卡片、索赔分发、处理进度追踪、统计分析',
+                    'sub.pending.intro': '基于历史数据的智能决策优化工具，支持QC团队与运营人员做出科学的优化决策。',
+                    'sub.pending.functions': '历史数据分析、风险等级评估、智能决策建议、决策记录追踪',
+                    'sub.material.intro': '服装面辅料管理系统，面辅料登记信息仓库。',
+                    'sub.material.functions': '面辅料登记管理、库存查询、采购订单管理',
+                    'sub.efficiency.intro': '效率提升工具集合，支持多场景自动化处理。',
+                    'sub.efficiency.functions': '自动化流程、批量处理、数据导出',
+                    'sub.qi.intro': 'AI驱动的综合性知识库系统，分析历史数据形成可复用的知识卡片，为应用端提供智能提示。',
+                    'sub.qi.functions': '大模型数据分析、智能知识卡片生成、AI提示引擎、交互推荐',
+                    'progress.completed': '已完成', 'progress.inprogress': '开发中', 'progress.notstarted': '未开始',
+                    'progress.reset_confirm': '确定要重置所有红绿灯状态吗？此操作不可撤销。',
+                    'progress.save_err': '保存状态点失败:', 'progress.load_err': '读取状态点失败:',
+                    'data.factory_quality': '工厂质量评估数据', 'data.factory_process': '工厂生产流程工序评估',
+                    'data.factory_report': '评估报告与整改建议',
+                    'data.claim_history': '历史Claim明细', 'data.defect_photo': '疵点照片', 'data.claim_new': '新Claim明细',
+                    'data.pending_history': '历史Pending决策信息', 'data.pending_new': '新Pending决策信息',
+                    'data.claim_library': 'claim library', 'data.process_exp': '各品类产品生产流程',
+                    'data.experience': '生产经验与技巧',
+                    'app.section.main': '📋 主要功能', 'app.section.data': '📊 核心数据/流程', 'app.section.ai': '🧠 AI知识库在本应用使用',
+                    'app.section.ai_use': '🧠 AI知识库应用', 'app.section.core': '📋 核心功能', 'app.section.source': '📊 数据来源',
+                    'app.section.frontend': '🔗 知识库应用前端（未来扩展）', 'app.section.ai_examples': '🧠 AI知识库实际应用提示示例',
+                    'app.ai_placeholder': '暂无AI应用场景，后续可扩展', 'app.coming_soon': '具体功能将在后续版本中完善',
+                    'app.knowledge.title': '🧠 AI 综合知识库',
+                    'app.knowledge.core': '<ul style="line-height: 1.8;"><li>收集<strong>大模型</strong>数据库中的历史数据并进行<strong>知识提炼</strong></li><li>通过<strong>关键字段</strong>如客户名称、问题原因、产品类型等，进行分类整理</li><li>AI自动分析历史数据，生成标准化的流程知识</li><li>形成可被应用端调用的<strong>结构化知识</strong></li></ul>',
+                    'app.knowledge.source': '<ul style="line-height: 1.8;"><li>Factory Assessment & Process Evaluation — 工厂数据、质量评估结果</li><li>Claim Management — 历史Claim详细记录与归档</li><li>Pending Decision Tool — 历史待决策记录与处理结果</li><li>Quality Academy — 培训记录、案例库、最佳实践（持续更新中）</li></ul>',
+                    'app.knowledge.ai_hint1': '场景1 - 上传时AI提示hint： "该工厂在质量评估中表现，<strong>可能引发某客户或某Claim风险</strong>，参考历史数据..."',
+                    'app.knowledge.ai_hint2': '场景2 - 建议时AI提示hint： "之前QC检查该工厂的某Claim的RCA，<strong>根本原因是...</strong>"',
+                    'app.knowledge.ai_app1': 'Factory Assessment / Process Evaluation',
+                    'app.knowledge.ai_hint3': '场景 - RCA分析时AI提示hint： "<strong>历史类似Claim通常是什么原因</strong>？模型建议重点关注..."',
+                    'app.knowledge.ai_hint4': '补充："是否需要应用<strong>特定方案</strong>"',
+                    'app.knowledge.ai_app2': 'Claim Management System',
+                    'app.knowledge.ai_hint5': '场景 - 优化决策时AI提示hint： "该客户+工厂+该产品<strong>历史总投诉</strong>较高，建议<strong>优化方案</strong>"',
+                    'app.knowledge.ai_hint6': '补充："该客户+工厂+该产品<strong>OK</strong>记录，可考虑是否优化"',
+                    'app.knowledge.ai_app3': 'Pending Decision Tool',
+                    'app.factory_assessment.title': '🏭 Factory Assessment Online',
+                    'app.factory_assessment.main': '在线工厂质量评估管理系统，支持多维度打分、历史对比与AI智能建议。',
+                    'app.factory_assessment.data': '<ul style="line-height: 1.8;"><li><strong>工厂质量评估数据</strong></li><li><strong>评估报告与整改建议</strong></li></ul>',
+                    'app.factory_assessment.ai_app1': '上传评估时AI提示',
+                    'app.factory_assessment.ai_hint1': '当用户对某工厂进行评估时AI知识库提供<strong>Hint</strong>：<br>"该工厂在[印染]工序的评分较低，参考历史数据，可能引发<strong>[客户A]、[相关Claim]</strong>风险，历史类似情况3起（2024年2月、2025年7月...）"',
+                    'app.factory_assessment.ai_app2': '建议/写Comments时AI提示',
+                    'app.factory_assessment.ai_hint2': '当用户需要填写建议或Comments时AI知识库提供<strong>Hint</strong>：<br>"之前QC检查该工厂[2025年3月Claim#12345]的RCA，<strong>根本原因是：缝纫[设备]导致的QC异常</strong>，建议关注[自动检测设备]"',
+                    'app.process_evaluation.title': '⚙️ Factory Process Evaluation System',
+                    'app.process_evaluation.main': '针对特定工序进行深度评估，用于工厂内部流程优化、问题识别与持续改进追踪。',
+                    'app.process_evaluation.data': '<ul style="line-height: 1.8;"><li>工厂生产流程工序评估</li><li>不同产品类型的工序表现分析</li><li>评估报告与整改建议</li></ul>',
+                    'app.process_evaluation.ai_app1': '评估过程时AI提示',
+                    'app.process_evaluation.ai_hint1': '当用户对某工厂[印染]工序评估时AI提示：<br>"该工厂在[印染]工序的产品偏色率15% vs 行业平均8%，历史数据显示此为常见问题，<strong>[色牢度不达标]</strong>是Claim<strong>最常见原因</strong>，染色配方和工艺参数"',
+                    'app.claim.title': '📋 Claim Management System',
+                    'app.claim.main': '质量索赔管理系统，用于记录、跟踪和分析客户投诉与索赔案件，支持RCA分析、根本原因追踪及持续改进追踪。',
+                    'app.claim.data': '<ul style="line-height: 1.8;"><li><strong>历史Claim详细</strong> — 客户、供应商、产品类型、索赔原因等</li><li><strong>疵点照片</strong> </li><li><strong>新登记Claim信息</strong></li><li>RCA报告信息</li></ul>',
+                    'app.claim.ai_app1': 'RCA分析时AI提示',
+                    'app.claim.ai_hint1': '当用户对某Claim做根因分析时AI提示：<br>"此类claim多由[设备校准不当]导致，建议优先调查该工厂的设备因素..."',
+                    'app.pending.title': '⚖️ Pending Decision Tool',
+                    'app.pending.main': '放货决策工具，帮助QC团队基于历史数据和当前状态做出更准确的放货决策。',
+                    'app.pending.data': '<ul style="line-height: 1.8;"><li><strong>历史Pending决策信息</strong> </li><li><strong>新的Pending 决策信息</strong></li><li><strong>疵点照片</strong></li></ul>',
+                    'app.pending.ai_app1': '优化决策时AI提示',
+                    'app.pending.ai_hint1': '当用户考虑是否放货提示：<br>"该客户+工厂+[产品]组合在<strong>此类疵点问题放货率100%，且未产生过claim,建议放货"',
+                    'app.efficiency.title': '⚡ Efficiency Tools',
+                    'app.efficiency.main': '效率提升工具集合',
+                    'app.efficiency.data': '<p style="color: #9ca3af; font-style: italic;">具体功能将在后续版本中完善</p>',
+                    'app.efficiency.ai': '<p style="color: #9ca3af; font-style: italic;">暂无AI应用场景，后续可扩展</p>',
+                    'app.material.title': '📦 Material Management System',
+                    'app.material.main': '<ul style="line-height: 1.8;"><li><strong>面辅料信息管理</strong> — 面料、辅料的基础数据库，记录成分、颜色、供应商等信息</li><li><strong>数据看板</strong> — 展示面料供应商的分数排名</li></ul>',
+                    'app.material.data': '<ul style="line-height: 1.8;"><li><strong>面辅料信息查询</strong> — 成分、颜色、供应商、规格等</li></ul>',
+                    'app.material.ai': '<p style="color: #9ca3af; font-style: italic;">暂无AI应用场景，后续可扩展</p>',
+                    'app.quality.title': '🎓 Quality Intelligence Library',
+                    'app.quality.main': '<ul style="line-height: 1.8;"><li><strong>AI知识库问答与检索系统</strong> — 基于大模型的知识问答系统，支持自然语言查询</li><li><strong>前端交互展示</strong> — 提供友好的用户界面，展示知识查询结果</li></ul>',
+                    'app.quality.data': '<p style="color: #9ca3af; font-style: italic;">当前版本暂未开放，后续作为知识库查询端</p>',
+                    'app.quality.ai': '<ul style="line-height: 1.8;"><li><strong>AI知识库前端交互展示</strong> — 作为知识库用户端，提供智能问答与检索</li></ul>',
+                    'app.quality.ai_app1': '智能问答场景',
+                    'app.quality.ai_hint1': '用户输入问题："该工厂的某工序有哪些风险？" → AI知识库基于历史数据生成回答',
+                    'app.quality.ai_hint2': '用户输入："如何预防此类问题？" → AI知识库推荐类似历史成功案例',
+                    'app.modal.title': '应用详情',
+                },
+                en: {
+                    'common.cancel': 'Cancel', 'common.close': 'Close', 'common.save': 'Save', 'common.edit': 'Edit',
+                    'common.coming_soon': 'Not yet available in the current version. Will serve as the knowledge base query interface later.',
+                    'common.tbd': 'TBD', 'common.owner_prefix': 'Owner: ',
+                    'common.tbd_full': 'Not assigned', 'common.unassigned': 'TBD',
+                    'page.title': 'Quality Intelligence Platform - Project Overview',
+                    'tab.overview': 'Project Overview',
+                    'tab.planning': 'Project Planning & Management',
+                    'tab.subprojects': 'Subproject Details',
+                    'header.section_title': '🎯 Quality Intelligence Platform',
+                    'header.milestone': '📍 Key Milestones',
+                    'header.schedule': '📅 Project Schedule',
+                    'header.overall_progress': 'Overall Progress',
+                    'header.reset_btn': '🔄 Reset Progress',
+                    'header.reset_title': 'Reset all traffic lights to red and clear localStorage',
+                    'header.lang_switch_to_en': '🌐 EN',
+                    'header.lang_switch_to_zh': '🌐 中文',
+                    'arch.title': '🏗️ Project Overview Architecture',
+                    'arch.app_layer': '📱 Application Layer', 'arch.data_layer': '🗄️ Data Layer', 'arch.ai_layer': '🧠 AI Knowledge Base',
+                    'arch.intro_line': 'Use large language models to distill knowledge from data, forming an AI knowledge base callable by applications, providing intelligent hints to the front-end.',
+                    'arch.flow1': 'Application → Data: Data Generation & Storage',
+                    'arch.flow1_desc': 'New data generated by each application during use, or uploaded historical data, are correlated via key fields (e.g., customer, factory, claim reason, product type) and stored in the database.',
+                    'arch.flow2': 'Data → Knowledge: AI Knowledge Distillation',
+                    'arch.flow2_desc': 'Through large language models, data in the database is distilled into knowledge. The AI analyzes historical data automatically, categorizes and organizes it, generating standardized process knowledge that forms the comprehensive AI knowledge base.',
+                    'arch.flow3': 'Knowledge → Application: Smart Feedback to Front-end',
+                    'arch.flow3_desc': 'The AI knowledge base provides intelligent hints at key operation nodes of each application, suggesting directions based on historical data, helping users make more accurate judgments and decisions.',
+                    'arch.key_field': 'key fields', 'arch.big_model': 'large language model',
+                    'arch.knowledge_distill': 'knowledge distillation', 'arch.ai_library': 'Comprehensive AI Knowledge Base',
+                    'arch.structured': 'structured knowledge',
+                    'milestone.modal_title': '📍 Key Milestones',
+                    'milestone.1.date': 'July 2026', 'milestone.1.title': 'Database Products Finalized', 'milestone.1.desc': 'Unify database field specifications, finalize database products',
+                    'milestone.2.date': 'September 2026', 'milestone.2.title': 'Database Migration / Setup Complete',
+                    'milestone.2.desc': 'Connect to database, prepare tables/files, complete migration/setup, and perform small-scale testing and optimization of front-end basic features',
+                    'milestone.3.date': 'November 2026', 'milestone.3.title': 'AI Knowledge Base Built',
+                    'milestone.3.desc': 'Use large language models for deep learning and summarization of data, generate knowledge cards, integrate AI knowledge base features into the front-end, perform small-scale testing and optimization',
+                    'milestone.4.date': 'December 2026', 'milestone.4.title': 'V1 Goes Live',
+                    'milestone.4.desc': 'Ensure website is properly deployed, database syncs normally, and all front-end features work correctly',
+                    'gantt.title': '📅 Project Planning Schedule',
+                    'gantt.col_phase': 'Project Phase', 'gantt.col_task': 'Key Timeline Node', 'gantt.col_duration': 'Duration', 'gantt.milestone_label': 'Milestone',
+                    'gantt.phase1': 'Phase 1:<br>Preparation', 'gantt.phase2': 'Phase 2:<br>Core Feature Development',
+                    'gantt.phase3': 'Phase 3:<br>AI Knowledge Base', 'gantt.phase4': 'Phase 4:<br>V1 Go-Live<br>2026.12.31',
+                    'gantt.phase5': 'Phase 5:<br>Monitoring &<br>Iteration',
+                    'gantt.legend1': 'Phase 1: Preparation', 'gantt.legend2': 'Phase 2: Core Feature Development',
+                    'gantt.legend3': 'Phase 3: AI Knowledge Base', 'gantt.legend4': 'Phase 4: V1 Go-Live', 'gantt.legend5': 'Phase 5: Monitoring & Iteration',
+                    'gantt.milestone_dec31': '⭐ 12.31 Launch',
+                    'tl.phase1': 'Phase 1: Preparation', 'tl.phase2': 'Phase 2: Core Feature Development',
+                    'tl.phase3': 'Phase 3: AI Knowledge Base', 'tl.phase4': 'Phase 4: V1 Go-Live',
+                    'tl.phase5': 'Phase 5: Monitoring & Iteration',
+                    'tl.node1': 'DB Schema (2 weeks)', 'tl.node2': 'Finalize DB Products (2 weeks)',
+                    'tl.node3': 'FE Core Features Built (2 weeks)', 'tl.node4': 'DB Connection & Migration (4 weeks)',
+                    'tl.node5': 'Web / Backend Deployment (2 weeks)', 'tl.node6': 'FE Basic Features Testing & Optimization (2 weeks)',
+                    'tl.node7': 'Backend Knowledge Base (4 weeks)', 'tl.node8': 'AI KB Frontend Integration (2 weeks)',
+                    'tl.node9': 'AI Features Small-Scale Testing & Optimization (2 weeks)',
+                    'tl.node10': 'Product / Dev Manual (2 weeks)', 'tl.node11': 'V1 Go-Live',
+                    'tl.node12': 'App Monitoring Setup: Anomaly & Sync Monitoring (2 weeks)',
+                    'tl.node13': 'Iteration Standards: Requirements, Review, Versions, Changelog, Notifications (2 weeks)',
+                    'n.db_schema': 'DB Schema', 'n.ensure_db': 'DB Products Confirmed',
+                    'n.fe_base': 'FE Core Architecture', 'n.be_db': 'BE Database / Migration',
+                    'n.fe_be_test': 'FE / BE Testing', 'n.fe_test_optim': 'FE Small-Scale Test & Optimization',
+                    'n.kb_build': 'KB Foundation', 'n.ai_fe': 'AI KB FE Integration', 'n.ai_test': 'AI KB Test & Optimization',
+                    'n.manual': 'Product / Training Manual', 'n.launch': 'Go-Live',
+                    'n.monitor': 'App Monitoring & Data Sync', 'n.iteration': 'Iteration Standards',
+                    'sub.title': '📦 Subproject Management Details',
+                    'sub.fallback_node': 'No matching subproject nodes found', 'sub.empty': 'No progress nodes yet',
+                    'sub.completed_label': '✅ Completed: ', 'sub.inprogress_label': '🔄 In Progress: ', 'sub.notstarted_label': ' Not Started: ',
+                    'sub.completed_x': '{0} Completed', 'sub.inprogress_x': '{0} In Progress', 'sub.notstarted_x': '{0} Not Started',
+                    'sub.detail.name': 'Project Name', 'sub.detail.intro': 'Project Name', 'sub.detail.functions': 'Main Functions', 'sub.detail.progress': 'Current Progress',
+                    'sub.detail.biz_owner': 'Business Owner', 'sub.detail.tech_owner': 'Technical Owner',
+                    'sub.detail.edit': '✏️ Edit', 'sub.detail.save': 'Save',
+                    'common.edit': '✏️ Edit', 'common.save': 'Save',
+                    'tl.2w': '2 weeks', 'tl.4w': '4 weeks', 'tl.milestone': 'Milestone',
+                    'tl.not_applicable': '/',
+                    'tl.node1_short': 'DB Schema Spec', 'tl.node2_short': 'Confirm DB Product',
+                    'tl.node3_short': 'FE Core Functions Complete', 'tl.node4_short': 'DB Connection & Migration Complete',
+                    'tl.node5_short': 'Website / Backend Deployment', 'tl.node6_short': 'FE Base Functions - Small-Scale Test & Optimization',
+                    'tl.node7_short': 'BE Knowledge Base Setup', 'tl.node8_short': 'AI KB FE Integration', 'tl.node9_short': 'AI Small-Scale Test & Optimization',
+                    'tl.node10_short': 'Product / Dev Manual', 'tl.node11_short': 'V1 Go-Live',
+                    'tl.node12_short': 'Setup App Monitoring: Anomaly & Data Sync',
+                    'tl.node13_short': 'Set Iteration Standards: Requirements, Review, Version, Changelog, Notification',
+                    'gantt.phase1_simple': 'Phase 1: Preparation', 'gantt.phase2_simple': 'Phase 2: Core Feature Development',
+                    'gantt.phase3_simple': 'Phase 3: AI Knowledge Base', 'gantt.phase4_simple': 'Phase 4: V1 Go-Live',
+                    'gantt.phase5_simple': 'Phase 5: Monitoring & Iteration',
+                    'gantt.milestone_dec31': '⭐ 12.31 Go-Live',
+                    'sub.factory_assessment.intro': 'Online factory quality assessment management system with multi-dimensional scoring, historical comparison, and AI suggestions.',
+                    'sub.factory_assessment.functions': 'Factory assessment data upload, multi-dimensional scoring, historical data comparison, smart suggestions',
+                    'sub.factory_evaluation.intro': 'In-depth process-specific evaluation tool for factory internal process optimization, issue identification, and continuous improvement tracking.',
+                    'sub.factory_evaluation.functions': 'Process risk assessment, issue identification, improvement tracking, process optimization suggestions',
+                    'sub.claim.intro': 'Comprehensive quality claim management system, from claim registration to RCA analysis, processing, and closed-loop tracking.',
+                    'sub.claim.functions': 'Claim registration, RCA analysis, claim cards, claim distribution, processing tracking, statistics',
+                    'sub.pending.intro': 'Data-driven smart decision optimization tool, supporting QC and operations teams in making scientific optimization decisions.',
+                    'sub.pending.functions': 'Historical data analysis, risk level assessment, smart decision suggestions, decision tracking',
+                    'sub.material.intro': 'Garment fabric & trim management system, the registration warehouse for fabric/trim data.',
+                    'sub.material.functions': 'Fabric/trim registration, inventory query, purchase order management',
+                    'sub.efficiency.intro': 'Efficiency tool suite supporting multi-scenario automation.',
+                    'sub.efficiency.functions': 'Automated workflows, batch processing, data export',
+                    'sub.qi.intro': 'AI-driven comprehensive knowledge base system that analyzes historical data into reusable knowledge cards, providing intelligent hints to applications.',
+                    'sub.qi.functions': 'LLM data analysis, smart knowledge card generation, AI hint engine, interactive recommendations',
+                    'progress.completed': 'Completed', 'progress.inprogress': 'In Progress', 'progress.notstarted': 'Not Started',
+                    'progress.reset_confirm': 'Are you sure you want to reset all traffic lights? This cannot be undone.',
+                    'progress.save_err': 'Failed to save status dots:', 'progress.load_err': 'Failed to load status dots:',
+                    'data.factory_quality': 'Factory quality assessment data', 'data.factory_process': 'Factory process workflow evaluation',
+                    'data.factory_report': 'Assessment reports & improvement suggestions',
+                    'data.claim_history': 'Historical claim details', 'data.defect_photo': 'Defect photos', 'data.claim_new': 'New claim details',
+                    'data.pending_history': 'Historical pending decision info', 'data.pending_new': 'New pending decision info',
+                    'data.claim_library': 'claim library', 'data.process_exp': 'Production workflow per product category',
+                    'data.experience': 'Production experience & skills',
+                    'app.section.main': '📋 Main Functions', 'app.section.data': '📊 Core Data / Process', 'app.section.ai': '🧠 AI KB Used in This App',
+                    'app.section.ai_use': '🧠 AI KB Application', 'app.section.core': '📋 Core Features', 'app.section.source': '📊 Data Sources',
+                    'app.section.frontend': '🔗 KB Application Frontend (Future Extension)', 'app.section.ai_examples': '🧠 AI KB Real Application Hint Examples',
+                    'app.ai_placeholder': 'No AI application scenarios yet; can be extended later', 'app.coming_soon': 'Specific features will be refined in later versions',
+                    'app.knowledge.title': '🧠 Comprehensive AI Knowledge Base',
+                    'app.knowledge.core': '<ul style="line-height: 1.8;"><li>Collect historical data from the <strong>large language model</strong> database and perform <strong>knowledge distillation</strong></li><li>Categorize and organize by <strong>key fields</strong> such as customer name, issue cause, product type, etc.</li><li>AI automatically analyzes historical data and generates standardized process knowledge</li><li>Forms <strong>structured knowledge</strong> callable by the application layer</li></ul>',
+                    'app.knowledge.source': '<ul style="line-height: 1.8;"><li>Factory Assessment & Process Evaluation — factory data, quality assessment results</li><li>Claim Management — historical claim records and archive</li><li>Pending Decision Tool — historical pending decision records and outcomes</li><li>Quality Academy — training records, case library, best practices (continuously updated)</li></ul>',
+                    'app.knowledge.ai_hint1': 'Scenario 1 - AI hint on upload: "The factory\'s performance in quality assessment may trigger <strong>certain customer or claim risks</strong>, reference historical data..."',
+                    'app.knowledge.ai_hint2': 'Scenario 2 - AI hint on suggestions: "In a previous QC inspection, the RCA of one of the factory\'s claims found the <strong>root cause was...</strong>"',
+                    'app.knowledge.ai_app1': 'Factory Assessment / Process Evaluation',
+                    'app.knowledge.ai_hint3': 'Scenario - AI hint on RCA analysis: "<strong>What are the usual causes of similar historical claims?</strong> The model suggests focusing on..."',
+                    'app.knowledge.ai_hint4': 'Supplement: "Should we apply a <strong>specific solution</strong>?"',
+                    'app.knowledge.ai_app2': 'Claim Management System',
+                    'app.knowledge.ai_hint5': 'Scenario - AI hint on optimization decision: "This customer + factory + product combination has a <strong>high historical complaint rate</strong>; an <strong>optimization plan</strong> is recommended"',
+                    'app.knowledge.ai_hint6': 'Supplement: "This combination also has <strong>OK</strong> records; consider whether to optimize"',
+                    'app.knowledge.ai_app3': 'Pending Decision Tool',
+                    'app.factory_assessment.title': '🏭 Factory Assessment Online',
+                    'app.factory_assessment.main': 'Online factory quality assessment management system with multi-dimensional scoring, historical comparison, and AI suggestions.',
+                    'app.factory_assessment.data': '<ul style="line-height: 1.8;"><li><strong>Factory quality assessment data</strong></li><li><strong>Assessment reports & improvement suggestions</strong></li></ul>',
+                    'app.factory_assessment.ai_app1': 'AI hint on assessment upload',
+                    'app.factory_assessment.ai_hint1': 'When a user assesses a factory, the AI knowledge base provides a <strong>Hint</strong>:<br>"The factory scores low on the [Dyeing] process. Reference historical data: this may trigger <strong>[Customer A], [related claims]</strong> risks. 3 similar cases on record (Feb 2024, Jul 2025...)"',
+                    'app.factory_assessment.ai_app2': 'AI hint on writing suggestions / comments',
+                    'app.factory_assessment.ai_hint2': 'When the user needs to fill in suggestions or comments, the AI knowledge base provides a <strong>Hint</strong>:<br>"In a previous QC inspection of this factory [Claim #12345, Mar 2025], the RCA found the <strong>root cause: sewing [equipment] causing QC abnormalities</strong>. Recommend attention to [auto-inspection equipment]"',
+                    'app.process_evaluation.title': '⚙️ Factory Process Evaluation System',
+                    'app.process_evaluation.main': 'In-depth process-specific evaluation for factory internal process optimization, issue identification, and continuous improvement tracking.',
+                    'app.process_evaluation.data': '<ul style="line-height: 1.8;"><li>Factory process workflow evaluation</li><li>Process performance analysis per product type</li><li>Assessment reports & improvement suggestions</li></ul>',
+                    'app.process_evaluation.ai_app1': 'AI hint during evaluation',
+                    'app.process_evaluation.ai_hint1': 'When the user evaluates a factory\'s [Dyeing] process, AI hints:<br>"This factory has a 15% color-deviation rate on [Dyeing] vs 8% industry average. Historical data shows this is common; <strong>[poor color fastness]</strong> is the <strong>most common claim cause</strong>; check dye recipe and process parameters"',
+                    'app.claim.title': '📋 Claim Management System',
+                    'app.claim.main': 'Quality claim management system for recording, tracking, and analyzing customer complaints and claims. Supports RCA analysis, root-cause tracking, and continuous improvement.',
+                    'app.claim.data': '<ul style="line-height: 1.8;"><li><strong>Historical claim details</strong> — customer, supplier, product type, claim reason, etc.</li><li><strong>Defect photos</strong></li><li><strong>Newly registered claim info</strong></li><li>RCA report info</li></ul>',
+                    'app.claim.ai_app1': 'AI hint on RCA analysis',
+                    'app.claim.ai_hint1': 'When the user performs RCA on a claim, AI hints:<br>"Such claims are often caused by [improper equipment calibration]; recommend prioritizing investigation of this factory\'s equipment factors..."',
+                    'app.pending.title': '⚖️ Pending Decision Tool',
+                    'app.pending.main': 'Release decision tool helping QC teams make more accurate release decisions based on historical data and current status.',
+                    'app.pending.data': '<ul style="line-height: 1.8;"><li><strong>Historical pending decision info</strong></li><li><strong>New pending decision info</strong></li><li><strong>Defect photos</strong></li></ul>',
+                    'app.pending.ai_app1': 'AI hint on optimization decision',
+                    'app.pending.ai_hint1': 'When considering release, AI hints:<br>"This customer + factory + [product] combination has a <strong>100% release rate for this defect type, with no claims generated; recommend release</strong>"',
+                    'app.efficiency.title': '⚡ Efficiency Tools',
+                    'app.efficiency.main': 'Efficiency tool suite',
+                    'app.efficiency.data': '<p style="color: #9ca3af; font-style: italic;">Specific features to be enhanced in subsequent versions</p>',
+                    'app.efficiency.ai': '<p style="color: #9ca3af; font-style: italic;">No AI application scenario yet; can be extended later</p>',
+                    'app.material.title': '📦 Material Management System',
+                    'app.material.main': '<ul style="line-height: 1.8;"><li><strong>Fabric & trim information management</strong> — base database of fabrics and trims, recording composition, color, supplier, etc.</li><li><strong>Data dashboard</strong> — displays fabric supplier score rankings</li></ul>',
+                    'app.material.data': '<ul style="line-height: 1.8;"><li><strong>Fabric & trim info query</strong> — composition, color, supplier, specifications, etc.</li></ul>',
+                    'app.material.ai': '<p style="color: #9ca3af; font-style: italic;">No AI application scenario yet; can be extended later</p>',
+                    'app.quality.title': '🎓 Quality Intelligence Library',
+                    'app.quality.main': '<ul style="line-height: 1.8;"><li><strong>AI KB Q&A and search system</strong> — knowledge Q&A system based on large language models, supports natural-language queries</li><li><strong>Frontend interactive display</strong> — user-friendly interface for displaying knowledge query results</li></ul>',
+                    'app.quality.data': '<p style="color: #9ca3af; font-style: italic;">Not yet available in the current version. Will serve as the knowledge base query interface later.</p>',
+                    'app.quality.ai': '<ul style="line-height: 1.8;"><li><strong>AI KB frontend interactive display</strong> — serves as the knowledge base client, providing intelligent Q&A and search</li></ul>',
+                    'app.quality.ai_app1': 'Intelligent Q&A scenario',
+                    'app.quality.ai_hint1': 'User asks: "What risks exist in a factory\'s process?" → AI KB generates an answer based on historical data',
+                    'app.quality.ai_hint2': 'User asks: "How to prevent such issues?" → AI KB recommends similar historical success cases',
+                    'app.modal.title': 'Application Details',
+                }
+            }
+        };
+
+        I18N.t = function(key) {
+            var args = Array.prototype.slice.call(arguments, 1);
+            var dict = this.dict[this.lang] || this.dict.zh;
+            var val = (dict && dict[key]) || (this.dict.zh[key]) || key;
+            for (var i = 0; i < args.length; i++) {
+                val = val.replace(new RegExp('\\{' + i + '\\}', 'g'), args[i]);
+            }
+            return val;
+        };
+
+        I18N.localize = function(obj) {
+            if (obj == null) return '';
+            if (typeof obj === 'string') return obj;
+            return obj[this.lang] || obj.zh || obj.en || '';
+        };
+
+        I18N.setLang = function(lang) {
+            if (lang !== 'zh' && lang !== 'en') return;
+            this.lang = lang;
+            try { localStorage.setItem(this.LANG_KEY, lang); } catch (e) {}
+            document.documentElement.lang = lang === 'zh' ? 'zh-CN' : 'en';
+            document.title = this.t('page.title');
+            this.applyDataI18n();
+            this.refreshDynamicContent();
+            this.updateSwitcherLabel();
+        };
+
+        I18N.applyDataI18n = function() {
+            var self = this;
+            document.querySelectorAll('[data-i18n]').forEach(function(el) {
+                el.textContent = self.t(el.getAttribute('data-i18n'));
+            });
+            document.querySelectorAll('[data-i18n-html]').forEach(function(el) {
+                el.innerHTML = self.t(el.getAttribute('data-i18n-html'));
+            });
+            document.querySelectorAll('[data-i18n-attr]').forEach(function(el) {
+                el.getAttribute('data-i18n-attr').split('|').forEach(function(pair) {
+                    var p = pair.split(':');
+                    if (p.length === 2) el.setAttribute(p[0], self.t(p[1]));
+                });
+            });
+        };
+
+        I18N.refreshDynamicContent = function() {
+            if (typeof refreshAllPreviewProgress === 'function') refreshAllPreviewProgress();
+            if (typeof refreshOpenSubDetail === 'function') refreshOpenSubDetail();
+            if (typeof refreshAppDetail === 'function') refreshAppDetail();
+        };
+
+        I18N.updateSwitcherLabel = function() {
+            var btn = document.getElementById('langSwitcher');
+            if (!btn) return;
+            btn.textContent = this.lang === 'zh' ? this.t('header.lang_switch_to_en') : this.t('header.lang_switch_to_zh');
+        };
+
+        I18N.init = function() {
+            var saved = null;
+            try { saved = localStorage.getItem(this.LANG_KEY); } catch (e) {}
+            if (saved === 'en' || saved === 'zh') this.lang = saved;
+            document.documentElement.lang = this.lang === 'zh' ? 'zh-CN' : 'en';
+            document.title = this.t('page.title');
+            this.applyDataI18n();
+            this.updateSwitcherLabel();
+            this.refreshDynamicContent();
+        };
+
+        function switchLanguage() {
+            I18N.setLang(I18N.lang === 'zh' ? 'en' : 'zh');
+        }
+
         function switchTab(tabId) {
             var tabs = document.querySelectorAll('.nav-tab');
             var contents = document.querySelectorAll('.tab-content');
@@ -2785,6 +3247,7 @@
 
         // Load saved state when DOM is ready
         document.addEventListener('DOMContentLoaded', function() {
+            I18N.init();
             setTimeout(initStatusDots, 50);
         });
 
@@ -2806,204 +3269,204 @@
 
         var appDetails = {
             'knowledge': {
-                title: '🧠 AI 综合知识库',
+                titleKey: 'app.knowledge.title',
                 sections: [
                     {
-                        title: '📋 核心功能',
-                        content: '<ul style="line-height: 1.8;"><li>收集<strong>大模型</strong>数据库中的历史数据并进行<strong>知识提炼</strong></li><li>通过<strong>关键字段</strong>如客户名称、问题原因、产品类型等，进行分类整理</li><li>AI自动分析历史数据，生成标准化的流程知识</li><li>形成可被应用端调用的<strong>结构化知识</strong></li></ul>'
+                        titleKey: 'app.section.core',
+                        contentKey: 'app.knowledge.core'
                     },
                     {
-                        title: '📊 数据来源',
-                        content: '<ul style="line-height: 1.8;"><li>Factory Assessment & Process Evaluation — 工厂数据、质量评估结果</li><li>Claim Management — 历史Claim详细记录与归档</li><li>Pending Decision Tool — 历史待决策记录与处理结果</li><li>Quality Academy — 培训记录、案例库、最佳实践（持续更新中）</li></ul>'
+                        titleKey: 'app.section.source',
+                        contentKey: 'app.knowledge.source'
                     },
                     {
-                        title: '🔗 知识库应用前端（未来扩展）',
-                        content: ''
+                        titleKey: 'app.section.frontend',
+                        contentKey: ''
                     }
                 ],
                 aiApplications: [
                     {
-                        app: 'Factory Assessment / Process Evaluation',
-                        hint1: '场景1 - 上传时AI提示hint： "该工厂在质量评估中表现，<strong>可能引发某客户或某Claim风险</strong>，参考历史数据..."',
-                        hint2: '场景2 - 建议时AI提示hint： "之前QC检查该工厂的某Claim的RCA，<strong>根本原因是...</strong>"'
+                        appKey: 'app.knowledge.ai_app1',
+                        hint1Key: 'app.knowledge.ai_hint1',
+                        hint2Key: 'app.knowledge.ai_hint2'
                     },
                     {
-                        app: 'Claim Management System',
-                        hint1: '场景 - RCA分析时AI提示hint： "<strong>历史类似Claim通常是什么原因</strong>？模型建议重点关注..."',
-                        hint2: '补充："是否需要应用<strong>特定方案</strong>"'
+                        appKey: 'app.knowledge.ai_app2',
+                        hint1Key: 'app.knowledge.ai_hint3',
+                        hint2Key: 'app.knowledge.ai_hint4'
                     },
                     {
-                        app: 'Pending Decision Tool',
-                        hint1: '场景 - 优化决策时AI提示hint： "该客户+工厂+该产品<strong>历史总投诉</strong>较高，建议<strong>优化方案</strong>"',
-                        hint2: '补充："该客户+工厂+该产品<strong>OK</strong>记录，可考虑是否优化"'
+                        appKey: 'app.knowledge.ai_app3',
+                        hint1Key: 'app.knowledge.ai_hint5',
+                        hint2Key: 'app.knowledge.ai_hint6'
                     }
                 ]
             },
 
             'factory-assessment': {
-                title: '🏭 Factory Assessment Online',
+                titleKey: 'app.factory_assessment.title',
                 sections: [
                     {
-                        title: '📋 主要功能',
-                        content: '在线工厂质量评估管理系统，支持多维度打分、历史对比与AI智能建议。'
+                        titleKey: 'app.section.main',
+                        contentKey: 'app.factory_assessment.main'
                     },
                     {
-                        title: '📊 核心数据/流程',
-                        content: '<ul style="line-height: 1.8;"><li><strong>工厂质量评估数据</strong></li><li><strong>评估报告与整改建议</strong></li></ul>'
+                        titleKey: 'app.section.data',
+                        contentKey: 'app.factory_assessment.data'
                     },
                     {
-                        title: '🧠 AI知识库在本应用使用',
-                        content: ''
+                        titleKey: 'app.section.ai',
+                        contentKey: ''
                     }
                 ],
                 aiApplications: [
                     {
-                        app: '上传评估时AI提示',
-                        hint1: '当用户对某工厂进行评估时AI知识库提供<strong>Hint</strong>：<br>"该工厂在[印染]工序的评分较低，参考历史数据，可能引发<strong>[客户A]、[相关Claim]</strong>风险，历史类似情况3起（2024年2月、2025年7月...）"',
-                        hint2: ''
+                        appKey: 'app.factory_assessment.ai_app1',
+                        hint1Key: 'app.factory_assessment.ai_hint1',
+                        hint2Key: ''
                     },
                     {
-                        app: '建议/写Comments时AI提示',
-                        hint1: '当用户需要填写建议或Comments时AI知识库提供<strong>Hint</strong>：<br>"之前QC检查该工厂[2025年3月Claim#12345]的RCA，<strong>根本原因是：缝纫[设备]导致的QC异常</strong>，建议关注[自动检测设备]"',
-                        hint2: ''
+                        appKey: 'app.factory_assessment.ai_app2',
+                        hint1Key: 'app.factory_assessment.ai_hint2',
+                        hint2Key: ''
                     }
                 ]
             },
 
             'process-evaluation': {
-                title: '⚙️ Factory Process Evaluation System',
+                titleKey: 'app.process_evaluation.title',
                 sections: [
                     {
-                        title: '📋 主要功能',
-                        content: '针对特定工序进行深度评估，用于工厂内部流程优化、问题识别与持续改进追踪。'
+                        titleKey: 'app.section.main',
+                        contentKey: 'app.process_evaluation.main'
                     },
                     {
-                        title: '📊 核心数据/流程',
-                        content: '<ul style="line-height: 1.8;"><li>工厂生产流程工序评估</li><li>不同产品类型的工序表现分析</li><li>评估报告与整改建议</li></ul>'
+                        titleKey: 'app.section.data',
+                        contentKey: 'app.process_evaluation.data'
                     },
                     {
-                        title: '🧠 AI知识库在本应用使用',
-                        content: ''
+                        titleKey: 'app.section.ai',
+                        contentKey: ''
                     }
                 ],
                 aiApplications: [
                     {
-                        app: '评估过程时AI提示',
-                        hint1: '当用户对某工厂[印染]工序评估时AI提示：<br>"该工厂在[印染]工序的产品偏色率15% vs 行业平均8%，历史数据显示此为常见问题，<strong>[色牢度不达标]</strong>是Claim<strong>最常见原因</strong>，染色配方和工艺参数"',
-                        hint2: ''
+                        appKey: 'app.process_evaluation.ai_app1',
+                        hint1Key: 'app.process_evaluation.ai_hint1',
+                        hint2Key: ''
                     }
                 ]
             },
 
             'claim-management': {
-                title: '📋 Claim Management System',
+                titleKey: 'app.claim.title',
                 sections: [
                     {
-                        title: '📋 主要功能',
-                        content: '质量索赔管理系统，用于记录、跟踪和分析客户投诉与索赔案件，支持RCA分析、根本原因追踪及持续改进追踪。'
+                        titleKey: 'app.section.main',
+                        contentKey: 'app.claim.main'
                     },
                     {
-                        title: '📊 核心数据/流程',
-                        content: '<ul style="line-height: 1.8;"><li><strong>历史Claim详细</strong> — 客户、供应商、产品类型、索赔原因等</li><li><strong>疵点照片</strong> </li><li><strong>新登记Claim信息</strong></li><li>RCA报告信息</li></ul>'
+                        titleKey: 'app.section.data',
+                        contentKey: 'app.claim.data'
                     },
                     {
-                        title: '🧠 AI知识库在本应用使用',
-                        content: ''
+                        titleKey: 'app.section.ai',
+                        contentKey: ''
                     }
                 ],
                 aiApplications: [
                     {
-                        app: 'RCA分析时AI提示',
-                        hint1: '当用户对某Claim做根因分析时AI提示：<br>"此类claim多由[设备校准不当]导致，建议优先调查该工厂的设备因素..."',
-                        hint2: ''
+                        appKey: 'app.claim.ai_app1',
+                        hint1Key: 'app.claim.ai_hint1',
+                        hint2Key: ''
                     }
                 ]
             },
 
             'pending-decision': {
-                title: '⚖️ Pending Decision Tool',
+                titleKey: 'app.pending.title',
                 sections: [
                     {
-                        title: '📋 主要功能',
-                        content: '放货决策工具，帮助QC团队基于历史数据和当前状态做出更准确的放货决策。'
+                        titleKey: 'app.section.main',
+                        contentKey: 'app.pending.main'
                     },
                     {
-                        title: '📊 核心数据/流程',
-                        content: '<ul style="line-height: 1.8;"><li><strong>历史Pending决策信息</strong> </li><li><strong>新的Pending 决策信息</strong></li><li><strong>疵点照片</strong></li></ul>'
+                        titleKey: 'app.section.data',
+                        contentKey: 'app.pending.data'
                     },
                     {
-                        title: '🧠 AI知识库在本应用使用',
-                        content: ''
+                        titleKey: 'app.section.ai',
+                        contentKey: ''
                     }
                 ],
                 aiApplications: [
                     {
-                        app: '优化决策时AI提示',
-                        hint1: '当用户考虑是否放货提示：<br>"该客户+工厂+[产品]组合在<strong>此类疵点问题放货率100%，且未产生过claim,建议放货"',
-                        hint2: ''
+                        appKey: 'app.pending.ai_app1',
+                        hint1Key: 'app.pending.ai_hint1',
+                        hint2Key: ''
                     }
                 ]
             },
 
             'efficiency-tools': {
-                title: '⚡ Efficiency Tools',
+                titleKey: 'app.efficiency.title',
                 sections: [
                     {
-                        title: '📋 主要功能',
-                        content: '效率提升工具集合'
+                        titleKey: 'app.section.main',
+                        contentKey: 'app.efficiency.main'
                     },
                     {
-                        title: '📊 核心数据/流程',
-                        content: '<p style="color: #9ca3af; font-style: italic;">具体功能将在后续版本中完善</p>'
+                        titleKey: 'app.section.data',
+                        contentKey: 'app.efficiency.data'
                     },
                     {
-                        title: '🧠 AI知识库应用',
-                        content: '<p style="color: #9ca3af; font-style: italic;">暂无AI应用场景，后续可扩展</p>'
+                        titleKey: 'app.section.ai_use',
+                        contentKey: 'app.efficiency.ai'
                     }
                 ],
                 aiApplications: []
             },
 
             'material-management': {
-                title: '📦 Material Management System',
+                titleKey: 'app.material.title',
                 sections: [
                     {
-                        title: '📋 主要功能',
-                        content: '<ul style="line-height: 1.8;"><li><strong>面辅料信息管理</strong> — 面料、辅料的基础数据库，记录成分、颜色、供应商等信息</li><li><strong>数据看板</strong> — 展示面料供应商的分数排名</li></ul>'
+                        titleKey: 'app.section.main',
+                        contentKey: 'app.material.main'
                     },
                     {
-                        title: '📊 核心数据/流程',
-                        content: '<ul style="line-height: 1.8;"><li><strong>面辅料信息查询</strong> — 成分、颜色、供应商、规格等</li></ul>'
+                        titleKey: 'app.section.data',
+                        contentKey: 'app.material.data'
                     },
                     {
-                        title: '🧠 AI知识库应用',
-                        content: '<p style="color: #9ca3af; font-style: italic;">暂无AI应用场景，后续可扩展</p>'
+                        titleKey: 'app.section.ai_use',
+                        contentKey: 'app.material.ai'
                     }
                 ],
                 aiApplications: []
             },
 
             'quality-intelligence': {
-                title: '🎓 Quality Intelligence Library',
+                titleKey: 'app.quality.title',
                 sections: [
                     {
-                        title: '📋 主要功能',
-                        content: '<ul style="line-height: 1.8;"><li><strong>AI知识库问答与检索系统</strong> — 基于大模型的知识问答系统，支持自然语言查询</li><li><strong>前端交互展示</strong> — 提供友好的用户界面，展示知识查询结果</li></ul>'
+                        titleKey: 'app.section.main',
+                        contentKey: 'app.quality.main'
                     },
                     {
-                        title: '📊 核心数据/流程',
-                        content: '<p style="color: #9ca3af; font-style: italic;">当前版本暂未开放，后续作为知识库查询端</p>'
+                        titleKey: 'app.section.data',
+                        contentKey: 'app.quality.data'
                     },
                     {
-                        title: '🧠 AI知识库应用',
-                        content: '<ul style="line-height: 1.8;"><li><strong>AI知识库前端交互展示</strong> — 作为知识库用户端，提供智能问答与检索</li></ul>'
+                        titleKey: 'app.section.ai_use',
+                        contentKey: 'app.quality.ai'
                     }
                 ],
                 aiApplications: [
                     {
-                        app: '智能问答场景',
-                        hint1: '用户输入问题："该工厂的某工序有哪些风险？" → AI知识库基于历史数据生成回答',
-                        hint2: '用户输入："如何预防此类问题？" → AI知识库推荐类似历史成功案例'
+                        appKey: 'app.quality.ai_app1',
+                        hint1Key: 'app.quality.ai_hint1',
+                        hint2Key: 'app.quality.ai_hint2'
                     }
                 ]
             }
@@ -3016,32 +3479,36 @@
             var appData = appDetails[appId];
 
             if (appData) {
-                modalTitle.textContent = appData.title;
+                modalTitle.textContent = I18N.t(appData.titleKey);
+                modalBody.setAttribute('data-current-app', appId);
                 var html = '';
 
                 for (var i = 0; i < appData.sections.length; i++) {
                     var section = appData.sections[i];
-                    if (section.content) {
+                    var sectionContent = section.contentKey ? I18N.t(section.contentKey) : '';
+                    if (sectionContent) {
                         html += '<div class="modal-section">';
-                        html += '<div class="modal-section-title">' + section.title + '</div>';
-                        html += '<div class="modal-section-content">' + section.content + '</div>';
+                        html += '<div class="modal-section-title">' + I18N.t(section.titleKey) + '</div>';
+                        html += '<div class="modal-section-content">' + sectionContent + '</div>';
                         html += '</div>';
                     }
                 }
 
                 if (appData.aiApplications && appData.aiApplications.length > 0) {
                     html += '<div class="modal-section" style="margin-top: 20px; background: linear-gradient(135deg, #faf5ff, #ede9fe); border-left: 4px solid #8b5cf6;">';
-                    html += '<div class="modal-section-title">🧠 AI知识库实际应用提示示例</div>';
+                    html += '<div class="modal-section-title">' + I18N.t('app.section.ai_examples') + '</div>';
                     html += '<div class="modal-section-content">';
                     for (var j = 0; j < appData.aiApplications.length; j++) {
                         var aiApp = appData.aiApplications[j];
                         html += '<div style="margin-bottom: 15px;">';
-                        html += '<div style="font-weight: 600; color: #7c3aed; margin-bottom: 8px;">🧠 AI知识库实际应用提示示例</div>';
-                        if (aiApp.hint1) {
-                            html += '<div style="padding: 10px; background: white; border-radius: 8px; margin-bottom: 6px; line-height: 1.65;">' + aiApp.hint1 + '</div>';
+                        html += '<div style="font-weight: 600; color: #7c3aed; margin-bottom: 8px;">' + I18N.t(aiApp.appKey) + '</div>';
+                        var hint1Val = aiApp.hint1Key ? I18N.t(aiApp.hint1Key) : '';
+                        var hint2Val = aiApp.hint2Key ? I18N.t(aiApp.hint2Key) : '';
+                        if (hint1Val) {
+                            html += '<div style="padding: 10px; background: white; border-radius: 8px; margin-bottom: 6px; line-height: 1.65;">' + hint1Val + '</div>';
                         }
-                        if (aiApp.hint2) {
-                            html += '<div style="padding: 10px; background: white; border-radius: 8px; line-height: 1.65;">' + aiApp.hint2 + '</div>';
+                        if (hint2Val) {
+                            html += '<div style="padding: 10px; background: white; border-radius: 8px; line-height: 1.65;">' + hint2Val + '</div>';
                         }
                         html += '</div>';
                     }
@@ -3050,6 +3517,16 @@
 
                 modalBody.innerHTML = html;
                 modal.classList.add('active');
+            }
+        }
+
+        function refreshAppDetail() {
+            var modal = document.getElementById('appModal');
+            if (!modal || !modal.classList.contains('active')) return;
+            var modalBody = document.getElementById('modalBody');
+            var currentAppId = modalBody.getAttribute('data-current-app');
+            if (currentAppId) {
+                showAppDetail(currentAppId);
             }
         }
 
@@ -3113,30 +3590,39 @@
         }
 
         var nodeNames = [
-            '数据库字段规范',
-            '确保各数据库产品使用',
-            '前端基础功能架构搭建',
-            '后端数据库/迁移搭建',
-            '前端/后端功能测试',
-            '前端基础功能小范围测试并优化',
-            '基础知识库搭建',
-            'AI知识库前端集成',
-            'AI知识库小范围测试并优化',
-            '产品使用手册/培训手册',
-            '统一上线使用',
-            '应用监控与数据同步',
-            '版本迭代规范',
+            'n.db_schema', 'n.ensure_db', 'n.fe_base', 'n.be_db', 'n.fe_be_test',
+            'n.fe_test_optim', 'n.kb_build', 'n.ai_fe', 'n.ai_test', 'n.manual',
+            'n.launch', 'n.monitor', 'n.iteration'
         ];
 
+        function getNodeName(idx) {
+            var key = nodeNames[idx] || ('n.node_' + idx);
+            return I18N.t(key);
+        }
+
         var subprojectData = {
-            'factory assessment online': { icon:'🏭', name:'Factory Assessment Online', intro:'在线工厂质量评估管理系统，支持多维度打分、历史对比与AI智能建议。', functions:'工厂评估数据上传、多维度打分、历史数据对比、智能建议' },
-            'factory evaluation system': { icon:'⚙️', name:'Factory Evaluation System', intro:'针对特定工序的深度评估工具，用于工厂内部流程优化、问题识别与持续改进追踪。', functions:'工序风险评估、问题识别、改进追踪、工序优化建议' },
-            'claim management system': { icon:'📋', name:'Claim Management System', intro:'综合质量索赔管理系统，从索赔登记到RCA分析、处理与闭环追踪。', functions:'索赔登记、RCA分析、索赔卡片、索赔分发、处理进度追踪、统计分析' },
-            'pending decision tool': { icon:'⚖️', name:'Pending Decision Tool', intro:'基于历史数据的智能决策优化工具，支持QC团队与运营人员做出科学的优化决策。', functions:'历史数据分析、风险等级评估、智能决策建议、决策记录追踪' },
-            'material management system': { icon:'📦', name:'Material Management System', intro:'服装面辅料管理系统，面辅料登记信息仓库。', functions:'面辅料登记管理、库存查询、采购订单管理' },
-            'efficiency tools': { icon:'⚡', name:'Efficiency Tools', intro:'效率提升工具集合，支持多场景自动化处理。', functions:'自动化流程、批量处理、数据导出' },
-            'quality intelligence library': { icon:'🎓', name:'Quality Intelligence Library', intro:'AI驱动的综合性知识库系统，分析历史数据形成可复用的知识卡片，为应用端提供智能提示。', functions:'大模型数据分析、智能知识卡片生成、AI提示引擎、交互推荐' }
+            'factory assessment online': { icon:'🏭', name:'Factory Assessment Online', introKey:'sub.factory_assessment.intro', functionsKey:'sub.factory_assessment.functions' },
+            'factory evaluation system': { icon:'⚙️', name:'Factory Evaluation System', introKey:'sub.factory_evaluation.intro', functionsKey:'sub.factory_evaluation.functions' },
+            'claim management system': { icon:'📋', name:'Claim Management System', introKey:'sub.claim.intro', functionsKey:'sub.claim.functions' },
+            'pending decision tool': { icon:'⚖️', name:'Pending Decision Tool', introKey:'sub.pending.intro', functionsKey:'sub.pending.functions' },
+            'material management system': { icon:'📦', name:'Material Management System', introKey:'sub.material.intro', functionsKey:'sub.material.functions' },
+            'efficiency tools': { icon:'⚡', name:'Efficiency Tools', introKey:'sub.efficiency.intro', functionsKey:'sub.efficiency.functions' },
+            'quality intelligence library': { icon:'🎓', name:'Quality Intelligence Library', introKey:'sub.qi.intro', functionsKey:'sub.qi.functions' }
         };
+
+        // Helper: get current-language text for a subproject
+        function getSubText(key, field) {
+            var d = subprojectData[key];
+            if (!d) return '';
+            // Prefer user-edited value if present
+            if (d[field]) return d[field];
+            var tkey = d[field + 'Key'];
+            if (tkey) {
+                var translated = I18N.t(tkey);
+                if (translated && translated !== tkey) return translated;
+            }
+            return '';
+        }
 
         function getAllDotsForSubproject(name) {
             var rows = document.querySelectorAll('#timelineBody tr');
@@ -3171,27 +3657,27 @@
                 else red++;
             });
             var parts = [];
-            if (green>0) parts.push('<span style="color:#059669;font-weight:600">' + green + ' 已完成</span>');
-            if (yellow>0) parts.push('<span style="color:#d97706;font-weight:600">' + yellow + ' 开发中</span>');
-            if (red>0) parts.push('<span style="color:#dc2626;font-weight:600">' + red + ' 未开始</span>');
+            if (green>0) parts.push('<span style="color:#059669;font-weight:600">' + I18N.t('sub.completed_x', green) + '</span>');
+            if (yellow>0) parts.push('<span style="color:#d97706;font-weight:600">' + I18N.t('sub.inprogress_x', yellow) + '</span>');
+            if (red>0) parts.push('<span style="color:#dc2626;font-weight:600">' + I18N.t('sub.notstarted_x', red) + '</span>');
             return parts.join('  ');
         }
 
         function getSubprojectProgressDetail(name) {
             var allDots = getAllDotsForSubproject(name);
-            if (!allDots.length) return '<div>未找到对应的子项目节点</div>';
+            if (!allDots.length) return '<div>' + I18N.t('sub.fallback_node') + '</div>';
             var greenNodes=[], yellowNodes=[], redNodes=[];
             allDots.forEach(function(item){
-                var n = nodeNames[item.nodeIdx]||('节点'+(item.nodeIdx+1));
+                var n = getNodeName(item.nodeIdx);
                 if (item.dot.classList.contains('dot-green')) greenNodes.push(n);
                 else if (item.dot.classList.contains('dot-yellow')) yellowNodes.push(n);
                 else redNodes.push(n);
             });
             var html='';
-            if (greenNodes.length) html+='<div><span style="color:#059669;font-weight:600">✅ 已完成：</span>' + greenNodes.join('、') + '</div>';
-            if (yellowNodes.length) html+='<div style="margin-top:4px"><span style="color:#d97706;font-weight:600">🔄 开发中：</span>' + yellowNodes.join('、') + '</div>';
-            if (redNodes.length) html+='<div style="margin-top:4px"><span style="color:#dc2626;font-weight:600"> 未开始：</span>' + redNodes.join('、') + '</div>';
-            return html||'<div>暂无进度节点</div>';
+            if (greenNodes.length) html+='<div><span style="color:#059669;font-weight:600">' + I18N.t('sub.completed_label') + '</span>' + greenNodes.join('、') + '</div>';
+            if (yellowNodes.length) html+='<div style="margin-top:4px"><span style="color:#d97706;font-weight:600">' + I18N.t('sub.inprogress_label') + '</span>' + yellowNodes.join('、') + '</div>';
+            if (redNodes.length) html+='<div style="margin-top:4px"><span style="color:#dc2626;font-weight:600">' + I18N.t('sub.notstarted_label') + '</span>' + redNodes.join('、') + '</div>';
+            return html||'<div>' + I18N.t('sub.empty') + '</div>';
         }
 
         var currentEditName = null;
@@ -3202,11 +3688,11 @@
                 var progressEl = document.getElementById('preview-'+id);
                 if (progressEl) progressEl.innerHTML = getSubprojectProgressSummary(key);
                 var introEl = document.getElementById('intro-'+id);
-                if (introEl) introEl.textContent = subprojectData[key].intro;
+                if (introEl) introEl.textContent = getSubText(key, 'intro');
                 var techEl = document.getElementById('tech-'+id);
                 if (techEl) {
                     var t = subprojectData[key].techOwner || '';
-                    techEl.textContent = 'Owner: ' + (t || '待指定');
+                    techEl.textContent = I18N.t('common.owner_prefix') + (t || I18N.t('common.unassigned'));
                 }
             });
         }
@@ -3216,14 +3702,16 @@
             currentEditName = name;
             var d = subprojectData[name];
             document.getElementById('subDetailTitle').textContent = d.icon + ' ' + d.name;
-            document.getElementById('subDetailIntro').textContent = d.intro;
-            document.getElementById('subDetailFunctions').textContent = d.functions;
-            document.getElementById('subDetailIntroEdit').value = d.intro;
-            document.getElementById('subDetailFunctionsEdit').value = d.functions;
+            var introTxt = getSubText(name, 'intro');
+            var funcTxt = getSubText(name, 'functions');
+            document.getElementById('subDetailIntro').textContent = introTxt;
+            document.getElementById('subDetailFunctions').textContent = funcTxt;
+            document.getElementById('subDetailIntroEdit').value = introTxt;
+            document.getElementById('subDetailFunctionsEdit').value = funcTxt;
             var biz = subprojectData[name].bizOwner || '';
             var tech = subprojectData[name].techOwner || '';
-            document.getElementById('subDetailBizOwner').textContent = biz || '待指定';
-            document.getElementById('subDetailTechOwner').textContent = tech || '待指定';
+            document.getElementById('subDetailBizOwner').textContent = biz || I18N.t('common.tbd_full');
+            document.getElementById('subDetailTechOwner').textContent = tech || I18N.t('common.tbd_full');
             document.getElementById('subDetailBizOwner').className = biz ? 'subdetail-text-inline' : 'subdetail-text-inline empty';
             document.getElementById('subDetailTechOwner').className = tech ? 'subdetail-text-inline' : 'subdetail-text-inline empty';
             document.getElementById('subDetailBizOwnerEdit').value = biz;
@@ -3237,13 +3725,36 @@
             document.getElementById('subDetailModal').style.display = 'none';
         }
 
+        // Re-render the subproject detail modal in the current language
+        function refreshOpenSubDetail() {
+            var modal = document.getElementById('subDetailModal');
+            if (!modal || modal.style.display !== 'flex' || !currentEditName) return;
+            var name = currentEditName;
+            var d = subprojectData[name];
+            if (!d) return;
+            document.getElementById('subDetailTitle').textContent = d.icon + ' ' + d.name;
+            var introTxt = getSubText(name, 'intro');
+            var funcTxt = getSubText(name, 'functions');
+            var introEl = document.getElementById('subDetailIntro');
+            var funcEl = document.getElementById('subDetailFunctions');
+            var introEdit = document.getElementById('subDetailIntroEdit');
+            var funcEdit = document.getElementById('subDetailFunctionsEdit');
+            if (introEl && introEl.style.display !== 'none') introEl.textContent = introTxt;
+            if (funcEl && funcEl.style.display !== 'none') funcEl.textContent = funcTxt;
+            if (introEdit && introEdit.style.display !== 'none') introEdit.value = introTxt;
+            if (funcEdit && funcEdit.style.display !== 'none') funcEdit.value = funcTxt;
+            var btn = document.getElementById('subDetailEditBtn');
+            if (btn) btn.innerHTML = '<span data-i18n="common.edit">' + I18N.t('common.edit') + '</span>';
+            document.getElementById('subDetailProgress').innerHTML = getSubprojectProgressDetail(name);
+        }
+
         var editMode = false;
 
         function toggleEditMode() {
             editMode = !editMode;
             var btn = document.getElementById('subDetailEditBtn');
             if (editMode) {
-                btn.textContent = 'Save';
+                btn.textContent = I18N.t('common.save');
                 btn.classList.add('editing');
                 document.getElementById('subDetailIntro').style.display='none';
                 document.getElementById('subDetailIntroEdit').style.display='';
@@ -3255,7 +3766,7 @@
                 document.getElementById('subDetailTechOwnerEdit').style.display='';
             } else {
                 saveEdits();
-                btn.textContent = 'Edit';
+                btn.textContent = I18N.t('common.edit');
                 btn.classList.remove('editing');
                 exitEditMode();
             }
@@ -3270,8 +3781,8 @@
             document.getElementById('subDetailIntro').textContent = subprojectData[currentEditName].intro;
             document.getElementById('subDetailFunctions').textContent = subprojectData[currentEditName].functions;
             var b = subprojectData[currentEditName].bizOwner, t = subprojectData[currentEditName].techOwner;
-            document.getElementById('subDetailBizOwner').textContent = b || '待指定';
-            document.getElementById('subDetailTechOwner').textContent = t || '待指定';
+            document.getElementById('subDetailBizOwner').textContent = b || I18N.t('common.tbd_full');
+            document.getElementById('subDetailTechOwner').textContent = t || I18N.t('common.tbd_full');
             document.getElementById('subDetailBizOwner').className = b ? 'subdetail-text-inline' : 'subdetail-text-inline empty';
             document.getElementById('subDetailTechOwner').className = t ? 'subdetail-text-inline' : 'subdetail-text-inline empty';
             refreshAllPreviewProgress();
